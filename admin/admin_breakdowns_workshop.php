@@ -125,7 +125,8 @@ try {
                    b.bus_number, b.license_plate,
                    u.full_name as technician_name,
                    COUNT(wop.id) as parts_count,
-                   SUM(wop.total_cost) as total_parts_cost
+                   SUM(wop.total_cost) as total_parts_cost,
+                   CONCAT('OT-', YEAR(wo.created_at), '-', LPAD(wo.id, 4, '0')) as ref_ot
             FROM work_orders wo
             LEFT JOIN buses b ON wo.bus_id = b.id
             LEFT JOIN users u ON wo.technician_id = u.id
@@ -588,7 +589,7 @@ function generateReference($prefix, $table, $field) {
                                 <tbody>
                                     <?php foreach ($work_orders as $wo): ?>
                                         <tr>
-                                            <td><strong><?php echo htmlspecialchars($wo['ref_ot']); ?></strong></td>
+                                            <td><strong><?php echo htmlspecialchars($wo['ref_ot'] ?? ''); ?></strong></td>
                                             <td><?php echo htmlspecialchars($wo['bus_number'] ?? ''); ?></td>
                                             <td><?php echo htmlspecialchars($wo['technician_name'] ?? ''); ?></td>
                                             <td><?php echo htmlspecialchars($wo['work_type'] ?? ''); ?></td>
