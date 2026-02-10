@@ -6,11 +6,14 @@
             Journal des modifications
         </h6>
         <div class="btn-group" role="group">
-            <button type="button" class="btn btn-outline-primary btn-sm" onclick="refreshAuditLogs()">
+            <button type="button" class="btn btn-primary btn-sm" onclick="refreshAuditLogs()">
                 <i class="fas fa-sync me-1"></i>Actualiser
             </button>
-            <button type="button" class="btn btn-outline-success btn-sm" onclick="exportAuditLogs()">
+            <button type="button" class="btn btn-success btn-sm" onclick="exportAuditLogs()">
                 <i class="fas fa-download me-1"></i>Exporter
+            </button>
+            <button type="button" class="btn btn-outline-secondary btn-sm" onclick="clearAuditFilters()">
+                <i class="fas fa-times me-1"></i>Effacer
             </button>
         </div>
     </div>
@@ -42,7 +45,7 @@
         </div>
         <div class="col-md-3">
             <label class="form-label">&nbsp;</label>
-            <button type="button" class="btn btn-outline-secondary btn-sm w-100" onclick="clearAuditFilters()">
+            <button type="button" class="btn btn-outline-warning btn-sm w-100" onclick="clearAuditFilters()">
                 <i class="fas fa-times me-1"></i>Effacer filtres
             </button>
         </div>

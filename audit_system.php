@@ -448,8 +448,8 @@ $page_title = 'System Audit';
                                 <i class="fas fa-<?php echo $db_connected ? 'circle-check' : 'circle-exclamation'; ?>"></i>
                                 <?php echo $db_connected ? 'Connected' : 'Disconnected'; ?>
                             </div>
-                            <button class="btn btn-outline-light btn-sm" onclick="location.reload()">
-                                <i class="fas fa-sync-alt me-1"></i>Refresh
+                            <button class="btn btn-primary btn-sm" onclick="location.reload()">
+                                <i class="fas fa-sync-alt me-1"></i>Actualiser
                             </button>
                         </div>
                     </div>
@@ -521,8 +521,8 @@ $page_title = 'System Audit';
                                 <td><?php echo number_format($info['count']); ?></td>
                                 <td>
                                     <?php if ($info['status'] === 'error'): ?>
-                                    <button class="btn btn-sm btn-outline-primary" onclick="createTable('<?php echo $table; ?>')">
-                                        <i class="fas fa-plus me-1"></i>Create
+                                    <button class="btn btn-sm btn-success" onclick="createTable('<?php echo $table; ?>')">
+                                        <i class="fas fa-plus me-1"></i>Créer
                                     </button>
                                     <?php endif; ?>
                                 </td>

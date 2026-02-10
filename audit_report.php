@@ -370,17 +370,17 @@ $page_title = 'Audit Report';
                     </div>
                     <div class="col-md-4 text-end no-print">
                         <div class="btn-group" role="group">
-                            <a href="?format=json" class="btn btn-outline-light btn-sm">
+                            <a href="?format=json" class="btn btn-outline-primary btn-sm">
                                 <i class="fas fa-code me-1"></i>JSON
                             </a>
-                            <a href="?format=csv" class="btn btn-outline-light btn-sm">
+                            <a href="?format=csv" class="btn btn-success btn-sm">
                                 <i class="fas fa-file-csv me-1"></i>CSV
                             </a>
-                            <a href="?format=txt" class="btn btn-outline-light btn-sm">
+                            <a href="?format=txt" class="btn btn-outline-secondary btn-sm">
                                 <i class="fas fa-file-alt me-1"></i>TXT
                             </a>
-                            <button class="btn btn-light btn-sm" onclick="window.print()">
-                                <i class="fas fa-print me-1"></i>Print
+                            <button class="btn btn-primary btn-sm" onclick="window.print()">
+                                <i class="fas fa-print me-1"></i>Imprimer
                             </button>
                         </div>
                     </div>
