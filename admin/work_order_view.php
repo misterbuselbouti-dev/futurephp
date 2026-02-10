@@ -41,7 +41,8 @@ try {
         SELECT wo.*, 
                b.bus_number, b.license_plate, b.make, b.model,
                u.full_name as technician_name,
-               creator.full_name as created_by_name
+               creator.full_name as created_by_name,
+               CONCAT('OT-', YEAR(wo.created_at), '-', LPAD(wo.id, 4, '0')) as ref_ot
         FROM work_orders wo
         LEFT JOIN buses b ON wo.bus_id = b.id
         LEFT JOIN users u ON wo.technician_id = u.id
@@ -311,7 +312,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
                         <i class="fas fa-wrench me-3"></i>
                         Ordre de Travail #<?php echo $work_order_id; ?>
                     </h1>
-                    <p class="text-muted mb-0">Référence: <?php echo htmlspecialchars($work_order['ref_ot']); ?></p>
+                    <p class="text-muted mb-0">Référence: <?php echo htmlspecialchars($work_order['ref_ot'] ?? ''); ?></p>
                 </div>
                 <div class="d-flex gap-2">
                     <button class="btn btn-outline-primary" onclick="window.print()">
