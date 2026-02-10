@@ -187,6 +187,10 @@ $page_title = "Tableau de Bord Simple";
                 <div class="stat-value text-info">156</div>
                 <div class="stat-label">Articles</div>
             </div>
+            <div class="stat-card">
+                <div class="stat-value text-danger">85%</div>
+                <div class="stat-label">Performance Achats</div>
+            </div>
         </div>
 
         <!-- Dashboard Grid -->
@@ -226,6 +230,15 @@ $page_title = "Tableau de Bord Simple";
                             </div>
                         </div>
                         <div class="activity-item">
+                            <div class="activity-icon bg-danger text-white">
+                                <i class="fas fa-chart-line"></i>
+                            </div>
+                            <div class="activity-content">
+                                <div class="activity-title">Rapport performance achats mis à jour</div>
+                                <div class="activity-time">Il y a 8 heures</div>
+                            </div>
+                        </div>
+                        <div class="activity-item">
                             <div class="activity-icon bg-primary text-white">
                                 <i class="fas fa-user"></i>
                             </div>
@@ -249,6 +262,10 @@ $page_title = "Tableau de Bord Simple";
                             <a href="achat_da.php" class="quick-action">
                                 <i class="fas fa-plus-circle"></i>
                                 <span>Nouvelle DA</span>
+                            </a>
+                            <a href="purchase_performance.php" class="quick-action">
+                                <i class="fas fa-chart-line"></i>
+                                <span>Performance Achats</span>
                             </a>
                             <a href="work_orders.php" class="quick-action">
                                 <i class="fas fa-tools"></i>
@@ -295,8 +312,8 @@ $page_title = "Tableau de Bord Simple";
                     </div>
                     <div class="col-md-3">
                         <div class="d-flex justify-content-between align-items-center mb-3">
-                            <span class="text-muted">Maintenance</span>
-                            <span class="badge bg-info">3 bus</span>
+                            <span class="text-muted">Performance Achats</span>
+                            <span class="badge bg-success">85%</span>
                         </div>
                     </div>
                 </div>
