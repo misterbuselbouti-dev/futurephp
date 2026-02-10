@@ -221,18 +221,14 @@ function generateReference($prefix, $table, $field) {
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title><?php echo htmlspecialchars($page_title); ?> - <?php echo APP_NAME; ?></title>
     
-    <!-- Bootstrap CSS -->
+    <!-- Simple Clean Theme -->
     <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
-    
-    <!-- FontAwesome -->
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <link rel="stylesheet" href="../assets/css/simple-theme.css">
     
     <!-- Select2 CSS -->
     <link href="https://cdn.jsdelivr.net/npm/select2@4.1.0-rc.0/dist/css/select2.min.css" rel="stylesheet" />
     <link href="https://cdn.jsdelivr.net/npm/@ttskch/select2-bootstrap4-theme@x.x.x/dist/select2-bootstrap4.min.css" rel="stylesheet" />
-    
-    <!-- Custom CSS -->
-    <link rel="stylesheet" href="../assets/css/style.css">
     
     <style>
         .main-content {
@@ -241,58 +237,57 @@ function generateReference($prefix, $table, $field) {
             transition: margin-left 0.3s ease;
         }
         
-        .workshop-modal {
-            background: white;
-            border-radius: 15px;
-            box-shadow: 0 10px 30px rgba(0,0,0,0.1);
-            padding: 2rem;
-            margin-bottom: 2rem;
+        .workshop-card {
+            background-color: var(--bg-white);
+            border: 1px solid var(--border);
+            border-radius: var(--radius-lg);
+            padding: var(--space-6);
+            margin-bottom: var(--space-6);
+            transition: transform 0.2s;
         }
         
-        .workshop-modal .modal-title {
-            color: #333;
-            font-weight: 600;
-            margin-bottom: 1.5rem;
-            font-size: 1.5rem;
+        .workshop-card:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
         }
         
         .form-control, .form-select {
-            border-radius: 10px;
-            border: 1px solid #e0e0e0;
+            border-radius: var(--radius);
+            border: 1px solid var(--border);
             padding: 0.75rem 1rem;
             font-size: 0.95rem;
-            transition: all 0.3s ease;
+            transition: all 0.2s ease;
         }
         
         .form-control:focus, .form-select:focus {
-            border-color: #808000;
-            box-shadow: 0 0 0 0.2rem rgba(128, 128, 0, 0.25);
+            border-color: var(--primary);
+            box-shadow: 0 0 0 0.2rem rgba(var(--primary-rgb), 0.25);
         }
         
         .required-star {
-            color: #dc3545;
+            color: var(--danger);
             margin-left: 4px;
         }
         
-        .btn-olive {
-            background: linear-gradient(135deg, #808000, #6b6b00);
+        .btn-primary-custom {
+            background-color: var(--primary);
             border: none;
             color: white;
             padding: 0.75rem 2rem;
-            border-radius: 10px;
+            border-radius: var(--radius);
             font-weight: 500;
-            transition: all 0.3s ease;
+            transition: all 0.2s ease;
         }
         
-        .btn-olive:hover {
-            background: linear-gradient(135deg, #6b6b00, #585800);
-            transform: translateY(-2px);
-            box-shadow: 0 5px 15px rgba(128, 128, 0, 0.3);
+        .btn-primary-custom:hover {
+            background-color: var(--primary-dark);
+            transform: translateY(-1px);
+            box-shadow: 0 4px 12px rgba(var(--primary-rgb), 0.3);
             color: white;
         }
         
         .btn-add-part {
-            background: #28a745;
+            background-color: var(--success);
             border: none;
             color: white;
             border-radius: 50%;
@@ -303,7 +298,7 @@ function generateReference($prefix, $table, $field) {
             align-items: center;
             justify-content: center;
             margin-left: 10px;
-            transition: all 0.3s ease;
+            transition: all 0.2s ease;
         }
         
         .btn-add-part:hover {
@@ -359,28 +354,36 @@ function generateReference($prefix, $table, $field) {
         }
         
         .stat-value {
-            font-size: 2rem;
+            font-size: var(--font-size-2xl);
             font-weight: 700;
-            color: #1e3a8a;
-            margin-bottom: 0.5rem;
+            color: var(--primary);
+            margin-bottom: var(--space-2);
         }
         
         .stat-label {
-            color: #64748b;
-            font-size: 0.875rem;
+            color: var(--text-light);
+            font-size: var(--font-size-sm);
+        }
+        
+        .part-row {
+            background: var(--bg-light);
+            border-radius: var(--radius);
+            border: 1px solid var(--border);
+            text-align: center;
+            box-shadow: 0 2px 4px rgba(0,0,0,0.05);
         }
         
         @media (max-width: 768px) {
             .main-content {
                 margin-left: 0;
-                padding: 1rem;
+                padding: var(--space-4);
             }
         }
     </style>
 </head>
 <body>
     <!-- Include header -->
-    <?php include '../includes/header.php'; ?>
+    <?php include '../includes/header_simple.php'; ?>
     
     <!-- Include sidebar -->
     <?php include '../includes/sidebar.php'; ?>
@@ -388,20 +391,27 @@ function generateReference($prefix, $table, $field) {
     <!-- Main Content -->
     <div class="main-content">
         <div class="container-fluid">
-            <nav aria-label="breadcrumb" class="mb-2">
-                <ol class="breadcrumb">
-                    <li class="breadcrumb-item"><a href="../buses.php">Accueil</a></li>
-                    <li class="breadcrumb-item active">Gestion Atelier</li>
-                </ol>
-            </nav>
-            
-            <!-- Header -->
-            <div class="row mb-4">
-                <div class="col-12">
+            <!-- Page Header -->
+            <div class="d-flex justify-content-between align-items-center mb-6">
+                <div>
                     <h1 class="mb-2">
                         <i class="fas fa-wrench me-3"></i>
                         Gestion Atelier
                     </h1>
+                    <p class="text-muted mb-0">Bienvenue, <?php echo htmlspecialchars($full_name); ?></p>
+                </div>
+                <div class="d-flex gap-3">
+                    <button class="btn btn-outline-primary" onclick="window.location.href='../quick_audit.php'">
+                        <i class="fas fa-clipboard-check me-2"></i>Audit
+                    </button>
+                    <button class="btn btn-outline-success" onclick="window.location.href='../remove_unnecessary_files.php'">
+                        <i class="fas fa-trash-alt me-2"></i>Nettoyer
+                    </button>
+                    <button class="btn btn-primary" onclick="window.location.href='../dashboard_simple.php'">
+                        <i class="fas fa-home me-2"></i>Dashboard
+                    </button>
+                </div>
+            </div>
                     <p class="text-muted">Créer et gérer les ordres de travail de maintenance</p>
                 </div>
             </div>
@@ -424,7 +434,7 @@ function generateReference($prefix, $table, $field) {
             <?php endif; ?>
             
             <!-- Statistics Cards -->
-            <div class="stats-cards">
+            <div class="stats-grid">
                 <div class="stat-card">
                     <div class="stat-value"><?php echo count($work_orders); ?></div>
                     <div class="stat-label">Total Ordres</div>
@@ -443,12 +453,12 @@ function generateReference($prefix, $table, $field) {
                 </div>
             </div>
             
-            <!-- Work Order Modal Form -->
-            <div class="workshop-modal">
-                <h2 class="modal-title">
+            <!-- Work Order Form -->
+            <div class="workshop-card">
+                <h3 class="mb-4">
                     <i class="fas fa-plus-circle me-2"></i>
                     Nouvel Ordre de Travail
-                </h2>
+                </h3>
                 
                 <form id="workOrderForm" method="POST" action="">
                     
@@ -544,7 +554,7 @@ function generateReference($prefix, $table, $field) {
                             <button type="button" class="btn btn-outline-secondary me-2" id="resetBtn">
                                 <i class="fas fa-redo me-2"></i>Réinitialiser
                             </button>
-                            <button type="submit" name="submit" value="1" class="btn btn-olive">
+                            <button type="submit" name="submit" value="1" class="btn btn-primary-custom">
                                 <i class="fas fa-paper-plane me-2"></i>Créer OT
                             </button>
                         </div>
@@ -553,7 +563,7 @@ function generateReference($prefix, $table, $field) {
             </div>
             
             <!-- Existing Work Orders List -->
-            <div class="card">
+            <div class="card workshop-card">
                 <div class="card-header d-flex justify-content-between align-items-center">
                     <h5 class="mb-0">
                         <i class="fas fa-list me-2"></i>
@@ -570,7 +580,7 @@ function generateReference($prefix, $table, $field) {
                         <p class="text-muted">Aucun ordre de travail trouvé.</p>
                     <?php else: ?>
                         <div class="table-responsive">
-                            <table class="table table-striped align-middle">
+                            <table class="table table-hover align-middle">
                                 <thead>
                                     <tr>
                                         <th>Référence</th>
