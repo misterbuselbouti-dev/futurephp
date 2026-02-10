@@ -419,29 +419,6 @@ body {
 .gap-3 { gap: var(--space-3) !important; }
 .gap-4 { gap: var(--space-4) !important; }
 
-/* Theme Switcher Styles */
-.theme-switcher-btn {
-    display: flex;
-    align-items: center;
-    gap: var(--space-2);
-    padding: var(--space-2) var(--space-3);
-    color: var(--text-light);
-    text-decoration: none;
-    border-radius: var(--radius);
-    background-color: transparent;
-    border: 1px solid var(--border);
-    font-size: var(--font-size-sm);
-    font-weight: 500;
-    transition: all 0.2s;
-}
-
-.theme-switcher-btn:hover {
-    color: var(--primary);
-    background-color: #f1f5f9;
-    border-color: var(--primary);
-    text-decoration: none;
-}
-
 .mb-0 { margin-bottom: 0 !important; }
 .mb-2 { margin-bottom: var(--space-2) !important; }
 .mb-3 { margin-bottom: var(--space-3) !important; }
