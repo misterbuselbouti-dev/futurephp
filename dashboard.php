@@ -138,14 +138,10 @@ function breakdownStatusBadge($status) {
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Tableau de Bord - <?php echo APP_NAME; ?></title>
+    <title>Tableau de Bord - <?php echo APP_NAME; ?> - Simple Clean Theme</title>
     <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
-    
-    <!-- ISO 9001 Professional Design System -->
-    <link rel="stylesheet" href="assets/css/iso-theme.css">
-    <link rel="stylesheet" href="assets/css/iso-components.css">
-    <link rel="stylesheet" href="assets/css/iso-bootstrap.css">
+    <link rel="stylesheet" href="assets/css/simple-theme.css">
     <link href="https://fonts.googleapis.com/css2?family=DM+Sans:wght@400;500;600;700&display=swap" rel="stylesheet">
     <style>
         body {
@@ -324,7 +320,7 @@ function breakdownStatusBadge($status) {
     </style>
 </head>
 <body>
-    <?php include 'includes/header.php'; ?>
+    <?php include 'includes/header_simple.php'; ?>
     <?php include 'includes/sidebar.php'; ?>
 
     <div class="main-content">
