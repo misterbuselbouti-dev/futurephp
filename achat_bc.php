@@ -861,35 +861,56 @@ try {
             const bcCards = document.querySelectorAll('.bc-card');
             const bcTableRows = document.querySelectorAll('.bc-table tbody tr');
             
-            bcCards.forEach(card => {
+            console.log('Found BC cards:', bcCards.length);
+            console.log('Found BC table rows:', bcTableRows.length);
+            
+            bcCards.forEach((card, index) => {
                 const bcData = extractBCDataFromCard(card);
-                if (bcData) allBCData.push(bcData);
+                if (bcData) {
+                    console.log('BC Card Data', index, bcData);
+                    allBCData.push(bcData);
+                }
             });
             
-            bcTableRows.forEach(row => {
+            bcTableRows.forEach((row, index) => {
                 const bcData = extractBCDataFromTableRow(row);
-                if (bcData) allBCData.push(bcData);
+                if (bcData) {
+                    console.log('BC Table Data', index, bcData);
+                    allBCData.push(bcData);
+                }
             });
+            
+            console.log('Total BC Data collected:', allBCData.length);
         });
         
         function extractBCDataFromCard(card) {
             try {
-                const ref = card.querySelector('h5')?.textContent?.trim();
-                const details = card.querySelector('.text-muted')?.textContent?.trim();
-                const statut = card.querySelector('.status-badge')?.textContent?.trim();
-                const montant = card.querySelector('.bg-success')?.textContent?.trim();
-                const articles = card.querySelector('.bg-info')?.textContent?.trim();
+                const refElement = card.querySelector('h5');
+                const ref = refElement ? refElement.textContent.trim() : '';
+                
+                const detailsElement = card.querySelector('.text-muted');
+                const details = detailsElement ? detailsElement.textContent.trim() : '';
+                
+                const statutElement = card.querySelector('.status-badge');
+                const statut = statutElement ? statutElement.textContent.trim() : '';
+                
+                const montantElement = card.querySelector('.bg-success');
+                const montant = montantElement ? montantElement.textContent.trim() : '';
+                
+                const articlesElement = card.querySelector('.bg-info');
+                const articles = articlesElement ? articlesElement.textContent.trim() : '';
                 
                 return {
-                    ref: ref || '',
-                    details: details || '',
-                    statut: statut || '',
-                    montant: montant || '',
-                    articles: articles || '',
+                    ref: ref,
+                    details: details,
+                    statut: statut,
+                    montant: montant,
+                    articles: articles,
                     element: card,
                     type: 'card'
                 };
             } catch (e) {
+                console.error('Error extracting BC data from card:', e);
                 return null;
             }
         }
@@ -900,22 +921,27 @@ try {
                 if (cells.length < 5) return null;
                 
                 return {
-                    ref: cells[0]?.textContent?.trim() || '',
-                    details: cells[1]?.textContent?.trim() || '',
-                    statut: cells[2]?.textContent?.trim() || '',
-                    articles: cells[3]?.textContent?.trim() || '',
-                    montant: cells[4]?.textContent?.trim() || '',
+                    ref: cells[0] ? cells[0].textContent.trim() : '',
+                    details: cells[1] ? cells[1].textContent.trim() : '',
+                    statut: cells[2] ? cells[2].textContent.trim() : '',
+                    articles: cells[3] ? cells[3].textContent.trim() : '',
+                    montant: cells[4] ? cells[4].textContent.trim() : '',
                     element: row,
                     type: 'table'
                 };
             } catch (e) {
+                console.error('Error extracting BC data from table row:', e);
                 return null;
             }
         }
         
         // Smart Search Functions
         function performSmartSearch(searchTerm) {
+            console.log('Performing search for:', searchTerm);
+            console.log('Total BC Data available:', allBCData.length);
+            
             if (!searchTerm || searchTerm.length < 2) {
+                console.log('Search term too short, showing all BC');
                 showAllBC();
                 hideSearchSummary();
                 return;
@@ -924,8 +950,12 @@ try {
             const searchType = document.getElementById('searchType').value;
             const results = [];
             
-            allBCData.forEach(bc => {
+            console.log('Search type:', searchType);
+            
+            allBCData.forEach((bc, index) => {
                 let matches = false;
+                
+                console.log(`Checking BC ${index}:`, bc);
                 
                 switch (searchType) {
                     case 'all':
@@ -953,11 +983,14 @@ try {
                         matches = searchInAllFields(bc, searchTerm);
                 }
                 
+                console.log(`BC ${index} matches:`, matches);
+                
                 if (matches) {
                     results.push(bc);
                 }
             });
             
+            console.log('Search results:', results.length);
             displaySearchResults(results, searchTerm);
         }
         
@@ -973,6 +1006,8 @@ try {
         }
         
         function displaySearchResults(results, searchTerm) {
+            console.log('Displaying search results:', results.length);
+            
             // Hide all BC elements
             allBCData.forEach(bc => {
                 bc.element.style.display = 'none';
@@ -1063,6 +1098,57 @@ try {
             showAllBC();
             hideSearchSummary();
         }
+        
+        // Manual search function for testing
+        function manualSearch() {
+            const searchTerm = prompt('Enter search term:');
+            if (searchTerm) {
+                console.log('Manual search for:', searchTerm);
+                performSmartSearch(searchTerm);
+            }
+        }
+        
+        // Test function to verify BC data
+        function testBCData() {
+            console.log('=== BC Data Test ===');
+            console.log('Total BC Data:', allBCData.length);
+            
+            allBCData.forEach((bc, index) => {
+                console.log(`BC ${index}:`, {
+                    ref: bc.ref,
+                    details: bc.details,
+                    statut: bc.statut,
+                    montant: bc.montant,
+                    articles: bc.articles,
+                    type: bc.type
+                });
+            });
+            
+            // Test search for common terms
+            const testTerms = ['ALLIANCE', '60', 'Brouillon', 'Validé'];
+            testTerms.forEach(term => {
+                const results = allBCData.filter(bc => 
+                    searchInAllFields(bc, term)
+                );
+                console.log(`Test search for "${term}": ${results.length} results`);
+                results.forEach((bc, index) => {
+                    console.log(`  - Result ${index}: ${bc.ref}`);
+                });
+            });
+        }
+        
+        // Add test button to the page
+        document.addEventListener('DOMContentLoaded', function() {
+            // Add test button after search bar
+            const searchCard = document.querySelector('.workshop-card');
+            if (searchCard) {
+                const testButton = document.createElement('button');
+                testButton.className = 'btn btn-outline-info btn-sm mt-2';
+                testButton.innerHTML = '<i class="fas fa-bug me-1"></i>Test Search';
+                testButton.onclick = testBCData;
+                searchCard.appendChild(testButton);
+            }
+        });
         
         function updateSearchPlaceholder() {
             const searchType = document.getElementById('searchType').value;
