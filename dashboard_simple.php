@@ -158,13 +158,14 @@ $page_title = "Tableau de Bord Simple";
                 <p class="text-muted mb-0">Bienvenue, <?php echo htmlspecialchars($user['full_name']); ?></p>
             </div>
             <div class="d-flex gap-3">
-                <button class="btn btn-outline-primary">
-                    <i class="fas fa-download me-2"></i>
-                    Exporter
+                <button class="btn btn-outline-primary" onclick="window.location.href='site_audit.php'">
+                    <i class="fas fa-clipboard-check me-2"></i>Audit
                 </button>
-                <button class="btn btn-primary">
-                    <i class="fas fa-plus me-2"></i>
-                    Nouveau
+                <button class="btn btn-outline-success" onclick="window.location.href='remove_unnecessary_files.php'">
+                    <i class="fas fa-trash-alt me-2"></i>Nettoyer
+                </button>
+                <button class="btn btn-primary" onclick="window.location.href='admin_breakdowns_workshop.php'">
+                    <i class="fas fa-plus me-2"></i>Nouveau
                 </button>
             </div>
         </div>
@@ -267,7 +268,7 @@ $page_title = "Tableau de Bord Simple";
                                 <i class="fas fa-chart-line"></i>
                                 <span>Performance Achats</span>
                             </a>
-                            <a href="work_orders.php" class="quick-action">
+                            <a href="admin_breakdowns_workshop.php" class="quick-action">
                                 <i class="fas fa-tools"></i>
                                 <span>Ordre Travail</span>
                             </a>
@@ -278,6 +279,18 @@ $page_title = "Tableau de Bord Simple";
                             <a href="buses_complete.php" class="quick-action">
                                 <i class="fas fa-bus"></i>
                                 <span>Ajouter Bus</span>
+                            </a>
+                            <a href="fournisseurs.php" class="quick-action">
+                                <i class="fas fa-users"></i>
+                                <span>Fournisseurs</span>
+                            </a>
+                            <a href="archive_dashboard.php" class="quick-action">
+                                <i class="fas fa-archive"></i>
+                                <span>Archives</span>
+                            </a>
+                            <a href="site_cleanup.php" class="quick-action">
+                                <i class="fas fa-broom"></i>
+                                <span>Nettoyage</span>
                             </a>
                         </div>
                     </div>
