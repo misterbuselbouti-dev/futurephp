@@ -1,0 +1,31 @@
+# FUTURE AUTOMOTIVE - Apache Configuration for Port 8000 Direct Access
+# Enable URL rewriting and set default documents
+
+<IfModule mod_rewrite.c>
+    RewriteEngine On
+    
+    # Set default files
+    DirectoryIndex home.php landing.php index.php index.html
+    
+    # Redirect to landing page if accessing root
+    RewriteRule ^$ home.php [L]
+    
+    # Handle clean URLs
+    RewriteCond %{REQUEST_FILENAME} !-f
+    RewriteCond %{REQUEST_FILENAME} !-d
+    RewriteRule ^(.*)$ $1.php [L,QSA]
+</IfModule>
+
+# Set default character encoding
+AddDefaultCharset UTF-8
+
+# Enable PHP error display for development
+php_flag display_errors On
+php_value error_reporting E_ALL
+
+# Security headers
+<IfModule mod_headers.c>
+    Header always set X-Content-Type-Options nosniff
+    Header always set X-Frame-Options SAMEORIGIN
+    Header always set X-XSS-Protection "1; mode=block"
+</IfModule>

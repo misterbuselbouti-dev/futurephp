@@ -1,0 +1,93 @@
+# Dependencies
+node_modules/
+npm-debug.log*
+yarn-debug.log*
+yarn-error.log*
+
+# Environment variables
+.env
+.env.local
+.env.development.local
+.env.test.local
+.env.production.local
+
+# IDE files
+.vscode/
+.idea/
+*.swp
+*.swo
+*~
+
+# OS generated files
+.DS_Store
+.DS_Store?
+._*
+.Spotlight-V100
+.Trashes
+ehthumbs.db
+Thumbs.db
+
+# Logs
+logs/*.log
+logs/error.log
+logs/access.log
+
+# Uploads (sensitive files)
+uploads/*
+!uploads/.gitkeep
+
+# Database backups
+*.sql.backup
+*.db.backup
+
+# Configuration files with sensitive data
+config_local.php
+config_production.php
+config_*.php
+!config.example.php
+
+# Temporary files
+tmp/
+temp/
+*.tmp
+*.temp
+
+# Cache
+cache/
+*.cache
+
+# Compiled files
+*.class.php
+*.compiled.php
+
+# Backup files
+*.bak
+*.backup
+*.old
+
+# Test files
+test/
+tests/
+*.test.php
+
+# Documentation build
+docs/build/
+
+# Private files
+private/
+PRIVATE/
+
+# Security files
+.htaccess.local
+*.pem
+*.key
+*.crt
+
+# Vendor (if using composer)
+vendor/
+
+# Composer
+composer.phar
+
+# Local configuration
+config_local.php
