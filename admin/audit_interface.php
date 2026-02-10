@@ -1,6 +1,6 @@
 <!-- Audit and Logging Interface -->
-<div class="card mb-4" id="auditInterface">
-    <div class="card-header d-flex justify-content-between align-items-center">
+<div class="workshop-card mb-4" id="auditInterface">
+    <div class="d-flex justify-content-between align-items-center mb-4">
         <h6 class="mb-0">
             <i class="fas fa-history me-2"></i>
             Journal des modifications
@@ -14,89 +14,89 @@
             </button>
         </div>
     </div>
-    <div class="card-body">
-        <!-- Filters -->
-        <div class="row mb-3">
-            <div class="col-md-3">
-                <label class="form-label">Action</label>
-                <select class="form-select" id="auditActionFilter" onchange="filterAuditLogs()">
-                    <option value="">Toutes les actions</option>
-                    <option value="assignment">Assignation</option>
-                    <option value="work_started">Début travail</option>
-                    <option value="work_ended">Fin travail</option>
-                    <option value="session_started">Session démarrée</option>
-                    <option value="session_paused">Session mise en pause</option>
-                    <option value="session_resumed">Session reprise</option>
-                    <option value="session_ended">Session terminée</option>
-                    <option value="item_added">Pièce ajoutée</option>
-                    <option value="item_removed">Pièce retirée</option>
-                </select>
-            </div>
-            <div class="col-md-3">
-                <label class="form-label">Date début</label>
-                <input type="date" class="form-control" id="auditDateFrom" onchange="filterAuditLogs()">
-            </div>
-            <div class="col-md-3">
-                <label class="form-label">Date fin</label>
-                <input type="date" class="form-control" id="auditDateTo" onchange="filterAuditLogs()">
-            </div>
-            <div class="col-md-3">
-                <label class="form-label">&nbsp;</label>
-                <button type="button" class="btn btn-outline-secondary btn-sm w-100" onclick="clearAuditFilters()">
-                    <i class="fas fa-times me-1"></i>Effacer filtres
-                </button>
+    
+    <!-- Filters -->
+    <div class="row mb-4">
+        <div class="col-md-3">
+            <label class="form-label">Action</label>
+            <select class="form-select" id="auditActionFilter" onchange="filterAuditLogs()">
+                <option value="">Toutes les actions</option>
+                <option value="assignment">Assignation</option>
+                <option value="work_started">Début travail</option>
+                <option value="work_ended">Fin travail</option>
+                <option value="session_started">Session démarrée</option>
+                <option value="session_paused">Session mise en pause</option>
+                <option value="session_resumed">Session reprise</option>
+                <option value="session_ended">Session terminée</option>
+                <option value="item_added">Pièce ajoutée</option>
+                <option value="item_removed">Pièce retirée</option>
+            </select>
+        </div>
+        <div class="col-md-3">
+            <label class="form-label">Date début</label>
+            <input type="date" class="form-control" id="auditDateFrom" onchange="filterAuditLogs()">
+        </div>
+        <div class="col-md-3">
+            <label class="form-label">Date fin</label>
+            <input type="date" class="form-control" id="auditDateTo" onchange="filterAuditLogs()">
+        </div>
+        <div class="col-md-3">
+            <label class="form-label">&nbsp;</label>
+            <button type="button" class="btn btn-outline-secondary btn-sm w-100" onclick="clearAuditFilters()">
+                <i class="fas fa-times me-1"></i>Effacer filtres
+            </button>
+        </div>
+    </div>
+    
+    <!-- Statistics Summary -->
+    <div class="row mb-4">
+        <div class="col-md-3">
+            <div class="stat-card text-center">
+                <div class="stat-value" id="totalActions">0</div>
+                <div class="stat-label">Total actions</div>
             </div>
         </div>
-        
-        <!-- Statistics Summary -->
-        <div class="row mb-3">
-            <div class="col-md-3">
-                <div class="stat-box text-center">
-                    <div class="stat-value" id="totalActions">0</div>
-                    <div class="stat-label">Total actions</div>
-                </div>
-            </div>
-            <div class="col-md-3">
-                <div class="stat-box text-center">
-                    <div class="stat-value" id="todayActions">0</div>
-                    <div class="stat-label">Aujourd'hui</div>
-                </div>
-            </div>
-            <div class="col-md-3">
-                <div class="stat-box text-center">
-                    <div class="stat-value" id="uniqueUsers">0</div>
-                    <div class="stat-label">Utilisateurs</div>
-                </div>
-            </div>
-            <div class="col-md-3">
-                <div class="stat-box text-center">
-                    <div class="stat-value" id="avgActionsPerDay">0</div>
-                    <div class="stat-label">Actions/jour</div>
-                </div>
+        <div class="col-md-3">
+            <div class="stat-card text-center">
+                <div class="stat-value" id="todayActions">0</div>
+                <div class="stat-label">Aujourd'hui</div>
             </div>
         </div>
-        
-        <!-- Audit Logs Table -->
-        <div class="table-responsive" style="max-height: 400px; overflow-y: auto;">
-            <table class="table table-sm">
-                <thead class="table-light sticky-top">
-                    <tr>
-                        <th>Date</th>
-                        <th>Action</th>
-                        <th>Champ</th>
-                        <th>Ancienne valeur</th>
-                        <th>Nouvelle valeur</th>
-                        <th>Utilisateur</th>
-                        <th>Adresse IP</th>
-                    </tr>
-                </thead>
-                <tbody id="auditLogsBody">
-                    <tr>
-                        <td colspan="8" class="text-center text-muted">
-                            <div class="spinner-border spinner-border-sm me-2" role="status"></div>
-                            Chargement...
-                        </td>
-                    </tr>
+        <div class="col-md-3">
+            <div class="stat-card text-center">
+                <div class="stat-value" id="uniqueUsers">0</div>
+                <div class="stat-label">Utilisateurs</div>
+            </div>
+        </div>
+        <div class="col-md-3">
+            <div class="stat-card text-center">
+                <div class="stat-value" id="avgActionsPerDay">0</div>
+                <div class="stat-label">Actions/jour</div>
+            </div>
+        </div>
+    </div>
+    
+    <!-- Audit Logs Table -->
+    <div class="table-responsive" style="max-height: 400px; overflow-y: auto;">
+        <table class="table table-hover">
+            <thead class="table-light sticky-top">
+                <tr>
+                    <th>Date</th>
+                    <th>Action</th>
+                    <th>Champ</th>
+                    <th>Ancienne valeur</th>
+                    <th>Nouvelle valeur</th>
+                    <th>Utilisateur</th>
+                    <th>Adresse IP</th>
+                </tr>
+            </thead>
+            <tbody id="auditLogsBody">
+                <tr>
+                    <td colspan="8" class="text-center text-muted">
+                        <div class="spinner-border spinner-border-sm me-2" role="status"></div>
+                        Chargement...
+                    </td>
+                </tr>
                 </tbody>
             </table>
         </div>
