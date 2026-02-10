@@ -2,7 +2,148 @@
 // FUTURE AUTOMOTIVE - Database Setup with Connection Form
 // إعداد قاعدة البيانات مع نموذج اتصال
 
-echo "<h2>🔧 إعداد قاعدة البيانات</h2>";
+require_once '../config.php';
+require_once '../includes/functions.php';
+
+// Check authentication
+if (!is_logged_in()) {
+    header('Location: ../login.php');
+    exit();
+}
+
+$user = get_logged_in_user();
+$role = $user['role'] ?? '';
+
+// Only admin can access database setup
+if ($role !== 'admin') {
+    http_response_code(403);
+    echo 'Accès refusé.';
+    exit();
+}
+?>
+
+<!DOCTYPE html>
+<html lang="fr" dir="ltr">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Database Setup - <?php echo APP_NAME; ?></title>
+    
+    <!-- Simple Clean Theme -->
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <link rel="stylesheet" href="../assets/css/simple-theme.css">
+    
+    <style>
+        .main-content {
+            margin-left: 260px;
+            padding: 2rem;
+        }
+        
+        .workshop-card {
+            background-color: var(--bg-white);
+            border: 1px solid var(--border);
+            border-radius: var(--radius-lg);
+            padding: var(--space-6);
+            margin-bottom: var(--space-6);
+            transition: transform 0.2s;
+        }
+        
+        .workshop-card:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
+        }
+        
+        .form-control, .form-select {
+            border-radius: var(--radius);
+            border: 1px solid var(--border);
+            transition: all 0.2s ease;
+        }
+        
+        .form-control:focus, .form-select:focus {
+            border-color: var(--primary);
+            box-shadow: 0 0 0 0.2rem rgba(var(--primary-rgb), 0.25);
+        }
+        
+        .btn-primary-custom {
+            background-color: var(--primary);
+            border: none;
+            color: white;
+            padding: 0.75rem 2rem;
+            border-radius: var(--radius);
+            font-weight: 500;
+            transition: all 0.2s ease;
+        }
+        
+        .btn-primary-custom:hover {
+            background-color: var(--primary-dark);
+            transform: translateY(-1px);
+            box-shadow: 0 4px 12px rgba(var(--primary-rgb), 0.3);
+            color: white;
+        }
+        
+        .status-success {
+            color: var(--success);
+            font-weight: bold;
+        }
+        
+        .status-error {
+            color: var(--danger);
+            font-weight: bold;
+        }
+        
+        .status-warning {
+            color: var(--warning);
+        }
+        
+        .status-info {
+            color: var(--info);
+        }
+        
+        @media (max-width: 768px) {
+            .main-content {
+                margin-left: 0;
+                padding: var(--space-4);
+            }
+        }
+    </style>
+</head>
+<body>
+    <!-- Include header -->
+    <?php include '../includes/header_simple.php'; ?>
+    
+    <!-- Include sidebar -->
+    <?php include '../includes/sidebar.php'; ?>
+
+    <!-- Main Content -->
+    <div class="main-content">
+        <div class="container-fluid">
+            <!-- Page Header -->
+            <div class="d-flex justify-content-between align-items-center mb-6">
+                <div>
+                    <h1 class="mb-2">
+                        <i class="fas fa-database me-3"></i>
+                        Database Setup
+                    </h1>
+                    <p class="text-muted mb-0">Bienvenue, <?php echo htmlspecialchars($user['full_name']); ?></p>
+                </div>
+                <div class="d-flex gap-3">
+                    <button class="btn btn-outline-primary" onclick="window.location.href='../quick_audit.php'">
+                        <i class="fas fa-clipboard-check me-2"></i>Audit
+                    </button>
+                    <button class="btn btn-outline-success" onclick="window.location.href='../remove_unnecessary_files.php'">
+                        <i class="fas fa-trash-alt me-2"></i>Nettoyer
+                    </button>
+                    <button class="btn btn-primary" onclick="window.location.href='../dashboard_simple.php'">
+                        <i class="fas fa-home me-2"></i>Dashboard
+                    </button>
+                </div>
+            </div>
+
+            <div class="workshop-card">
+                <h2 class="mb-4">🔧 إعداد قاعدة البيانات</h2>
+
+<?php
 
 // Check if form was submitted
 if ($_SERVER['REQUEST_METHOD'] === 'POST' && isset($_POST['setup_database'])) {
@@ -17,10 +158,10 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST' && isset($_POST['setup_database'])) {
         $pdo = new PDO("mysql:host=$host;dbname=$dbname;charset=utf8mb4", $username, $password);
         $pdo->setAttribute(PDO::ATTR_ERRMODE, PDO::ERRMODE_EXCEPTION);
         
-        echo "<div style='color: green; font-weight: bold;'>✅ الاتصال بقاعدة البيانات نجح!</div>";
-        echo "<div>Host: $host</div>";
-        echo "<div>Database: $dbname</div>";
-        echo "<div>Username: $username</div>";
+        echo "<div class='status-success mb-3'>✅ الاتصال بقاعدة البيانات نجح!</div>";
+        echo "<div class='mb-2'><strong>Host:</strong> $host</div>";
+        echo "<div class='mb-2'><strong>Database:</strong> $dbname</div>";
+        echo "<div class='mb-3'><strong>Username:</strong> $username</div>";
         
         // Now create the tables
         echo "<h3>إنشاء جداول الورشة...</h3>";
@@ -30,9 +171,9 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST' && isset($_POST['setup_database'])) {
         foreach ($tables_to_drop as $table) {
             try {
                 $pdo->exec("DROP TABLE IF EXISTS $table");
-                echo "<div style='color: orange;'>⚠️ تم حذف $table</div>";
+                echo "<div class='status-warning mb-2'>⚠️ تم حذف $table</div>";
             } catch (Exception $e) {
-                echo "<div style='color: blue;'>ℹ️ $table غير موجود</div>";
+                echo "<div class='status-info mb-2'>ℹ️ $table غير موجود</div>";
             }
         }
         
@@ -55,7 +196,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST' && isset($_POST['setup_database'])) {
             ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4";
             
             $pdo->exec($sql);
-            echo "<div style='color: green;'>✅ تم إنشاء work_orders</div>";
+            echo "<div class='status-success mb-2'>✅ تم إنشاء work_orders</div>";
             
             // Insert sample data
             $sql = "INSERT INTO work_orders (ref_ot, bus_id, technician_id, work_description, work_type, priority, status, created_by) VALUES 
@@ -63,10 +204,10 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST' && isset($_POST['setup_database'])) {
             ('OT-20250209-002', 2, 1, 'Réparation freins', 'Réparation', 'Urgent', 'En cours', 1)";
             
             $pdo->exec($sql);
-            echo "<div style='color: green;'>✅ تم إدخال بيانات work_orders</div>";
+            echo "<div class='status-success mb-2'>✅ تم إدخال بيانات work_orders</div>";
             
         } catch (Exception $e) {
-            echo "<div style='color: red;'>❌ خطأ في work_orders: " . $e->getMessage() . "</div>";
+            echo "<div class='status-error mb-2'>❌ خطأ في work_orders: " . $e->getMessage() . "</div>";
         }
         
         // Create work_order_parts table
@@ -84,10 +225,10 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST' && isset($_POST['setup_database'])) {
             ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4";
             
             $pdo->exec($sql);
-            echo "<div style='color: green;'>✅ تم إنشاء work_order_parts</div>";
+            echo "<div class='status-success mb-2'>✅ تم إنشاء work_order_parts</div>";
             
         } catch (Exception $e) {
-            echo "<div style='color: red;'>❌ خطأ في work_order_parts: " . $e->getMessage() . "</div>";
+            echo "<div class='status-error mb-2'>❌ خطأ في work_order_parts: " . $e->getMessage() . "</div>";
         }
         
         // Create work_order_timeline table
@@ -102,10 +243,10 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST' && isset($_POST['setup_database'])) {
             ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4";
             
             $pdo->exec($sql);
-            echo "<div style='color: green;'>✅ تم إنشاء work_order_timeline</div>";
+            echo "<div class='status-success mb-2'>✅ تم إنشاء work_order_timeline</div>";
             
         } catch (Exception $e) {
-            echo "<div style='color: red;'>❌ خطأ في work_order_timeline: " . $e->getMessage() . "</div>";
+            echo "<div class='status-error mb-2'>❌ خطأ في work_order_timeline: " . $e->getMessage() . "</div>";
         }
         
         // Test the query
@@ -122,21 +263,21 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST' && isset($_POST['setup_database'])) {
             ");
             $results = $stmt->fetchAll();
             
-            echo "<div style='color: green;'>✅ الاستعلام يعمل!</div>";
-            echo "<div>عدد النتائج: " . count($results) . "</div>";
+            echo "<div class='status-success mb-2'>✅ الاستعلام يعمل!</div>";
+            echo "<div class='mb-3'>عدد النتائج: " . count($results) . "</div>";
             
         } catch (Exception $e) {
-            echo "<div style='color: red;'>❌ خطأ في الاستعلام: " . $e->getMessage() . "</div>";
+            echo "<div class='status-error mb-2'>❌ خطأ في الاستعلام: " . $e->getMessage() . "</div>";
         }
         
         echo "<hr>";
-        echo "<div style='color: green; font-weight: bold; font-size: 18px;'>";
+        echo "<div class='status-success text-center mb-4' style='font-size: 18px;'>";
         echo "🎉 تم الإعداد بنجاح!";
         echo "</div>";
         
         echo "<h3>الخطوات التالية:</h3>";
         echo "<ol>";
-        echo "<li><a href='admin_breakdowns_workshop.php'>اذهب إلى إدارة الورشة</a></li>";
+        echo "<li><a href='admin_breakdowns_workshop.php' class='btn btn-outline-primary'>اذهب إلى إدارة الورشة</a></li>";
         echo "<li>اختبر إنشاء أمر عمل جديد</li>";
         echo "</ol>";
         
@@ -150,7 +291,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST' && isset($_POST['setup_database'])) {
         ];
         
     } catch (PDOException $e) {
-        echo "<div style='color: red; font-weight: bold;'>❌ خطأ في الاتصال: " . $e->getMessage() . "</div>";
+        echo "<div class='status-error mb-3'>❌ خطأ في الاتصال: " . $e->getMessage() . "</div>";
         echo "<h3>الحلول المقترحة:</h3>";
         echo "<ol>";
         echo "<li>تأكد من اسم قاعدة البيانات</li>";
@@ -159,23 +300,33 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST' && isset($_POST['setup_database'])) {
         echo "<li>تأكد من أن قاعدة البيانات موجودة</li>";
         echo "<li>جرب استخدام 127.0.0.1 بدلاً من localhost</li>";
         echo "</ol>";
-        echo "<p><a href='database_setup.php'>عد وحاول مرة أخرى</a></p>";
+        echo "<p><a href='database_setup.php' class='btn btn-outline-secondary'>عد وحاول مرة أخرى</a></p>";
     }
     
 } else {
     // Show the connection form
-    echo "<h3>أدخل بيانات الاتصال بقاعدة البيانات:</h3>";
+    echo "<h3 class='mb-4'>أدخل بيانات الاتصال بقاعدة البيانات:</h3>";
     
-    echo "<form method='post' style='max-width: 500px;'>";
-    echo "<table border='1' cellpadding='5' style='border-collapse: collapse;'>";
-    echo "<tr><td><strong>Host:</strong></td><td><input type='text' name='host' value='localhost' size='30'></td></tr>";
-    echo "<tr><td><strong>Database Name:</strong></td><td><input type='text' name='dbname' value='u442210176_Futur2' size='30'></td></tr>";
-    echo "<tr><td><strong>Username:</strong></td><td><input type='text' name='username' value='u442210176_Futur2' size='30'></td></tr>";
-    echo "<tr><td><strong>Password:</strong></td><td><input type='password' name='password' size='30' placeholder='أدخل كلمة المرور'></td></tr>";
-    echo "</table>";
-    
-    echo "<br>";
-    echo "<input type='submit' name='setup_database' value='اتصل وأنشئ الجداول' style='background: green; color: white; padding: 10px 20px; font-size: 16px;'>";
+    echo "<form method='post' class='row g-3'>";
+    echo "<div class='col-md-6'>";
+    echo "<label class='form-label'>Host:</label>";
+    echo "<input type='text' class='form-control' name='host' value='localhost'>";
+    echo "</div>";
+    echo "<div class='col-md-6'>";
+    echo "<label class='form-label'>Database Name:</label>";
+    echo "<input type='text' class='form-control' name='dbname' value='u442210176_Futur2'>";
+    echo "</div>";
+    echo "<div class='col-md-6'>";
+    echo "<label class='form-label'>Username:</label>";
+    echo "<input type='text' class='form-control' name='username' value='u442210176_Futur2'>";
+    echo "</div>";
+    echo "<div class='col-md-6'>";
+    echo "<label class='form-label'>Password:</label>";
+    echo "<input type='password' class='form-control' name='password' placeholder='أدخل كلمة المرور'>";
+    echo "</div>";
+    echo "<div class='col-12'>";
+    echo "<button type='submit' name='setup_database' class='btn btn-primary-custom btn-lg'>اتصل وأنشئ الجداول</button>";
+    echo "</div>";
     echo "</form>";
     
     echo "<hr>";
@@ -206,3 +357,11 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST' && isset($_POST['setup_database'])) {
     echo "</ol>";
 }
 ?>
+            </div>
+        </div>
+    </div>
+    
+    <!-- Scripts -->
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
+</body>
+</html>
