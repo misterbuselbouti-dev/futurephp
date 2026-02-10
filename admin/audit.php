@@ -439,14 +439,17 @@ function getActionColor($action) {
                     <p class="text-muted mb-0">Bienvenue, <?php echo htmlspecialchars($user['full_name']); ?></p>
                 </div>
                 <div class="d-flex gap-3">
-                    <button class="btn btn-outline-primary" onclick="window.location.href='../quick_audit.php'">
-                        <i class="fas fa-clipboard-check me-2"></i>Quick Audit
-                    </button>
-                    <button class="btn btn-outline-success" onclick="window.location.href='../remove_unnecessary_files.php'">
-                        <i class="fas fa-trash-alt me-2"></i>Nettoyer
-                    </button>
-                    <button class="btn btn-primary" onclick="window.location.href='../dashboard_simple.php'">
+                    <button class="btn btn-primary" onclick="window.location.href='../dashboard.php'">
                         <i class="fas fa-home me-2"></i>Dashboard
+                    </button>
+                    <button class="btn btn-success" onclick="window.location.href='#'">
+                        <i class="fas fa-save me-2"></i>Enregistrer
+                    </button>
+                    <button class="btn btn-warning" onclick="window.location.href='../quick_audit.php'">
+                        <i class="fas fa-clipboard-check me-2"></i>Audit Rapide
+                    </button>
+                    <button class="btn btn-outline-secondary" onclick="window.location.href='../remove_unnecessary_files.php'">
+                        <i class="fas fa-trash-alt me-2"></i>Nettoyer
                     </button>
                 </div>
             </div>

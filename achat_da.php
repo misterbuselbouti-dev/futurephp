@@ -478,24 +478,40 @@ try {
                         <div class="col-md-6">
                             <label for="commentaires" class="form-label">Commentaires</label>
                             <textarea class="form-control" id="commentaires" name="commentaires" rows="2" 
-                                      placeholder="Ajouter des commentaires..."></textarea>
-                        </div>
-                    </div>
-                    
-                    <!-- Buttons Simple -->
-                    <div class="d-flex justify-content-between">
-                        <div class="ms-auto">
-                            <button type="button" class="btn btn-outline-secondary me-2" id="resetBtn">
-                                <i class="fas fa-redo me-2"></i>Réinitialiser
-                            </button>
-                            <button type="submit" name="submit" value="1" class="btn btn-olive">
-                                <i class="fas fa-paper-plane me-2"></i>Soumettre
-                            </button>
-                        </div>
-                    </div>
-                </form>
-            </div>
             
+            @media (max-width: 768px) {
+                .main-content {
+                    margin-left: 0;
+                    padding: 1rem;
+                }
+            }
+        </style>
+    </head>
+    <body>
+        <!-- Include header -->
+        <?php include __DIR__ . '/includes/header.php'; ?>
+        
+        <!-- Include sidebar -->
+        <?php include __DIR__ . '/includes/sidebar.php'; ?>
+        
+        <!-- Main Content -->
+        <div class="main-content">
+            <div class="container-fluid">
+                <nav aria-label="breadcrumb" class="mb-2">
+                    <ol class="breadcrumb">
+                        <li class="breadcrumb-item"><a href="buses.php">Accueil</a></li>
+                        <li class="breadcrumb-item active">Liste des demandes d'achats</li>
+                    </ol>
+                </nav>
+                <!-- Header -->
+                <div class="row mb-4">
+                    <div class="col-12">
+                        <h1 class="mb-2">
+                            <i class="fas fa-file-alt me-3"></i>
+                            Demande d'Achat
+                        </h1>
+                        <p class="text-muted">Créer et gérer les demandes d'achat</p>
+                    </div>
             <!-- Existing DA List -->
             <div class="card">
                 <div class="card-header">
