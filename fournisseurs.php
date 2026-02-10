@@ -8,6 +8,8 @@ require_login();
 $page_title = 'Fournisseurs';
 $has_code = false;
 $has_ville = false;
+$has_ice = false;
+$has_rc = false;
 $pdo = null;
 
 try {
@@ -16,6 +18,8 @@ try {
     $cols = $pdo->query("SHOW COLUMNS FROM suppliers")->fetchAll(PDO::FETCH_COLUMN);
     $has_code = in_array('code_fournisseur', $cols);
     $has_ville = in_array('ville', $cols);
+    $has_ice = in_array('ice', $cols);
+    $has_rc = in_array('rc', $cols);
 } catch (Exception $e) {}
 
 // POST
@@ -27,14 +31,77 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
         $gsm = trim($_POST['telephone'] ?? '');
         $adresse = trim($_POST['adresse'] ?? '');
         $ville = trim($_POST['ville'] ?? '');
-        if ($nom === '') { $_SESSION['error'] = 'Nom obligatoire'; } else {
-            if ($has_code && $has_ville) {
-                $pdo->prepare("INSERT INTO suppliers (code_fournisseur, nom_fournisseur, telephone, adresse, ville) VALUES (?,?,?,?,?)")
-                   ->execute([$code ?: null, $nom, $gsm, $adresse, $ville]);
-            } else {
-                $pdo->prepare("INSERT INTO suppliers (nom_fournisseur, telephone, adresse) VALUES (?,?,?)")
-                   ->execute([$nom, $gsm, $adresse]);
+        $ice = trim($_POST['ice'] ?? '');
+        $rc = trim($_POST['rc'] ?? '');
+        
+        if ($nom === '') { 
+            $_SESSION['error'] = 'Nom obligatoire'; 
+        } else {
+            // Check for duplicate code_fournisseur
+            if ($has_code && $code !== '') {
+                $check_code = $pdo->prepare("SELECT id FROM suppliers WHERE code_fournisseur = ?");
+                $check_code->execute([$code]);
+                if ($check_code->fetch()) {
+                    $_SESSION['error'] = 'Code fournisseur existe déjà';
+                    header('Location: fournisseurs.php');
+                    exit;
+                }
             }
+            
+            // Check for duplicate ICE
+            if ($has_ice && $ice !== '') {
+                $check_ice = $pdo->prepare("SELECT id FROM suppliers WHERE ice = ?");
+                $check_ice->execute([$ice]);
+                if ($check_ice->fetch()) {
+                    $_SESSION['error'] = 'ICE existe déjà';
+                    header('Location: fournisseurs.php');
+                    exit;
+                }
+            }
+            
+            // Check for duplicate RC
+            if ($has_rc && $rc !== '') {
+                $check_rc = $pdo->prepare("SELECT id FROM suppliers WHERE rc = ?");
+                $check_rc->execute([$rc]);
+                if ($check_rc->fetch()) {
+                    $_SESSION['error'] = 'RC existe déjà';
+                    header('Location: fournisseurs.php');
+                    exit;
+                }
+            }
+            
+            // Build insert query based on available columns
+            $insert_fields = ['nom_fournisseur', 'telephone', 'adresse'];
+            $insert_values = [$nom, $gsm, $adresse];
+            $insert_placeholders = '???';
+            
+            if ($has_code) {
+                $insert_fields[] = 'code_fournisseur';
+                $insert_values[] = $code ?: null;
+                $insert_placeholders .= ',?';
+            }
+            
+            if ($has_ville) {
+                $insert_fields[] = 'ville';
+                $insert_values[] = $ville;
+                $insert_placeholders .= ',?';
+            }
+            
+            if ($has_ice) {
+                $insert_fields[] = 'ice';
+                $insert_values[] = $ice ?: null;
+                $insert_placeholders .= ',?';
+            }
+            
+            if ($has_rc) {
+                $insert_fields[] = 'rc';
+                $insert_values[] = $rc ?: null;
+                $insert_placeholders .= ',?';
+            }
+            
+            $sql = "INSERT INTO suppliers (" . implode(', ', $insert_fields) . ") VALUES (" . $insert_placeholders . ")";
+            $pdo->prepare($sql)->execute($insert_values);
+            
             $_SESSION['message'] = 'Fournisseur ajouté';
         }
         header('Location: fournisseurs.php');
@@ -47,13 +114,71 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
         $gsm = trim($_POST['telephone'] ?? '');
         $adresse = trim($_POST['adresse'] ?? '');
         $ville = trim($_POST['ville'] ?? '');
-        if ($has_code && $has_ville) {
-            $pdo->prepare("UPDATE suppliers SET code_fournisseur=?, nom_fournisseur=?, telephone=?, adresse=?, ville=? WHERE id=?")
-               ->execute([$code ?: null, $nom, $gsm, $adresse, $ville, $id]);
-        } else {
-            $pdo->prepare("UPDATE suppliers SET nom_fournisseur=?, telephone=?, adresse=? WHERE id=?")
-               ->execute([$nom, $gsm, $adresse, $id]);
+        $ice = trim($_POST['ice'] ?? '');
+        $rc = trim($_POST['rc'] ?? '');
+        
+        // Check for duplicate code_fournisseur (excluding current record)
+        if ($has_code && $code !== '') {
+            $check_code = $pdo->prepare("SELECT id FROM suppliers WHERE code_fournisseur = ? AND id != ?");
+            $check_code->execute([$code, $id]);
+            if ($check_code->fetch()) {
+                $_SESSION['error'] = 'Code fournisseur existe déjà';
+                header('Location: fournisseurs.php');
+                exit;
+            }
         }
+        
+        // Check for duplicate ICE (excluding current record)
+        if ($has_ice && $ice !== '') {
+            $check_ice = $pdo->prepare("SELECT id FROM suppliers WHERE ice = ? AND id != ?");
+            $check_ice->execute([$ice, $id]);
+            if ($check_ice->fetch()) {
+                $_SESSION['error'] = 'ICE existe déjà';
+                header('Location: fournisseurs.php');
+                exit;
+            }
+        }
+        
+        // Check for duplicate RC (excluding current record)
+        if ($has_rc && $rc !== '') {
+            $check_rc = $pdo->prepare("SELECT id FROM suppliers WHERE rc = ? AND id != ?");
+            $check_rc->execute([$rc, $id]);
+            if ($check_rc->fetch()) {
+                $_SESSION['error'] = 'RC existe déjà';
+                header('Location: fournisseurs.php');
+                exit;
+            }
+        }
+        
+        // Build update query based on available columns
+        $update_fields = ['nom_fournisseur = ?', 'telephone = ?', 'adresse = ?'];
+        $update_values = [$nom, $gsm, $adresse];
+        
+        if ($has_code) {
+            $update_fields[] = 'code_fournisseur = ?';
+            $update_values[] = $code ?: null;
+        }
+        
+        if ($has_ville) {
+            $update_fields[] = 'ville = ?';
+            $update_values[] = $ville;
+        }
+        
+        if ($has_ice) {
+            $update_fields[] = 'ice = ?';
+            $update_values[] = $ice ?: null;
+        }
+        
+        if ($has_rc) {
+            $update_fields[] = 'rc = ?';
+            $update_values[] = $rc ?: null;
+        }
+        
+        $update_values[] = $id;
+        
+        $sql = "UPDATE suppliers SET " . implode(', ', $update_fields) . " WHERE id=?";
+        $pdo->prepare($sql)->execute($update_values);
+        
         $_SESSION['message'] = 'Fournisseur mis à jour';
         header('Location: fournisseurs.php');
         exit;
@@ -86,9 +211,10 @@ function fv($f, $k, $d = '') { return isset($f[$k]) ? htmlspecialchars($f[$k]) :
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title><?php echo $page_title; ?> - <?php echo APP_NAME; ?></title>
+    <!-- Simple Clean Theme -->
     <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
-    <link href="assets/css/style.css" rel="stylesheet">
+    <link rel="stylesheet" href="assets/css/simple-theme.css">
     <style>
         .main-content { margin-left: 260px; padding: 2rem; }
         .fournisseurs-card { border-radius: 12px; box-shadow: 0 2px 12px rgba(0,0,0,0.08); border: 1px solid #e2e8f0; }
@@ -100,7 +226,7 @@ function fv($f, $k, $d = '') { return isset($f[$k]) ? htmlspecialchars($f[$k]) :
     </style>
 </head>
 <body>
-    <?php include __DIR__ . '/includes/header.php'; ?>
+    <?php include __DIR__ . '/includes/header_simple.php'; ?>
     <?php include __DIR__ . '/includes/sidebar.php'; ?>
 
     <div class="main-content">
@@ -153,12 +279,14 @@ function fv($f, $k, $d = '') { return isset($f[$k]) ? htmlspecialchars($f[$k]) :
                                     <th>GSM</th>
                                     <th>Addresse</th>
                                     <th>Ville</th>
+                                    <?php if ($has_ice): ?><th>ICE</th><?php endif; ?>
+                                    <?php if ($has_rc): ?><th>RC</th><?php endif; ?>
                                     <th>Actions</th>
                                 </tr>
                             </thead>
                             <tbody>
                                 <?php if (empty($fournisseurs)): ?>
-                                <tr><td colspan="6" class="text-center py-4 text-muted">Aucun fournisseur</td></tr>
+                                <tr><td colspan="<?php echo 6 + ($has_ice ? 1 : 0) + ($has_rc ? 1 : 0); ?>" class="text-center py-4 text-muted">Aucun fournisseur</td></tr>
                                 <?php else: ?>
                                 <?php foreach ($fournisseurs as $i => $f): ?>
                                 <tr class="<?php echo $i % 2 ? 'row-alt' : ''; ?>">
@@ -167,6 +295,8 @@ function fv($f, $k, $d = '') { return isset($f[$k]) ? htmlspecialchars($f[$k]) :
                                     <td><?php echo fv($f,'telephone','-'); ?></td>
                                     <td><?php echo fv($f,'adresse','-'); ?></td>
                                     <td><?php echo $has_ville ? fv($f,'ville','-') : '-'; ?></td>
+                                    <?php if ($has_ice): ?><td><?php echo fv($f,'ice','-'); ?></td><?php endif; ?>
+                                    <?php if ($has_rc): ?><td><?php echo fv($f,'rc','-'); ?></td><?php endif; ?>
                                     <td>
                                         <a href="fournisseurs.php?edit=<?php echo $f['id']; ?>" class="btn btn-sm btn-outline-primary" title="Modifier"><i class="fas fa-pen"></i></a>
                                         <button class="btn btn-sm btn-outline-danger" onclick="deleteFournisseur(<?php echo $f['id']; ?>,'<?php echo addslashes(fv($f,'nom_fournisseur')); ?>')" title="Supprimer"><i class="fas fa-trash"></i></button>
@@ -196,23 +326,35 @@ function fv($f, $k, $d = '') { return isset($f[$k]) ? htmlspecialchars($f[$k]) :
                         <?php if ($edit_f): ?><input type="hidden" name="id" value="<?php echo $edit_f['id']; ?>"><?php endif; ?>
                         <div class="row">
                             <?php if ($has_code): ?>
-                            <div class="col-md-6 mb-3">
+                            <div class="col-md-4 mb-3">
                                 <label class="form-label">Code Fournisseur</label>
                                 <input type="text" class="form-control" name="code_fournisseur" value="<?php echo fv($edit_f ?? [],'code_fournisseur'); ?>" placeholder="F1XXX">
                             </div>
                             <?php endif; ?>
-                            <div class="col-md-6 mb-3">
+                            <div class="col-md-4 mb-3">
                                 <label class="form-label">Nom *</label>
                                 <input type="text" class="form-control" name="nom_fournisseur" required value="<?php echo fv($edit_f ?? [],'nom_fournisseur'); ?>">
                             </div>
+                            <?php if ($has_ice): ?>
+                            <div class="col-md-4 mb-3">
+                                <label class="form-label">ICE</label>
+                                <input type="text" class="form-control" name="ice" value="<?php echo fv($edit_f ?? [],'ice'); ?>" placeholder="12345678901234567">
+                            </div>
+                            <?php endif; ?>
                         </div>
                         <div class="row">
-                            <div class="col-md-6 mb-3">
+                            <div class="col-md-4 mb-3">
                                 <label class="form-label">GSM</label>
                                 <input type="text" class="form-control" name="telephone" value="<?php echo fv($edit_f ?? [],'telephone'); ?>" placeholder="0539971226">
                             </div>
+                            <?php if ($has_rc): ?>
+                            <div class="col-md-4 mb-3">
+                                <label class="form-label">RC</label>
+                                <input type="text" class="form-control" name="rc" value="<?php echo fv($edit_f ?? [],'rc'); ?>" placeholder="123456789">
+                            </div>
+                            <?php endif; ?>
                             <?php if ($has_ville): ?>
-                            <div class="col-md-6 mb-3">
+                            <div class="col-md-4 mb-3">
                                 <label class="form-label">Ville</label>
                                 <input type="text" class="form-control" name="ville" value="<?php echo fv($edit_f ?? [],'ville'); ?>" placeholder="TETOUAN">
                             </div>
