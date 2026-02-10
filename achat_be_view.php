@@ -471,9 +471,19 @@ try {
                         </button>
                     </div>
                     <div class="col-md-3">
-                        <button class="btn-action btn-info w-100" onclick="validateBE()">
-                            <i class="fas fa-check me-2"></i>Valider
-                        </button>
+                        <?php if ($be['statut'] === 'Reçu'): ?>
+                            <button class="btn-action btn-info w-100" disabled>
+                                <i class="fas fa-clock me-2"></i>Auto-Validation...
+                            </button>
+                        <?php elseif ($be['statut'] === 'Validé'): ?>
+                            <button class="btn-action btn-success w-100" disabled>
+                                <i class="fas fa-check me-2"></i>Déjà Validé
+                            </button>
+                        <?php else: ?>
+                            <button class="btn-action btn-info w-100" onclick="validateBE()">
+                                <i class="fas fa-check me-2"></i>Valider
+                            </button>
+                        <?php endif; ?>
                     </div>
                     <div class="col-md-3">
                         <?php if ($be['statut'] === 'Reçu'): ?>
@@ -494,23 +504,63 @@ try {
     <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
     
     <script>
+        // Auto-validate on page load if status is "Reçu"
+        document.addEventListener('DOMContentLoaded', function() {
+            const statusElement = document.querySelector('.status-badge');
+            const beId = <?php echo $be_id; ?>;
+            
+            if (statusElement && statusElement.textContent.trim() === 'Reçu') {
+                // Auto-validate without user interaction
+                console.log('Auto-validating BE...');
+                
+                fetch('achat_be_auto_validate.php?id=' + beId)
+                    .then(response => response.json())
+                    .then(data => {
+                        if (data.success) {
+                            // Reload page to show new status
+                            window.location.reload();
+                        }
+                    })
+                    .catch(error => {
+                        console.error('Auto-validation error:', error);
+                    });
+            }
+            
+            // Show validation success message
+            const urlParams = new URLSearchParams(window.location.search);
+            if (urlParams.get('validated') === '1') {
+                const alertDiv = document.createElement('div');
+                alertDiv.className = 'alert alert-success alert-dismissible fade show';
+                alertDiv.innerHTML = `
+                    <i class="fas fa-check-circle me-2"></i>
+                    Bon d'entrée validé automatiquement avec succès!
+                    <button type="button" class="btn-close" data-bs-dismiss="alert"></button>
+                `;
+                
+                const container = document.querySelector('.container-fluid');
+                container.insertBefore(alertDiv, container.firstChild);
+                
+                // Remove parameter from URL
+                const url = new URL(window.location);
+                url.searchParams.delete('validated');
+                window.history.replaceState({}, '', url);
+            }
+        });
+        
         function duplicateBE() {
             if (confirm('Voulez-vous dupliquer ce bon d\'entrée?')) {
-                // Implémenter la duplication
                 window.location.href = 'achat_be_duplicate.php?id=<?php echo $be_id; ?>';
             }
         }
         
         function validateBE() {
-            if (confirm('Êtes-vous sûr de voulovalider ce bon d\'entrée?')) {
-                // Implémenter la validation
+            if (confirm('Êtes-vous sûr de vouloir valider ce bon d\'entrée?')) {
                 window.location.href = 'achat_be_validate.php?id=<?php echo $be_id; ?>';
             }
         }
         
         function rejectBE() {
             if (confirm('Êtes-vous sûr de vouloir rejeter ce bon d\'entrée?')) {
-                // Implémenter le rejet
                 window.location.href = 'achat_be_reject.php?id=<?php echo $be_id; ?>';
             }
         }
