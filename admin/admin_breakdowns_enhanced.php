@@ -171,70 +171,122 @@ function format_duration($hours) {
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title><?php echo htmlspecialchars($page_title); ?> - <?php echo APP_NAME; ?></title>
+    
+    <!-- Simple Clean Theme -->
     <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
-    <link href="../assets/css/style.css" rel="stylesheet">
+    <link rel="stylesheet" href="../assets/css/simple-theme.css">
+    
     <style>
         .filter-section {
-            background: #f8fafc;
-            border: 1px solid #e2e8f0;
-            border-radius: 8px;
-            padding: 1.5rem;
-            margin-bottom: 2rem;
+            background-color: var(--bg-light);
+            border: 1px solid var(--border);
+            border-radius: var(--radius-lg);
+            padding: var(--space-6);
+            margin-bottom: var(--space-6);
         }
+        
         .filter-row {
             display: grid;
             grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
-            gap: 1rem;
-            margin-bottom: 1rem;
+            gap: var(--space-4);
+            margin-bottom: var(--space-4);
         }
-        .stats-cards {
+        
+        .stats-grid {
             display: grid;
             grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
-            gap: 1rem;
-            margin-bottom: 2rem;
+            gap: var(--space-4);
+            margin-bottom: var(--space-6);
         }
+        
         .stat-card {
-            background: white;
-            padding: 1rem;
-            border-radius: 8px;
-            border: 1px solid #e2e8f0;
+            background-color: var(--bg-white);
+            border: 1px solid var(--border);
+            border-radius: var(--radius-lg);
+            padding: var(--space-6);
             text-align: center;
+            transition: transform 0.2s;
         }
+        
+        .stat-card:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
+        }
+        
         .stat-value {
-            font-size: 1.5rem;
+            font-size: var(--font-size-2xl);
             font-weight: 700;
-            color: #1e3a8a;
+            margin-bottom: var(--space-2);
         }
+        
         .stat-label {
-            color: #64748b;
-            font-size: 0.875rem;
+            font-size: var(--font-size-sm);
+            color: var(--text-light);
         }
-        .table-responsive {
-            border-radius: 8px;
-            overflow: hidden;
-            box-shadow: 0 1px 3px rgba(0,0,0,0.05);
+        
+        .workshop-card {
+            background-color: var(--bg-white);
+            border: 1px solid var(--border);
+            border-radius: var(--radius-lg);
+            padding: var(--space-6);
+            margin-bottom: var(--space-6);
+            transition: transform 0.2s;
         }
-        .btn-filter-clear {
-            background: transparent;
-            border: 1px solid #e2e8f0;
-            color: #64748b;
+        
+        .workshop-card:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
         }
-        .btn-filter-clear:hover {
-            background: #f8fafc;
+        
+        .form-control, .form-select {
+            border-radius: var(--radius);
+            border: 1px solid var(--border);
+            transition: all 0.2s ease;
+        }
+        
+        .form-control:focus, .form-select:focus {
+            border-color: var(--primary);
+            box-shadow: 0 0 0 0.2rem rgba(var(--primary-rgb), 0.25);
+        }
+        
+        @media (max-width: 768px) {
+            .main-content {
+                margin-left: 0;
+                padding: var(--space-4);
+            }
         }
     </style>
 </head>
 <body>
-    <?php include __DIR__ . '/../includes/header.php'; ?>
-    <?php include __DIR__ . '/../includes/sidebar.php'; ?>
+    <!-- Include header -->
+    <?php include '../includes/header_simple.php'; ?>
+    
+    <!-- Include sidebar -->
+    <?php include '../includes/sidebar.php'; ?>
 
+    <!-- Main Content -->
     <div class="main-content">
         <div class="container-fluid">
-            <div class="row mb-4">
-                <div class="col-12">
-                    <h1 class="mb-2"><i class="fas fa-screwdriver-wrench me-3"></i><?php echo htmlspecialchars($page_title); ?></h1>
-                    <p class="text-muted">Gestion avancée des incidents avec filtres et recherche</p>
+            <!-- Page Header -->
+            <div class="d-flex justify-content-between align-items-center mb-6">
+                <div>
+                    <h1 class="mb-2">
+                        <i class="fas fa-screwdriver-wrench me-3"></i>
+                        <?php echo htmlspecialchars($page_title); ?>
+                    </h1>
+                    <p class="text-muted mb-0">Bienvenue, <?php echo htmlspecialchars($user['full_name']); ?></p>
+                </div>
+                <div class="d-flex gap-3">
+                    <button class="btn btn-outline-primary" onclick="window.location.href='../quick_audit.php'">
+                        <i class="fas fa-clipboard-check me-2"></i>Audit
+                    </button>
+                    <button class="btn btn-outline-success" onclick="window.location.href='../remove_unnecessary_files.php'">
+                        <i class="fas fa-trash-alt me-2"></i>Nettoyer
+                    </button>
+                    <button class="btn btn-primary" onclick="window.location.href='../dashboard_simple.php'">
+                        <i class="fas fa-home me-2"></i>Dashboard
+                    </button>
                 </div>
             </div>
 
@@ -253,7 +305,7 @@ function format_duration($hours) {
             <?php endif; ?>
 
             <!-- Statistics Cards -->
-            <div class="stats-cards">
+            <div class="stats-grid">
                 <div class="stat-card">
                     <div class="stat-value"><?php echo count($reports); ?></div>
                     <div class="stat-label">Total Incidents</div>
@@ -348,8 +400,8 @@ function format_duration($hours) {
             </div>
 
             <!-- Results Table -->
-            <div class="card">
-                <div class="card-header d-flex justify-content-between align-items-center">
+            <div class="workshop-card">
+                <div class="d-flex justify-content-between align-items-center mb-4">
                     <h5 class="mb-0">Résultats (<?php echo count($reports); ?> incidents)</h5>
                     <div>
                         <a class="btn btn-outline-primary btn-sm" href="../notifications.php">
@@ -360,31 +412,30 @@ function format_duration($hours) {
                         </button>
                     </div>
                 </div>
-                <div class="card-body">
-                    <?php if (empty($reports)): ?>
-                        <div class="text-center py-4 text-muted">
-                            <i class="fas fa-search fa-3x mb-3"></i>
-                            <div>Aucun incident trouvé avec les filtres actuels</div>
-                        </div>
-                    <?php else: ?>
-                        <div class="table-responsive">
-                            <table class="table table-hover">
-                                <thead>
-                                    <tr>
-                                        <th>Réf</th>
-                                        <th>Bus</th>
-                                        <th>Type</th>
-                                        <th>PAN</th>
-                                        <th>Urgence</th>
-                                        <th>Technicien</th>
-                                        <th>Temps</th>
-                                        <th>Coût</th>
-                                        <th>Pièces</th>
-                                        <th>Statut</th>
-                                        <th>Date</th>
-                                        <th>Actions</th>
-                                    </tr>
-                                </thead>
+                <?php if (empty($reports)): ?>
+                    <div class="text-center py-4 text-muted">
+                        <i class="fas fa-search fa-3x mb-3"></i>
+                        <div>Aucun incident trouvé avec les filtres actuels</div>
+                    </div>
+                <?php else: ?>
+                    <div class="table-responsive">
+                        <table class="table table-hover">
+                            <thead>
+                                <tr>
+                                    <th>Réf</th>
+                                    <th>Bus</th>
+                                    <th>Type</th>
+                                    <th>PAN</th>
+                                    <th>Urgence</th>
+                                    <th>Technicien</th>
+                                    <th>Temps</th>
+                                    <th>Coût</th>
+                                    <th>Pièces</th>
+                                    <th>Statut</th>
+                                    <th>Date</th>
+                                    <th>Actions</th>
+                                </tr>
+                            </thead>
                                 <tbody>
                                     <?php foreach ($reports as $r): ?>
                                         <tr>
