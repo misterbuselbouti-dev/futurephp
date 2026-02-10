@@ -138,113 +138,71 @@ function breakdownStatusBadge($status) {
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Tableau de Bord - <?php echo APP_NAME; ?> - Simple Clean Theme</title>
+    <title>Tableau de Bord - <?php echo APP_NAME; ?> - ISO 9001 Professional Theme</title>
+    <!-- ISO 9001 Professional Theme -->
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&display=swap" rel="stylesheet">
     <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
-    <link rel="stylesheet" href="assets/css/simple-theme.css">
+    <link rel="stylesheet" href="assets/css/iso-theme.css">
+    <link rel="stylesheet" href="assets/css/iso-components.css">
+    <link rel="stylesheet" href="assets/css/iso-bootstrap.css">
     <link href="https://fonts.googleapis.com/css2?family=DM+Sans:wght@400;500;600;700&display=swap" rel="stylesheet">
     <style>
         body {
-            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            font-family: 'Inter', sans-serif;
             background-color: #ffffff;
             padding-top: 70px;
             line-height: 1.5;
         }
         .main-content {
-            margin-left: 250px;
-            padding: 20px;
-            transition: margin-left 0.3s;
+            margin-left: 260px;
+            padding: var(--space-8);
+            min-height: 100vh;
         }
-        .sidebar-collapsed .main-content {
-            margin-left: 70px;
+        
+        .iso-card {
+            background-color: var(--bg-secondary);
+            border: 1px solid var(--border-primary);
+            border-radius: var(--radius-lg);
+            padding: var(--space-6);
+            margin-bottom: var(--space-6);
+            transition: transform 0.2s;
         }
-        .dashboard-header {
-            background: white;
-            padding: 2rem;
-            border-radius: 8px;
-            box-shadow: 0 1px 3px rgba(0,0,0,0.05);
-            margin-bottom: 2rem;
-            border: 1px solid #e2e8f0;
+        
+        .iso-card:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
         }
-        .dashboard-section {
-            background: white;
-            padding: 1.5rem;
-            border-radius: 8px;
-            box-shadow: 0 1px 3px rgba(0,0,0,0.05);
-            margin-bottom: 2rem;
-            border: 1px solid #e2e8f0;
-        }
-        .section-title {
-            font-size: 1.25rem;
-            font-weight: 600;
-            margin-bottom: 1.5rem;
-            color: #1e293b;
-        }
-        .today-cards {
-            display: grid;
-            grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
-            gap: 1rem;
-        }
-        .today-card {
-            background: transparent;
-            color: #1e293b;
-            padding: 1.5rem;
-            border-radius: 8px;
-            position: relative;
-            overflow: hidden;
-            border: 1px solid #e2e8f0;
-        }
-        .today-card-icon {
-            font-size: 2rem;
-            margin-bottom: 1rem;
-        }
-        .today-card-value {
-            font-size: 2rem;
-            font-weight: 700;
-            display: block;
-        }
-        .today-card-label {
-            font-size: 0.875rem;
-            opacity: 0.9;
-        }
-        .today-card-link {
-            color: white;
-            text-decoration: none;
-            font-size: 0.875rem;
-            display: inline-flex;
-            align-items: center;
-            margin-top: 1rem;
-        }
-        .stats-row {
+        
+        .iso-stats-grid {
             display: grid;
             grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
-            gap: 1rem;
+            gap: var(--space-4);
+            margin-bottom: var(--space-6);
         }
-        .stat-box {
-            background: white;
-            border: 1px solid #e2e8f0;
-            border-radius: 12px;
-            padding: 1.5rem;
+        
+        .stat-card {
+            background: linear-gradient(135deg, var(--primary) 0%, var(--primary-dark) 100%);
+            color: white;
+            padding: var(--space-6);
+            border-radius: var(--radius-lg);
             text-align: center;
-            transition: transform 0.2s, box-shadow 0.2s;
+            transition: transform var(--transition);
         }
-        .stat-box:hover {
-            transform: translateY(-2px);
-            box-shadow: 0 4px 20px rgba(0,0,0,0.1);
+        
+        .stat-card:hover {
+            transform: translateY(-4px);
         }
-        .stat-box-icon {
-            font-size: 2rem;
-            margin-bottom: 1rem;
-            color: #4299e1;
+        
+        .stat-value {
+            font-size: var(--text-4xl);
+            font-weight: var(--font-bold);
+            margin-bottom: var(--space-2);
         }
-        .stat-box-value {
-            font-size: 1.5rem;
-            font-weight: 700;
-            color: #2d3748;
-        }
-        .stat-box-label {
-            font-size: 0.875rem;
-            color: #718096;
+        
+        .stat-label {
+            font-size: var(--text-sm);
+            opacity: 0.9;
         }
         .quick-actions {
             display: grid;
@@ -349,7 +307,7 @@ function breakdownStatusBadge($status) {
             </header>
 
             <!-- Section: Aujourd'hui -->
-            <section class="dashboard-section">
+            <section class="iso-card">
                 <h2 class="section-title"><i class="fas fa-sun"></i> Aujourd'hui</h2>
                 <div class="today-cards">
                     <div class="today-card" style="background: linear-gradient(135deg, #f093fb 0%, #f5576c 100%);">
@@ -386,7 +344,7 @@ function breakdownStatusBadge($status) {
             </section>
 
             <!-- Statistiques principales -->
-            <section class="dashboard-section">
+            <section class="iso-card">
                 <h2 class="section-title"><i class="fas fa-chart-pie"></i> Statistiques</h2>
                 <div class="stats-row">
                     <div class="stat-box">
@@ -443,7 +401,7 @@ function breakdownStatusBadge($status) {
             <!-- Actions rapides + Activités récentes -->
             <div class="row">
                 <div class="col-lg-6">
-                    <section class="dashboard-section">
+                    <section class="iso-card">
                         <h2 class="section-title"><i class="fas fa-bolt"></i> Actions rapides</h2>
                         <div class="quick-actions">
                             <a href="buses_complete.php" class="quick-action">
@@ -482,7 +440,7 @@ function breakdownStatusBadge($status) {
                     </section>
                 </div>
                 <div class="col-lg-6">
-                    <section class="dashboard-section">
+                    <section class="iso-card">
                         <h2 class="section-title"><i class="fas fa-clock"></i> Activités récentes</h2>
                         <div class="recent-activities">
                             <?php if (empty($recent_activities)): ?>
@@ -523,7 +481,7 @@ function breakdownStatusBadge($status) {
 
             <!-- Module Achat -->
             <?php if ($stats['total_da'] > 0 || $stats['total_bc'] > 0 || $stats['total_be'] > 0): ?>
-            <section class="dashboard-section">
+            <section class="iso-card">
                 <h2 class="section-title"><i class="fas fa-shopping-cart"></i> Module Achat</h2>
                 <div class="stats-row">
                     <div class="stat-box">

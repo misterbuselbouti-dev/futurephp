@@ -355,19 +355,52 @@ $page_title = 'System Audit';
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title><?php echo $page_title; ?> - <?php echo APP_NAME; ?></title>
+    <!-- ISO 9001 Professional Theme -->
     <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
-    <link href="assets/css/style.css" rel="stylesheet">
+    <link rel="stylesheet" href="assets/css/iso-theme.css">
+    <link rel="stylesheet" href="assets/css/iso-components.css">
+    <link rel="stylesheet" href="assets/css/iso-bootstrap.css">
     <style>
-        .audit-section {
-            background: white;
-            border-radius: 12px;
-            box-shadow: 0 2px 12px rgba(0,0,0,0.08);
-            padding: 1.5rem;
-            margin-bottom: 2rem;
+        .main-content {
+            margin-left: 260px;
+            padding: var(--space-8);
+            min-height: 100vh;
         }
-        .status-success { color: #28a745; }
-        .status-warning { color: #ffc107; }
+        
+        .audit-header {
+            background: var(--primary);
+            color: white;
+            padding: var(--space-6);
+            border-radius: var(--radius-lg);
+            margin-bottom: var(--space-6);
+        }
+        
+        .iso-card {
+            background-color: var(--bg-secondary);
+            border: 1px solid var(--border-primary);
+            border-radius: var(--radius-lg);
+            padding: var(--space-6);
+            margin-bottom: var(--space-6);
+            transition: transform 0.2s;
+        }
+        
+        .iso-card:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
+        }
+        
+        .iso-stats-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+            gap: var(--space-4);
+            margin-bottom: var(--space-6);
+        }
+        
+        .status-success { color: var(--success); }
+        .status-warning { color: var(--warning); }
+        .status-error { color: var(--danger); }
+        .status-info { color: var(--info); }
         .status-error { color: #dc3545; }
         .status-info { color: #17a2b8; }
         .audit-header {
@@ -431,7 +464,7 @@ $page_title = 'System Audit';
             <?php else: ?>
 
             <!-- Database Connection Status -->
-            <div class="audit-section">
+            <div class="iso-card">
                 <h3><i class="fas fa-database me-2"></i>Database Connection</h3>
                 <div class="row">
                     <div class="col-md-4">
@@ -463,7 +496,7 @@ $page_title = 'System Audit';
             </div>
 
             <!-- Tables Status -->
-            <div class="audit-section">
+            <div class="iso-card">
                 <h3><i class="fas fa-table me-2"></i>Tables Status</h3>
                 <div class="table-responsive">
                     <table class="table table-striped">
@@ -501,7 +534,7 @@ $page_title = 'System Audit';
             </div>
 
             <!-- Structure Checks -->
-            <div class="audit-section">
+            <div class="iso-card">
                 <h3><i class="fas fa-sitemap me-2"></i>Table Structures</h3>
                 <div class="row">
                     <?php foreach ($audit_results['structures'] as $table => $check): ?>
@@ -521,7 +554,7 @@ $page_title = 'System Audit';
             </div>
 
             <!-- Data Integrity -->
-            <div class="audit-section">
+            <div class="iso-card">
                 <h3><i class="fas fa-shield-alt me-2"></i>Data Integrity</h3>
                 <div class="row">
                     <div class="col-md-6">
@@ -569,7 +602,7 @@ $page_title = 'System Audit';
             </div>
 
             <!-- File System -->
-            <div class="audit-section">
+            <div class="iso-card">
                 <h3><i class="fas fa-file-code me-2"></i>File System</h3>
                 <div class="table-responsive">
                     <table class="table table-striped">
@@ -599,7 +632,7 @@ $page_title = 'System Audit';
             </div>
 
             <!-- Performance -->
-            <div class="audit-section">
+            <div class="iso-card">
                 <h3><i class="fas fa-tachometer-alt me-2"></i>Performance</h3>
                 <div class="row">
                     <div class="col-md-6">
@@ -625,7 +658,7 @@ $page_title = 'System Audit';
             </div>
 
             <!-- Audit Summary -->
-            <div class="audit-section">
+            <div class="iso-card">
                 <h3><i class="fas fa-clipboard-check me-2"></i>Audit Summary</h3>
                 <div class="row">
                     <div class="col-md-12">

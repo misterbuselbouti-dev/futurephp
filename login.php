@@ -119,93 +119,75 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
     <title>Connexion - Future Automotive</title>
     <meta name="description" content="Page de connexion Future Automotive">
     <link rel="icon" type="image/x-icon" href="assets/favicon.ico">
+    <!-- ISO 9001 Professional Theme -->
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&display=swap" rel="stylesheet">
     <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
-    <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <link rel="stylesheet" href="assets/css/iso-theme.css">
+    <link rel="stylesheet" href="assets/css/iso-components.css">
+    <link rel="stylesheet" href="assets/css/iso-bootstrap.css">
     <style>
-        :root {
-            --primary-color: #1e3a8a;
-            --secondary-color: #f59e0b;
-            --dark-color: #1f2937;
-            --light-bg: #f8fafc;
-        }
-        body {
-            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
-            background: linear-gradient(135deg, var(--primary-color) 0%, #2563eb 100%);
+        .login-container {
             min-height: 100vh;
             display: flex;
             align-items: center;
             justify-content: center;
+            background: var(--bg-primary);
         }
-        .login-container {
-            background: white;
-            border-radius: 15px;
-            box-shadow: 0 15px 35px rgba(0,0,0,0.1);
-            overflow: hidden;
+        
+        .login-card {
+            background: var(--bg-secondary);
+            border: 1px solid var(--border-primary);
+            border-radius: var(--radius-lg);
+            padding: var(--space-8);
             width: 100%;
-            max-width: 900px;
-            min-height: 500px;
+            max-width: 400px;
+            box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
         }
-        .login-left {
-            background: linear-gradient(135deg, var(--primary-color), #2563eb);
-            color: white;
-            padding: 40px;
-            display: flex;
-            flex-direction: column;
-            justify-content: center;
-            align-items: center;
-            text-align: center;
-        }
-        .login-right {
-            padding: 40px;
-            display: flex;
-            flex-direction: column;
-            justify-content: center;
-        }
+        
         .brand-logo {
-            font-size: 2.5rem;
-            font-weight: bold;
-            margin-bottom: 20px;
+            font-size: var(--text-3xl);
+            font-weight: var(--font-bold);
+            color: var(--primary);
+            text-align: center;
+            margin-bottom: var(--space-4);
         }
+        
         .brand-text {
-            font-size: 1.1rem;
-            opacity: 0.9;
-            margin-bottom: 30px;
+            color: var(--text-secondary);
+            text-align: center;
+            margin-bottom: var(--space-6);
         }
+        
         .form-control {
-            border-radius: 8px;
-            border: 2px solid #e5e7eb;
-            padding: 12px 15px;
-            font-size: 1rem;
-            transition: all 0.3s ease;
+            border: 1px solid var(--border-primary);
+            border-radius: var(--radius);
+            padding: var(--space-3);
+            font-size: var(--text-base);
+            transition: all 0.2s ease;
         }
+        
         .form-control:focus {
-            border-color: var(--primary-color);
-            box-shadow: 0 0 0 0.2rem rgba(30, 58, 138, 0.25);
+            border-color: var(--primary);
+            box-shadow: 0 0 0 0.2rem rgba(26, 54, 93, 0.25);
         }
-        .btn-login {
-            background: var(--primary-color);
-            color: white;
+        
+        .btn-primary {
+            background: var(--primary);
             border: none;
-            border-radius: 8px;
-            padding: 12px 30px;
-            font-size: 1rem;
-            font-weight: 600;
-            transition: all 0.3s ease;
-            width: 100%;
+            border-radius: var(--radius);
+            padding: var(--space-3);
+            font-weight: var(--font-medium);
+            transition: all 0.2s ease;
         }
-        .btn-login:hover {
-            background: #1e40af;
-            transform: translateY(-2px);
-            box-shadow: 0 5px 15px rgba(30, 58, 138, 0.3);
+        
+        .btn-primary:hover {
+            background: var(--primary-dark);
         }
-        .back-home {
-            color: white;
-            text-decoration: none;
-            opacity: 0.9;
-            transition: opacity 0.3s ease;
-        }
-        .back-home:hover {
-            opacity: 1;
+        
+        .alert {
+            border-radius: var(--radius);
+            border: none;
             color: white;
         }
         .feature-list {
@@ -233,98 +215,65 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
 </head>
 <body>
     <div class="login-container">
-        <div class="row g-0 h-100">
-            <!-- Left Side - Branding -->
-            <div class="col-md-5">
-                <div class="login-left">
-                    <div class="brand-logo">
-                        <i class="fas fa-car me-2"></i>
-                        Future Automotive
-                    </div>
-                    <div class="brand-text">
-                        Votre système de gestion de garage professionnel
-                    </div>
-                    <ul class="feature-list">
-                        <li><i class="fas fa-check-circle"></i> Gestion des clients</li>
-                        <li><i class="fas fa-check-circle"></i> Suivi des véhicules</li>
-                        <li><i class="fas fa-check-circle"></i> Ordres de travail</li>
-                        <li><i class="fas fa-check-circle"></i> Facturation</li>
-                        <li><i class="fas fa-check-circle"></i> Inventaire</li>
-                    </ul>
-                    <a href="landing.php" class="back-home">
-                        <i class="fas fa-arrow-left me-2"></i>
-                        Retour à l'accueil
-                    </a>
-                </div>
+        <div class="login-card">
+            <div class="brand-logo">
+                <i class="fas fa-car me-2"></i>
+                Future Automotive
+            </div>
+            <div class="brand-text">
+                Système de gestion ISO 9001
             </div>
             
-            <!-- Right Side - Login Form -->
-            <div class="col-md-7">
-                <div class="login-right">
-                    <div class="text-center mb-4">
-                        <h2 class="fw-bold text-dark">Connexion</h2>
-                        <p class="text-muted">Accédez à votre espace de travail</p>
-                    </div>
-                    
-                    <?php if ($error_message): ?>
-                        <div class="alert alert-danger" role="alert">
-                            <i class="fas fa-exclamation-triangle me-2"></i>
-                            <?php echo htmlspecialchars($error_message); ?>
-                        </div>
-                    <?php endif; ?>
-                    
-                    <?php if ($success_message): ?>
-                        <div class="alert alert-success" role="alert">
-                            <i class="fas fa-check-circle me-2"></i>
-                            <?php echo htmlspecialchars($success_message); ?>
-                        </div>
-                    <?php endif; ?>
-                    
-                    <form method="POST" action="">
-                        <div class="mb-3">
-                            <label for="username" class="form-label">
-                                <i class="fas fa-user me-2"></i>Email ou Nom d'utilisateur
-                            </label>
-                            <input type="text" class="form-control" id="username" name="username" 
-                                   placeholder="Entrez votre email ou nom d'utilisateur" required
-                                   value="<?php echo htmlspecialchars($_POST['username'] ?? ''); ?>">
-                        </div>
-                        
-                        <div class="mb-3">
-                            <label for="password" class="form-label">
-                                <i class="fas fa-lock me-2"></i>Mot de passe
-                            </label>
-                            <input type="password" class="form-control" id="password" name="password" 
-                                   placeholder="Entrez votre mot de passe" required>
-                        </div>
-                        
-                        <div class="mb-3 form-check">
-                            <input type="checkbox" class="form-check-input" id="remember" name="remember">
-                            <label class="form-check-label" for="remember">
-                                Se souvenir de moi
-                            </label>
-                        </div>
-                        
-                        <button type="submit" class="btn btn-login mb-3">
-                            <i class="fas fa-sign-in-alt me-2"></i>
-                            Se connecter
-                        </button>
-                    </form>
-                    
-                    <div class="text-center">
-                        <small class="text-muted">
-                            <i class="fas fa-shield-alt me-1"></i>
-                            Connexion sécurisée avec chiffrement SSL
-                        </small>
-                    </div>
-                    
-                    <div class="text-center mt-3">
-                        <a href="landing.php" class="text-decoration-none">
-                            <i class="fas fa-arrow-left me-1"></i>
-                            Retour à l'accueil
-                        </a>
-                    </div>
+            <?php if ($error_message): ?>
+                <div class="alert alert-danger" role="alert">
+                    <i class="fas fa-exclamation-triangle me-2"></i>
+                    <?php echo htmlspecialchars($error_message); ?>
                 </div>
+            <?php endif; ?>
+            
+            <?php if ($success_message): ?>
+                <div class="alert alert-success" role="alert">
+                    <i class="fas fa-check-circle me-2"></i>
+                    <?php echo htmlspecialchars($success_message); ?>
+                </div>
+            <?php endif; ?>
+            
+            <form method="POST" action="">
+                <div class="mb-4">
+                    <label for="username" class="form-label">
+                        <i class="fas fa-user me-2"></i>Email ou Nom d'utilisateur
+                    </label>
+                    <input type="text" class="form-control" id="username" name="username" 
+                           placeholder="Entrez votre email ou nom d'utilisateur" required
+                           value="<?php echo htmlspecialchars($_POST['username'] ?? ''); ?>">
+                </div>
+                
+                <div class="mb-4">
+                    <label for="password" class="form-label">
+                        <i class="fas fa-lock me-2"></i>Mot de passe
+                    </label>
+                    <input type="password" class="form-control" id="password" name="password" 
+                           placeholder="Entrez votre mot de passe" required>
+                </div>
+                
+                <div class="mb-4 form-check">
+                    <input type="checkbox" class="form-check-input" id="remember" name="remember">
+                    <label class="form-check-label" for="remember">
+                        Se souvenir de moi
+                    </label>
+                </div>
+                
+                <button type="submit" class="btn btn-primary w-100">
+                    <i class="fas fa-sign-in-alt me-2"></i>
+                    Se connecter
+                </button>
+            </form>
+            
+            <div class="text-center mt-4">
+                <small class="text-muted">
+                    <i class="fas fa-shield-alt me-1"></i>
+                    Connexion sécurisée ISO 9001
+                </small>
             </div>
         </div>
     </div>

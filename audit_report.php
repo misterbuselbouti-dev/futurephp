@@ -279,18 +279,49 @@ $page_title = 'Audit Report';
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title><?php echo $page_title; ?> - <?php echo APP_NAME; ?></title>
+    <!-- ISO 9001 Professional Theme -->
     <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
-    <link href="assets/css/style.css" rel="stylesheet">
+    <link rel="stylesheet" href="assets/css/iso-theme.css">
+    <link rel="stylesheet" href="assets/css/iso-components.css">
+    <link rel="stylesheet" href="assets/css/iso-bootstrap.css">
     <style>
-        .report-header {
-            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
-            color: white;
-            padding: 2rem;
-            border-radius: 12px;
-            margin-bottom: 2rem;
+        .main-content {
+            margin-left: 260px;
+            padding: var(--space-8);
+            min-height: 100vh;
         }
-        .status-healthy { color: #28a745; }
+        
+        .report-header {
+            background: var(--primary);
+            color: white;
+            padding: var(--space-6);
+            border-radius: var(--radius-lg);
+            margin-bottom: var(--space-6);
+        }
+        
+        .iso-stats-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+            gap: var(--space-4);
+            margin-bottom: var(--space-6);
+        }
+        
+        .iso-card {
+            background-color: var(--bg-secondary);
+            border: 1px solid var(--border-primary);
+            border-radius: var(--radius-lg);
+            padding: var(--space-6);
+            margin-bottom: var(--space-6);
+            transition: transform 0.2s;
+        }
+        
+        .iso-card:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
+        }
+        
+        .status-healthy { color: var(--success); }
         .status-warning { color: #ffc107; }
         .status-critical { color: #dc3545; }
         .metric-box {

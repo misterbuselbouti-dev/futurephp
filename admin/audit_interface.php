@@ -1,5 +1,5 @@
 <!-- Audit and Logging Interface -->
-<div class="workshop-card mb-4" id="auditInterface">
+<div class="iso-card mb-4" id="auditInterface">
     <div class="d-flex justify-content-between align-items-center mb-4">
         <h6 class="mb-0">
             <i class="fas fa-history me-2"></i>
@@ -49,30 +49,22 @@
     </div>
     
     <!-- Statistics Summary -->
-    <div class="row mb-4">
-        <div class="col-md-3">
-            <div class="stat-card text-center">
-                <div class="stat-value" id="totalActions">0</div>
-                <div class="stat-label">Total actions</div>
-            </div>
+    <div class="iso-stats-grid">
+        <div class="stat-card text-center">
+            <div class="stat-value" id="totalActions">0</div>
+            <div class="stat-label">Total actions</div>
         </div>
-        <div class="col-md-3">
-            <div class="stat-card text-center">
-                <div class="stat-value" id="todayActions">0</div>
-                <div class="stat-label">Aujourd'hui</div>
-            </div>
+        <div class="stat-card text-center">
+            <div class="stat-value" id="todayActions">0</div>
+            <div class="stat-label">Aujourd'hui</div>
         </div>
-        <div class="col-md-3">
-            <div class="stat-card text-center">
-                <div class="stat-value" id="uniqueUsers">0</div>
-                <div class="stat-label">Utilisateurs</div>
-            </div>
+        <div class="stat-card text-center">
+            <div class="stat-value" id="uniqueUsers">0</div>
+            <div class="stat-label">Utilisateurs</div>
         </div>
-        <div class="col-md-3">
-            <div class="stat-card text-center">
-                <div class="stat-value" id="avgActionsPerDay">0</div>
-                <div class="stat-label">Actions/jour</div>
-            </div>
+        <div class="stat-card text-center">
+            <div class="stat-value" id="avgActionsPerDay">0</div>
+            <div class="stat-label">Actions/jour</div>
         </div>
     </div>
     

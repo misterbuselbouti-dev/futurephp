@@ -174,10 +174,13 @@ try {
     <title>Bon de Commande - ATEO Auto</title>
     <meta name="description" content="Interface de gestion des bons de commande pour l'atelier ATEO Auto">
     <link rel="icon" type="image/x-icon" href="assets/favicon.ico">
+    <!-- ISO 9001 Professional Theme -->
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&display=swap" rel="stylesheet">
     <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
-    <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css" rel="stylesheet">
-    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700&display=swap" rel="stylesheet">
-    <link href="assets/css/style.css" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <link rel="stylesheet" href="assets/css/iso-theme.css">
+    <link rel="stylesheet" href="assets/css/iso-components.css">
+    <link rel="stylesheet" href="assets/css/iso-bootstrap.css">
     <style>
         :root {
             --primary-color: #1e3a8a;
@@ -197,25 +200,25 @@ try {
         
         .main-content {
             margin-left: 260px;
-            padding: 20px;
+            padding: var(--space-8);
             min-height: 100vh;
         }
         
-        .workshop-card {
-            background-color: var(--bg-white);
-            border: 1px solid var(--border);
+        .iso-card {
+            background-color: var(--bg-secondary);
+            border: 1px solid var(--border-primary);
             border-radius: var(--radius-lg);
             padding: var(--space-6);
             margin-bottom: var(--space-6);
             transition: transform 0.2s;
         }
         
-        .workshop-card:hover {
+        .iso-card:hover {
             transform: translateY(-2px);
             box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
         }
         
-        .page-header {
+        .dp-selection {
             background: white;
             border-radius: 15px;
             padding: 2rem;
@@ -236,14 +239,6 @@ try {
             border-radius: 15px;
             padding: 2rem;
             box-shadow: 0 5px 20px rgba(0,0,0,0.08);
-        }
-        
-        .dp-selection {
-            background: white;
-            border-radius: 15px;
-            padding: 2rem;
-            box-shadow: 0 5px 20px rgba(0,0,0,0.08);
-            margin-bottom: 2rem;
         }
         
         .dp-card {
@@ -389,6 +384,31 @@ try {
                 padding: 1rem;
             }
         }
+        
+        /* Smart Search Styles */
+        .advanced-search-options {
+            background: #f8f9fa;
+            border-radius: 8px;
+            padding: 1rem;
+            margin-top: 1rem;
+            border: 1px solid #e5e7eb;
+        }
+        
+        .search-summary {
+            background: #e3f2fd;
+            border: 1px solid #2196f3;
+            border-radius: 8px;
+            padding: 0.75rem;
+            margin-top: 1rem;
+            color: #1976d2;
+        }
+        
+        .highlight {
+            background-color: #fff3cd;
+            padding: 2px 4px;
+            border-radius: 3px;
+            font-weight: bold;
+        }
     </style>
 </head>
 <body>
@@ -408,125 +428,19 @@ try {
                 </ol>
             </nav>
             <!-- Header -->
-            <div class="page-header">
-                <div class="row align-items-center">
-                    <div class="col-md-6">
-                        <h1 class="mb-2">
-                            <i class="fas fa-file-invoice-dollar me-3"></i>
-                            Bon de Commande
-                        </h1>
-                        <p class="text-muted mb-0">Créer et gérer les bons de commande officiels</p>
-                    </div>
-                    <div class="col-md-6 text-md-end">
-                        <div class="d-flex gap-2 justify-content-md-end">
-                            <button class="btn btn-outline-secondary" onclick="exportBC()">
-                                <i class="fas fa-download me-2"></i>Exporter
-                            </button>
-                        </div>
-                    </div>
+            <div class="row mb-4">
+                <div class="col-md-6">
+                    <h1 class="mb-2">
+                        <i class="fas fa-file-invoice-dollar me-3"></i>
+                        Bon de Commande
+                    </h1>
+                    <p class="text-muted mb-0">Créer et gérer les bons de commande officiels</p>
                 </div>
-            </div>
-            
-            <!-- Smart Search Bar -->
-            <div class="workshop-card mb-4">
-                <div class="d-flex justify-content-between align-items-center mb-3">
-                    <h5 class="mb-0">
-                        <i class="fas fa-search me-2"></i>
-                        Recherche Intelligente
-                    </h5>
-                    <button class="btn btn-outline-secondary btn-sm" onclick="toggleAdvancedSearch()">
-                        <i class="fas fa-cog me-1"></i>Options
-                    </button>
-                </div>
-                
-                <!-- Main Search -->
-                <div class="row mb-3">
-                    <div class="col-md-8">
-                        <div class="input-group">
-                            <span class="input-group-text">
-                                <i class="fas fa-search"></i>
-                            </span>
-                            <input type="text" 
-                                   class="form-control" 
-                                   id="smartSearchInput" 
-                                   placeholder="Rechercher par référence, fournisseur, montant, statut..."
-                                   onkeyup="performSmartSearch(this.value)">
-                            <button class="btn btn-outline-primary" type="button" onclick="clearSearch()">
-                                <i class="fas fa-times"></i>
-                            </button>
-                        </div>
-                    </div>
-                    <div class="col-md-4">
-                        <select class="form-select" id="searchType" onchange="updateSearchPlaceholder()">
-                            <option value="all">Tous les champs</option>
-                            <option value="ref_bc">Référence BC</option>
-                            <option value="ref_dp">Référence DP</option>
-                            <option value="fournisseur">Fournisseur</option>
-                            <option value="montant">Montant</option>
-                            <option value="statut">Statut</option>
-                            <option value="date">Date</option>
-                        </select>
-                    </div>
-                </div>
-                
-                <!-- Advanced Search Options -->
-                <div id="advancedSearchOptions" style="display: none;">
-                    <div class="row mb-3">
-                        <div class="col-md-3">
-                            <label class="form-label">Date début</label>
-                            <input type="date" class="form-control" id="searchDateFrom" onchange="performAdvancedSearch()">
-                        </div>
-                        <div class="col-md-3">
-                            <label class="form-label">Date fin</label>
-                            <input type="date" class="form-control" id="searchDateTo" onchange="performAdvancedSearch()">
-                        </div>
-                        <div class="col-md-3">
-                            <label class="form-label">Montant min</label>
-                            <input type="number" class="form-control" id="searchAmountMin" placeholder="0" onchange="performAdvancedSearch()">
-                        </div>
-                        <div class="col-md-3">
-                            <label class="form-label">Montant max</label>
-                            <input type="number" class="form-control" id="searchAmountMax" placeholder="∞" onchange="performAdvancedSearch()">
-                        </div>
-                    </div>
-                    <div class="row mb-3">
-                        <div class="col-md-4">
-                            <label class="form-label">Statut</label>
-                            <select class="form-select" id="searchStatut" onchange="performAdvancedSearch()">
-                                <option value="">Tous les statuts</option>
-                                <option value="Brouillon">Brouillon</option>
-                                <option value="Validé">Validé</option>
-                                <option value="Envoyé">Envoyé</option>
-                                <option value="Accepté">Accepté</option>
-                                <option value="Rejeté">Rejeté</option>
-                            </select>
-                        </div>
-                        <div class="col-md-4">
-                            <label class="form-label">Fournisseur</label>
-                            <input type="text" class="form-control" id="searchFournisseur" placeholder="Nom du fournisseur" onchange="performAdvancedSearch()">
-                        </div>
-                        <div class="col-md-4">
-                            <label class="form-label">Articles</label>
-                            <input type="number" class="form-control" id="searchArticles" placeholder="Nombre d'articles" onchange="performAdvancedSearch()">
-                        </div>
-                    </div>
-                    <div class="row">
-                        <div class="col-12">
-                            <button class="btn btn-primary me-2" onclick="performAdvancedSearch()">
-                                <i class="fas fa-search me-1"></i>Rechercher
-                            </button>
-                            <button class="btn btn-outline-secondary" onclick="resetAdvancedSearch()">
-                                <i class="fas fa-redo me-1"></i>Réinitialiser
-                            </button>
-                        </div>
-                    </div>
-                </div>
-                
-                <!-- Search Results Summary -->
-                <div id="searchSummary" style="display: none;" class="mt-3">
-                    <div class="alert alert-info">
-                        <i class="fas fa-info-circle me-2"></i>
-                        <span id="searchResultsText"></span>
+                <div class="col-md-6 text-md-end">
+                    <div class="d-flex gap-2 justify-content-md-end">
+                        <button class="btn btn-outline-secondary" onclick="exportBC()">
+                            <i class="fas fa-download me-2"></i>Exporter
+                        </button>
                     </div>
                 </div>
             </div>
@@ -786,6 +700,96 @@ try {
                         </div>
                     <?php endif; ?>
 
+                    <!-- Smart Search Bar for Archive -->
+                    <div class="iso-card mb-4">
+                        <div class="d-flex justify-content-between align-items-center mb-3">
+                            <h5 class="mb-0">
+                                <i class="fas fa-search me-2"></i>
+                                Recherche dans l'Archive
+                            </h5>
+                            <button class="btn btn-outline-secondary btn-sm" onclick="toggleAdvancedSearch()">
+                                <i class="fas fa-cog me-1"></i>Options
+                            </button>
+                        </div>
+                        
+                        <!-- Main Search -->
+                        <div class="row mb-3">
+                            <div class="col-md-8">
+                                <div class="input-group">
+                                    <span class="input-group-text">
+                                        <i class="fas fa-search"></i>
+                                    </span>
+                                    <input type="text" 
+                                           class="form-control" 
+                                           id="smartSearchInput" 
+                                           placeholder="Rechercher par référence, fournisseur, montant, statut..."
+                                           onkeyup="performSmartSearch(this.value)">
+                                    <button class="btn btn-primary" onclick="performSmartSearch(document.getElementById('smartSearchInput').value)">
+                                        <i class="fas fa-search me-1"></i>Rechercher
+                                    </button>
+                                </div>
+                            </div>
+                            <div class="col-md-4">
+                                <div class="d-flex gap-2">
+                                    <button class="btn btn-outline-warning btn-sm flex-fill" onclick="clearSearch()">
+                                        <i class="fas fa-times me-1"></i>Effacer
+                                    </button>
+                                </div>
+                            </div>
+                        </div>
+                        
+                        <!-- Advanced Search Options -->
+                        <div id="advancedSearchOptions" class="advanced-search-options" style="display: none;">
+                            <div class="row">
+                                <div class="col-md-3">
+                                    <label class="form-label">Fournisseur:</label>
+                                    <select class="form-select" id="filterFournisseur" onchange="performSmartSearch(document.getElementById('smartSearchInput').value)">
+                                        <option value="">Tous</option>
+                                        <?php
+                                        // Get unique suppliers from database
+                                        try {
+                                            $stmt = $conn->query("SELECT DISTINCT nom_fournisseur FROM bons_commande WHERE nom_fournisseur IS NOT NULL ORDER BY nom_fournisseur");
+                                            while ($row = $stmt->fetch()) {
+                                                echo '<option value="' . htmlspecialchars($row['nom_fournisseur']) . '">' . htmlspecialchars($row['nom_fournisseur']) . '</option>';
+                                            }
+                                        } catch (Exception $e) {
+                                            echo '<option value="">Erreur chargement</option>';
+                                        }
+                                        ?>
+                                    </select>
+                                </div>
+                                <div class="col-md-3">
+                                    <label class="form-label">Statut:</label>
+                                    <select class="form-select" id="filterStatut" onchange="performSmartSearch(document.getElementById('smartSearchInput').value)">
+                                        <option value="">Tous</option>
+                                        <option value="Commandé">Commandé</option>
+                                        <option value="Reçu">Reçu</option>
+                                        <option value="Validé">Validé</option>
+                                        <option value="Annulé">Annulé</option>
+                                    </select>
+                                </div>
+                                <div class="col-md-3">
+                                    <label class="form-label">Montant min:</label>
+                                    <input type="number" class="form-control" id="filterMontantMin" placeholder="0" onchange="performSmartSearch(document.getElementById('smartSearchInput').value)">
+                                </div>
+                                <div class="col-md-3">
+                                    <label class="form-label">Montant max:</label>
+                                    <input type="number" class="form-control" id="filterMontantMax" placeholder="99999" onchange="performSmartSearch(document.getElementById('smartSearchInput').value)">
+                                </div>
+                            </div>
+                        </div>
+                        
+                        <!-- Search Summary -->
+                        <div id="searchSummary" class="search-summary" style="display: none;">
+                            <div class="d-flex justify-content-between align-items-center">
+                                <span id="searchSummaryText"></span>
+                                <button class="btn btn-outline-secondary btn-sm" onclick="clearSearch()">
+                                    <i class="fas fa-times me-1"></i>Afficher tout
+                                </button>
+                            </div>
+                        </div>
+                    </div>
+
                     <h6 class="mb-3">
                         <i class="fas fa-archive me-2"></i>
                         Archive (terminé)
@@ -795,7 +799,7 @@ try {
                         <p class="text-muted">Aucun bon de commande archivé.</p>
                     <?php else: ?>
                         <div class="table-responsive">
-                            <table class="table table-striped align-middle">
+                            <table class="table table-striped align-middle bc-table">
                                 <thead>
                                     <tr>
                                         <th>Référence</th>
@@ -855,32 +859,22 @@ try {
         let itemCount = 0;
         let allBCData = [];
         
-        // Store all BC data for search
+        // Store all Archive BC data for search
         document.addEventListener('DOMContentLoaded', function() {
-            // Collect all BC data from the page
-            const bcCards = document.querySelectorAll('.bc-card');
+            // Collect only Archive BC data from the table
             const bcTableRows = document.querySelectorAll('.bc-table tbody tr');
             
-            console.log('Found BC cards:', bcCards.length);
-            console.log('Found BC table rows:', bcTableRows.length);
-            
-            bcCards.forEach((card, index) => {
-                const bcData = extractBCDataFromCard(card);
-                if (bcData) {
-                    console.log('BC Card Data', index, bcData);
-                    allBCData.push(bcData);
-                }
-            });
+            console.log('Found Archive BC table rows:', bcTableRows.length);
             
             bcTableRows.forEach((row, index) => {
                 const bcData = extractBCDataFromTableRow(row);
                 if (bcData) {
-                    console.log('BC Table Data', index, bcData);
+                    console.log('Archive BC Table Data', index, bcData);
                     allBCData.push(bcData);
                 }
             });
             
-            console.log('Total BC Data collected:', allBCData.length);
+            console.log('Total Archive BC Data collected:', allBCData.length);
         });
         
         function extractBCDataFromCard(card) {
@@ -938,52 +932,26 @@ try {
         // Smart Search Functions
         function performSmartSearch(searchTerm) {
             console.log('Performing search for:', searchTerm);
-            console.log('Total BC Data available:', allBCData.length);
+            console.log('Total Archive BC Data available:', allBCData.length);
             
             if (!searchTerm || searchTerm.length < 2) {
-                console.log('Search term too short, showing all BC');
-                showAllBC();
+                console.log('Search term too short, showing all Archive BC');
+                showAllArchiveBC();
                 hideSearchSummary();
                 return;
             }
             
-            const searchType = document.getElementById('searchType').value;
             const results = [];
-            
-            console.log('Search type:', searchType);
             
             allBCData.forEach((bc, index) => {
                 let matches = false;
                 
-                console.log(`Checking BC ${index}:`, bc);
+                console.log(`Checking Archive BC ${index}:`, bc);
                 
-                switch (searchType) {
-                    case 'all':
-                        matches = searchInAllFields(bc, searchTerm);
-                        break;
-                    case 'ref_bc':
-                        matches = bc.ref.toLowerCase().includes(searchTerm.toLowerCase());
-                        break;
-                    case 'ref_dp':
-                        matches = bc.details.toLowerCase().includes(searchTerm.toLowerCase());
-                        break;
-                    case 'fournisseur':
-                        matches = bc.details.toLowerCase().includes(searchTerm.toLowerCase());
-                        break;
-                    case 'montant':
-                        matches = bc.montant.toLowerCase().includes(searchTerm.toLowerCase());
-                        break;
-                    case 'statut':
-                        matches = bc.statut.toLowerCase().includes(searchTerm.toLowerCase());
-                        break;
-                    case 'date':
-                        matches = bc.details.toLowerCase().includes(searchTerm.toLowerCase());
-                        break;
-                    default:
-                        matches = searchInAllFields(bc, searchTerm);
-                }
+                // Search in all fields
+                matches = searchInAllFields(bc, searchTerm);
                 
-                console.log(`BC ${index} matches:`, matches);
+                console.log(`Archive BC ${index} matches:`, matches);
                 
                 if (matches) {
                     results.push(bc);
@@ -996,11 +964,19 @@ try {
         
         function searchInAllFields(bc, searchTerm) {
             const term = searchTerm.toLowerCase();
+            
+            // Clean amount text for comparison (remove spaces, currency symbols, etc.)
+            const cleanMontant = bc.montant.replace(/[^\d.,]/g, '').replace(',', '.');
+            
+            // Check if search term is a number and compare with amount
+            const isNumericSearch = /^\d+(\.\d+)?$/.test(term);
+            const amountMatch = isNumericSearch && cleanMontant.includes(term);
+            
             return (
                 bc.ref.toLowerCase().includes(term) ||
                 bc.details.toLowerCase().includes(term) ||
                 bc.statut.toLowerCase().includes(term) ||
-                bc.montant.toLowerCase().includes(term) ||
+                amountMatch ||
                 bc.articles.toLowerCase().includes(term)
             );
         }
@@ -1064,24 +1040,43 @@ try {
             return string.replace(/[.*+?^${}()|[\]\\]/g, '\\$&');
         }
         
-        function showSearchSummary(count, searchTerm) {
-            const summary = document.getElementById('searchSummary');
-            const text = document.getElementById('searchResultsText');
-            
-            summary.style.display = 'block';
-            text.textContent = `Trouvé ${count} résultat(s) pour "${searchTerm}"`;
-        }
-        
-        function hideSearchSummary() {
-            document.getElementById('searchSummary').style.display = 'none';
-        }
-        
-        function showAllBC() {
+        function showAllArchiveBC() {
+            console.log('Showing all Archive BC');
             allBCData.forEach(bc => {
                 bc.element.style.display = '';
                 // Remove highlights
                 removeHighlights(bc.element);
             });
+        }
+        
+        function hideSearchSummary() {
+            const summary = document.getElementById('searchSummary');
+            if (summary) {
+                summary.style.display = 'none';
+            }
+        }
+        
+        function showSearchSummary(count, searchTerm) {
+            const summary = document.getElementById('searchSummary');
+            const summaryText = document.getElementById('searchSummaryText');
+            
+            if (summary && summaryText) {
+                summaryText.textContent = `Trouvé ${count} résultat(s) pour "${searchTerm}"`;
+                summary.style.display = 'block';
+            }
+        }
+        
+        function clearSearch() {
+            document.getElementById('smartSearchInput').value = '';
+            showAllArchiveBC();
+            hideSearchSummary();
+        }
+        
+        function toggleAdvancedSearch() {
+            const options = document.getElementById('advancedSearchOptions');
+            if (options) {
+                options.style.display = options.style.display === 'none' ? 'block' : 'none';
+            }
         }
         
         function removeHighlights(element) {
@@ -1091,12 +1086,6 @@ try {
                 parent.replaceChild(document.createTextNode(mark.textContent), mark);
                 parent.normalize();
             });
-        }
-        
-        function clearSearch() {
-            document.getElementById('smartSearchInput').value = '';
-            showAllBC();
-            hideSearchSummary();
         }
         
         // Manual search function for testing
@@ -1140,7 +1129,7 @@ try {
         // Add test button to the page
         document.addEventListener('DOMContentLoaded', function() {
             // Add test button after search bar
-            const searchCard = document.querySelector('.workshop-card');
+            const searchCard = document.querySelector('.iso-card');
             if (searchCard) {
                 const testButton = document.createElement('button');
                 testButton.className = 'btn btn-outline-info btn-sm mt-2';

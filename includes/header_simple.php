@@ -28,14 +28,6 @@ try {
     </div>
     
     <div class="header-actions">
-        <!-- Theme Switcher -->
-        <div class="theme-switcher">
-            <a href="theme_manager.php" class="theme-switcher-btn">
-                <i class="fas fa-palette"></i>
-                <span>تيم</span>
-            </a>
-        </div>
-        
         <!-- Notifications -->
         <div class="notification-item">
             <a href="notifications.php" class="notification-link <?php echo $unread_notifications > 0 ? 'has-notifications' : ''; ?>">

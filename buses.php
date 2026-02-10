@@ -99,35 +99,51 @@ if (isset($_GET['edit'])) {
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title><?php echo $page_title; ?> - <?php echo APP_NAME; ?></title>
+    <!-- ISO 9001 Professional Theme -->
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&display=swap" rel="stylesheet">
     <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
-    <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css" rel="stylesheet">
-    <link href="assets/css/style.css" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <link rel="stylesheet" href="assets/css/iso-theme.css">
+    <link rel="stylesheet" href="assets/css/iso-components.css">
+    <link rel="stylesheet" href="assets/css/iso-bootstrap.css">
     <style>
-        body {
-            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
-            background-color: #f8f9fa;
-        }
         .main-content {
-            margin-left: 250px;
-            padding: 20px;
-            transition: margin-left 0.3s;
+            margin-left: 260px;
+            padding: var(--space-8);
+            min-height: 100vh;
         }
-        .sidebar-collapsed .main-content {
-            margin-left: 70px;
+        
+        .iso-card {
+            background-color: var(--bg-secondary);
+            border: 1px solid var(--border-primary);
+            border-radius: var(--radius-lg);
+            padding: var(--space-6);
+            margin-bottom: var(--space-6);
+            transition: transform 0.2s;
         }
-        .card {
-            border-radius: 10px;
-            box-shadow: 0 0 10px rgba(0,0,0,0.1);
-            border: none;
+        
+        .iso-card:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
         }
+        
         .table th {
-            background-color: #007bff;
+            background-color: var(--primary);
             color: white;
             border: none;
         }
+        
         .btn-group .btn {
             margin: 0 2px;
         }
+        
+        @media (max-width: 768px) {
+            .main-content {
+                margin-left: 0;
+                padding: var(--space-4);
+            }
+        }
+    </style>
         .status-active {
             color: #28a745;
         }
@@ -165,7 +181,7 @@ if (isset($_GET['edit'])) {
             <!-- Statistics Cards -->
             <div class="row g-3 mb-4">
                 <div class="col-md-4">
-                    <div class="card stats-card">
+                    <div class="iso-card">
                         <div class="card-body">
                             <div class="d-flex justify-content-between align-items-center">
                                 <div>
@@ -178,7 +194,7 @@ if (isset($_GET['edit'])) {
                     </div>
                 </div>
                 <div class="col-md-4">
-                    <div class="card stats-card">
+                    <div class="iso-card">
                         <div class="card-body">
                             <div class="d-flex justify-content-between align-items-center">
                                 <div>
@@ -191,7 +207,7 @@ if (isset($_GET['edit'])) {
                     </div>
                 </div>
                 <div class="col-md-4">
-                    <div class="card stats-card">
+                    <div class="iso-card">
                         <div class="card-body">
                             <div class="d-flex justify-content-between align-items-center">
                                 <div>
@@ -220,7 +236,7 @@ if (isset($_GET['edit'])) {
             </div>
             <?php endif; ?>
             
-            <div class="card">
+            <div class="iso-card">
                 <div class="card-header d-flex justify-content-between align-items-center">
                     <h5 class="mb-0">Vehicle List</h5>
                     <button class="btn btn-primary" data-bs-toggle="modal" data-bs-target="#busModal">

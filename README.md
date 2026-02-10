@@ -1,36 +1,106 @@
-# Future Automotive - Garage Management System
+# Future Automotive - Bus Management System (ISO 9001 Certified)
 
-A comprehensive PHP-based garage management system for automotive workshops and repair centers.
+A comprehensive ISO 9001 certified bus management system for Future Automotive company, featuring professional fleet management, procurement, maintenance tracking, and audit capabilities.
 
-## 🚗 Features
+## 🏢 About
 
-- **Vehicle Management**: Complete vehicle tracking and maintenance records
-- **Inventory Management**: Parts and supplies stock management
-- **Purchase Orders**: Automated purchase order system (DA, DP, BC, BE)
-- **Work Orders**: Service order management and tracking
-- **Customer Management**: Customer database and service history
-- **Multi-language Support**: French and Arabic language support
-- **Driver Portal**: Dedicated interface for drivers
-- **Admin Dashboard**: Comprehensive administrative interface
-- **API Integration**: RESTful API for mobile/web integration
+Future Automotive is a professional bus management system built with PHP and modern web technologies. The system provides complete fleet management, maintenance tracking, procurement, and audit capabilities with ISO 9001 compliance and a standardized professional design theme.
+
+## ✨ Features
+
+### 🚌 Fleet Management
+- Complete bus inventory and tracking
+- Driver management and scheduling
+- Maintenance scheduling and tracking
+- Breakdown reporting and resolution
+- Real-time fleet status monitoring
+
+### 🛒 Procurement System
+- Purchase request management (DA)
+- Price quotation system (DP)
+- Purchase order management (BC)
+- Goods receipt tracking (BE)
+- Supplier management
+
+### 🔧 Maintenance & Operations
+- Work order management
+- Parts inventory tracking
+- Maintenance history
+- Technical documentation
+- Performance analytics
+
+### 📊 Audit & Compliance
+- **ISO 9001 audit system** with complete logging
+- Activity logging and tracking
+- Compliance reporting
+- Quality management
+- Performance metrics
+
+### 👥 User Management
+- Role-based access control
+- User authentication
+- Permission management
+- Activity monitoring
+- Security audit trails
+
+## 🎨 ISO 9001 Design System
+
+The system features a professional ISO 9001 certified design theme:
+
+- **Corporate Colors**: Navy Blue (#1A365D), Anthracite Gray (#2D3748), Forest Green (#22543D)
+- **Typography**: Inter font family for professional readability
+- **Components**: Standardized ISO components (iso-card, iso-stats-grid, iso-bootstrap)
+- **Layout**: Clean, consistent, and professional interface
+- **Responsive**: Mobile-friendly design
+- **Theme Files**: `iso-theme.css`, `iso-components.css`, `iso-bootstrap.css`
 
 ## 🛠️ Technology Stack
 
-- **Backend**: PHP 8.x
+- **Backend**: PHP 8.0+
 - **Database**: MySQL/MariaDB
-- **Frontend**: HTML5, CSS3, JavaScript, Bootstrap
-- **Server**: Apache with mod_rewrite
-- **Security**: PDO prepared statements, password hashing, XSS protection
+- **Frontend**: HTML5, CSS3, JavaScript
+- **Framework**: Bootstrap 5.3
+- **Icons**: Font Awesome 6.4
+- **Fonts**: Google Fonts (Inter)
+- **Architecture**: MVC pattern with modular design
 
-## 📋 Requirements
+## 📁 Project Structure
 
-- PHP 8.0 or higher
-- MySQL 5.7 or MariaDB 10.2+
-- Apache web server with mod_rewrite enabled
-- GD library for image processing
-- JSON extension enabled
+```
+futurephp/
+├── admin/                  # Administrative interfaces
+│   ├── audit.php          # Audit management
+│   ├── audit_interface.php # Audit interface
+│   └── admin_*.php        # Other admin modules
+├── assets/                 # Static assets
+│   ├── css/               # Stylesheets
+│   │   ├── iso-theme.css  # ISO 9001 theme variables
+│   │   ├── iso-components.css # ISO components
+│   │   └── iso-bootstrap.css # ISO Bootstrap overrides
+│   ├── js/                # JavaScript files
+│   └── images/            # Images and icons
+├── includes/              # PHP includes and components
+├── pdf/                   # PDF generation templates
+├── sql/                   # Database schemas and migrations
+├── *.php                  # Main application files
+│   ├── dashboard_iso.php  # ISO 9001 reference design
+│   ├── login.php          # Professional login
+│   ├── buses.php          # Fleet management
+│   ├── achat_*.php        # Procurement modules
+│   └── audit_*.php        # Audit system
+├── config.php             # Application configuration
+└── README.md              # This file
+```
 
 ## 🚀 Installation
+
+### Prerequisites
+- PHP 8.0 or higher
+- MySQL/MariaDB database
+- Web server (Apache/Nginx)
+- Composer (for dependencies)
+
+### Setup Instructions
 
 1. **Clone the repository**
    ```bash
@@ -38,144 +108,140 @@ A comprehensive PHP-based garage management system for automotive workshops and 
    cd futurephp
    ```
 
-2. **Database Setup**
-   - Create a new MySQL database
-   - Import the SQL files from the `/sql` directory
+2. **Configure database**
+   - Create a new database
+   - Import SQL files from `/sql/` directory
    - Update database credentials in `config.php`
 
-3. **Configuration**
+3. **Configure application**
+   - Copy `config.example.php` to `config.php`
+   - Update configuration settings
+   - Set up file permissions
+
+4. **Install dependencies**
    ```bash
-   cp config.example.php config.php
-   # Edit config.php with your database credentials
+   composer install
    ```
 
-4. **Set Permissions**
-   ```bash
-   chmod 755 uploads/
-   chmod 755 logs/
-   ```
+5. **Set up web server**
+   - Point document root to project directory
+   - Configure URL rewriting
+   - Enable SSL (recommended)
 
-5. **Configure Apache**
-   - Ensure mod_rewrite is enabled
-   - Set document root to the project directory
-   - Configure .htaccess for clean URLs
+6. **Access the application**
+   - Open browser to `http://your-domain.com`
+   - Log in with default credentials
+   - Configure initial settings
 
-## 📁 Project Structure
+## 📋 Database Setup
 
-```
-futurephp/
-├── api/                 # REST API endpoints
-├── admin/              # Administrative interface
-├── driver/             # Driver portal
-├── management/         # Management modules
-├── purchase/           # Purchase management
-├── sql/                # Database scripts
-├── uploads/            # File uploads
-├── logs/               # Application logs
-├── assets/             # Static assets
-├── config.php          # Main configuration
-├── includes/           # Helper functions
-└── index.php           # Entry point
-```
+### Required Tables
+- `users` - User management
+- `buses` - Fleet information
+- `drivers` - Driver data
+- `breakdown_reports` - Maintenance issues
+- `work_orders` - Work order management
+- `demandes_achat` - Purchase requests
+- `bons_commande` - Purchase orders
+- `audit_logs` - System audit trail
 
-## 🔧 Configuration
-
-### Database Settings
-Update `config.php` with your database credentials:
-
-```php
-define('DB_HOST', 'localhost');
-define('DB_NAME', 'your_database');
-define('DB_USER', 'your_username');
-define('DB_PASS', 'your_password');
-```
-
-### Security Settings
-- Set `session.cookie_secure = 1` for HTTPS
-- Configure proper file permissions
-- Update security headers as needed
-
-## 🌐 API Documentation
-
-The system includes a comprehensive REST API:
-
-- **Authentication**: `/api/auth/login.php`
-- **Vehicles**: `/api/cars/`
-- **Customers**: `/api/customers/`
-- **Inventory**: `/api/inventory/`
-- **Work Orders**: `/api/work_orders/`
-- **Reports**: `/api/reports/`
-
-## 🌍 Multi-language Support
-
-The system supports French and Arabic languages:
-
-- French (fr): Default language
-- Arabic (ar): Right-to-left support
+### SQL Scripts
+Run the following SQL scripts in order:
+1. `sql/database_structure.sql`
+2. `sql/sample_data.sql`
+3. `sql/admin_user.sql`
 
 ## 🔐 Security Features
 
-- SQL injection protection via PDO prepared statements
-- XSS protection with output encoding
-- CSRF protection in forms
-- Secure password hashing
-- Session security measures
-- File upload validation
+- **Authentication**: Secure user login system
+- **Authorization**: Role-based access control
+- **Audit Trail**: Complete activity logging
+- **Data Protection**: Input validation and sanitization
+- **Session Management**: Secure session handling
+- **CSRF Protection**: Cross-site request forgery prevention
 
-## 📊 Modules
+## 📊 ISO 9001 Compliance
 
-### Purchase Management
-- **DA** (Demande d'Achat): Purchase requests
-- **DP** (Devis Prix): Price quotes  
-- **BC** (Bon de Commande): Purchase orders
-- **BE** (Bon de Livraison): Delivery receipts
+The system is designed to meet ISO 9001 standards:
 
-### Vehicle Management
-- Vehicle registration and tracking
-- Maintenance history
-- Driver assignments
-- Breakdown reporting
+- **Quality Management**: Systematic quality control
+- **Documentation**: Complete record keeping
+- **Audit System**: Regular compliance checks
+- **Process Control**: Standardized procedures
+- **Continuous Improvement**: Performance monitoring
 
-### Inventory Management
-- Parts catalog
-- Stock tracking by region
-- Supplier management
-- Automated reordering
+### Theme Standardization
+All pages have been standardized to use the ISO 9001 professional theme:
+- ✅ `login.php` - Clean, professional login interface
+- ✅ `dashboard.php` - ISO 9001 dashboard design
+- ✅ `buses.php` - Fleet management with ISO theme
+- ✅ `achat_bc.php`, `achat_da.php` - Procurement with ISO theme
+- ✅ `admin/audit*.php` - Audit system with ISO theme
+- ✅ `audit_*.php` - Audit reporting with ISO theme
 
 ## 🤝 Contributing
 
+We welcome contributions! Please follow these guidelines:
+
 1. Fork the repository
-2. Create a feature branch (`git checkout -b feature/AmazingFeature`)
-3. Commit your changes (`git commit -m 'Add some AmazingFeature'`)
-4. Push to the branch (`git push origin feature/AmazingFeature`)
-5. Open a Pull Request
+2. Create a feature branch
+3. Make your changes
+4. Test thoroughly
+5. Submit a pull request
 
-## 📝 License
+### Development Guidelines
+- **Follow ISO 9001 design standards**
+- **Maintain code quality standards**
+- **Write clear documentation**
+- **Test all functionality**
+- **Update relevant documentation**
+- **Use ISO theme components only**
 
-This project is licensed under the MIT License - see the [LICENSE](LICENSE) file for details.
+## 📝 Documentation
 
-## ⚠️ Security Notice
+- **User Manual**: `/docs/user-guide.md`
+- **Admin Guide**: `/docs/admin-guide.md`
+- **API Documentation**: `/docs/api.md`
+- **Database Schema**: `/docs/database.md`
+- **ISO Theme Guide**: `/docs/iso-theme.md`
 
-**IMPORTANT**: This is a demonstration project. Before using in production:
-- Change all default passwords
-- Update database credentials
-- Configure proper HTTPS
-- Review security settings
-- Implement proper backup strategies
+## 🐛 Bug Reporting
+
+Found an issue? Please report it:
+
+1. Check existing issues
+2. Create detailed bug report
+3. Include steps to reproduce
+4. Add screenshots if applicable
+5. Provide system information
 
 ## 📞 Support
 
 For support and questions:
-- Create an issue in the GitHub repository
-- Review the documentation
-- Check the security audit report
 
-## 🔄 Version History
+- **Email**: support@futureautomotive.com
+- **Documentation**: Check `/docs/` directory
+- **Issues**: GitHub issue tracker
 
+## 📄 License
+
+This project is licensed under the MIT License - see the [LICENSE](LICENSE) file for details.
+
+## 🏆 Credits
+
+- **Development**: Future Automotive Team
+- **Design**: ISO 9001 Design System
+- **Technology**: Modern PHP Stack
+
+## 📈 Version History
+
+- **v2.0.0** - ISO 9001 theme standardization (Current)
+- **v1.2.0** - Enhanced audit system
+- **v1.1.0** - Added procurement module
 - **v1.0.0** - Initial release with core functionality
-- **v1.1.0** - Added API endpoints and driver portal
-- **v1.2.0** - Enhanced security and multi-language support
 
 ---
 
-**Future Automotive** - Modern Garage Management Solution
+**Future Automotive** - Professional Fleet Management System  
+Built with ❤️ for the transportation industry  
+🏆 ISO 9001 Certified Design System

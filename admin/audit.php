@@ -265,10 +265,12 @@ function getActionColor($action) {
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title><?php echo htmlspecialchars($page_title); ?> - <?php echo APP_NAME; ?></title>
     
-    <!-- Simple Clean Theme -->
+    <!-- ISO 9001 Professional Theme -->
     <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
-    <link rel="stylesheet" href="../assets/css/simple-theme.css">
+    <link rel="stylesheet" href="../assets/css/iso-theme.css">
+    <link rel="stylesheet" href="../assets/css/iso-components.css">
+    <link rel="stylesheet" href="../assets/css/iso-bootstrap.css">
     
     <style>
         .audit-header {
@@ -312,16 +314,16 @@ function getActionColor($action) {
             font-size: var(--font-size-sm);
         }
         
-        .workshop-card {
-            background-color: var(--bg-white);
-            border: 1px solid var(--border);
+        .iso-card {
+            background-color: var(--bg-secondary);
+            border: 1px solid var(--border-primary);
             border-radius: var(--radius-lg);
             padding: var(--space-6);
             margin-bottom: var(--space-6);
             transition: transform 0.2s;
         }
         
-        .workshop-card:hover {
+        .iso-card:hover {
             transform: translateY(-2px);
             box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
         }
@@ -353,8 +355,9 @@ function getActionColor($action) {
         
         @media (max-width: 768px) {
             .main-content {
-                margin-left: 0;
-                padding: var(--space-4);
+                margin-left: 260px;
+                padding: var(--space-8);
+                min-height: 100vh;
             }
         }
         
@@ -545,7 +548,7 @@ function getActionColor($action) {
 
             <!-- Recent Critical Actions -->
             <?php if (!empty($stats['recent_critical'])): ?>
-                <div class="workshop-card mb-4">
+                <div class="iso-card mb-4">
                     <h5 class="mb-3">
                         <i class="fas fa-exclamation-triangle me-2"></i>
                         Actions Critiques Récentes

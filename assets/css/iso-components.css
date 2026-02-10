@@ -25,18 +25,15 @@
     display: flex;
     align-items: center;
     gap: var(--space-3);
-    color: #0d47a1; /* Dark blue text for high contrast */
+    color: #000000; /* Black text for brand like simple theme */
     font-size: var(--text-lg);
-    font-weight: var(--font-bold);
+    font-weight: 600;
     text-decoration: none;
 }
 
 .sidebar-brand:hover {
-    color: #0d47a1; /* Dark blue text */
+    color: #000000; /* Black text on hover like simple theme */
     text-decoration: none;
-    background-color: #90caf9; /* Lighter blue on hover */
-    border-radius: var(--radius);
-    transition: background-color var(--transition-fast);
 }
 
 .sidebar-nav {
@@ -46,25 +43,25 @@
 .sidebar-nav-item {
     display: block;
     padding: var(--space-3) var(--space-6);
-    color: #1565c0; /* Medium blue text for good contrast */
+    color: #000000; /* Black text for clarity like simple theme */
     text-decoration: none;
-    transition: all var(--transition-fast);
+    transition: background-color 0.2s;
     border-left: 3px solid transparent;
     font-weight: var(--font-medium); /* Make text bolder for clarity */
 }
 
 .sidebar-nav-item:hover {
-    color: #0d47a1; /* Darker blue on hover */
-    background-color: #bbdefb; /* Light blue background on hover */
-    border-left-color: #1976d2; /* Blue accent on left */
+    color: #000000; /* Black text on hover like simple theme */
+    background-color: #e2e8f0; /* Light gray background on hover like simple theme */
+    border-left-color: #000000; /* Black accent on left like simple theme */
     text-decoration: none;
 }
 
 .sidebar-nav-item.active {
-    color: #0d47a1; /* Dark blue text for active */
-    background-color: #90caf9; /* Lighter blue background for active */
-    border-left-color: #1565c0; /* Blue accent for active */
-    font-weight: var(--font-semibold); /* Even bolder for active */
+    color: #000000; /* Black text for active like simple theme */
+    background-color: #dbeafe; /* Light blue background for active exactly like simple theme */
+    border-left-color: #000000; /* Black accent for active like simple theme */
+    font-weight: 600; /* Bolder for active like simple theme */
 }
 
 .sidebar-nav-submenu {
@@ -74,12 +71,12 @@
 .sidebar-nav-submenu .sidebar-nav-item {
     font-size: var(--text-sm);
     padding: var(--space-2) var(--space-6);
-    color: #1976d2; /* Medium blue for submenu items */
+    color: #000000; /* Black text for submenu items like simple theme */
 }
 
 .sidebar-nav-submenu .sidebar-nav-item:hover {
-    color: #0d47a1; /* Darker blue on hover */
-    background-color: #e3f2fd; /* Light blue hover for submenu */
+    color: #000000; /* Black text on hover like simple theme */
+    background-color: #e2e8f0; /* Light gray hover for submenu like simple theme */
 }
 
 /* Professional Header */
