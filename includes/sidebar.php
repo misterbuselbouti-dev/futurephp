@@ -149,6 +149,13 @@
                         </a>
                     </li>
                     <li class="nav-item">
+                        <a class="nav-link <?php echo basename($_SERVER['PHP_SELF']) === 'archive_dashboard.php' ? 'active' : ''; ?>" 
+                               href="archive_dashboard.php">
+                            <i class="fas fa-archive"></i>
+                            <span>Archive System</span>
+                        </a>
+                    </li>
+                    <li class="nav-item">
                         <a class="nav-link <?php echo basename($_SERVER['PHP_SELF']) === 'achat_dp.php' ? 'active' : ''; ?>" 
                                href="achat_dp.php">
                             <i class="fas fa-file-invoice"></i>
