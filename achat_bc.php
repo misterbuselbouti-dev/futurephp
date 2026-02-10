@@ -201,6 +201,20 @@ try {
             min-height: 100vh;
         }
         
+        .workshop-card {
+            background-color: var(--bg-white);
+            border: 1px solid var(--border);
+            border-radius: var(--radius-lg);
+            padding: var(--space-6);
+            margin-bottom: var(--space-6);
+            transition: transform 0.2s;
+        }
+        
+        .workshop-card:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
+        }
+        
         .page-header {
             background: white;
             border-radius: 15px;
@@ -413,6 +427,110 @@ try {
                 </div>
             </div>
             
+            <!-- Smart Search Bar -->
+            <div class="workshop-card mb-4">
+                <div class="d-flex justify-content-between align-items-center mb-3">
+                    <h5 class="mb-0">
+                        <i class="fas fa-search me-2"></i>
+                        Recherche Intelligente
+                    </h5>
+                    <button class="btn btn-outline-secondary btn-sm" onclick="toggleAdvancedSearch()">
+                        <i class="fas fa-cog me-1"></i>Options
+                    </button>
+                </div>
+                
+                <!-- Main Search -->
+                <div class="row mb-3">
+                    <div class="col-md-8">
+                        <div class="input-group">
+                            <span class="input-group-text">
+                                <i class="fas fa-search"></i>
+                            </span>
+                            <input type="text" 
+                                   class="form-control" 
+                                   id="smartSearchInput" 
+                                   placeholder="Rechercher par référence, fournisseur, montant, statut..."
+                                   onkeyup="performSmartSearch(this.value)">
+                            <button class="btn btn-outline-primary" type="button" onclick="clearSearch()">
+                                <i class="fas fa-times"></i>
+                            </button>
+                        </div>
+                    </div>
+                    <div class="col-md-4">
+                        <select class="form-select" id="searchType" onchange="updateSearchPlaceholder()">
+                            <option value="all">Tous les champs</option>
+                            <option value="ref_bc">Référence BC</option>
+                            <option value="ref_dp">Référence DP</option>
+                            <option value="fournisseur">Fournisseur</option>
+                            <option value="montant">Montant</option>
+                            <option value="statut">Statut</option>
+                            <option value="date">Date</option>
+                        </select>
+                    </div>
+                </div>
+                
+                <!-- Advanced Search Options -->
+                <div id="advancedSearchOptions" style="display: none;">
+                    <div class="row mb-3">
+                        <div class="col-md-3">
+                            <label class="form-label">Date début</label>
+                            <input type="date" class="form-control" id="searchDateFrom" onchange="performAdvancedSearch()">
+                        </div>
+                        <div class="col-md-3">
+                            <label class="form-label">Date fin</label>
+                            <input type="date" class="form-control" id="searchDateTo" onchange="performAdvancedSearch()">
+                        </div>
+                        <div class="col-md-3">
+                            <label class="form-label">Montant min</label>
+                            <input type="number" class="form-control" id="searchAmountMin" placeholder="0" onchange="performAdvancedSearch()">
+                        </div>
+                        <div class="col-md-3">
+                            <label class="form-label">Montant max</label>
+                            <input type="number" class="form-control" id="searchAmountMax" placeholder="∞" onchange="performAdvancedSearch()">
+                        </div>
+                    </div>
+                    <div class="row mb-3">
+                        <div class="col-md-4">
+                            <label class="form-label">Statut</label>
+                            <select class="form-select" id="searchStatut" onchange="performAdvancedSearch()">
+                                <option value="">Tous les statuts</option>
+                                <option value="Brouillon">Brouillon</option>
+                                <option value="Validé">Validé</option>
+                                <option value="Envoyé">Envoyé</option>
+                                <option value="Accepté">Accepté</option>
+                                <option value="Rejeté">Rejeté</option>
+                            </select>
+                        </div>
+                        <div class="col-md-4">
+                            <label class="form-label">Fournisseur</label>
+                            <input type="text" class="form-control" id="searchFournisseur" placeholder="Nom du fournisseur" onchange="performAdvancedSearch()">
+                        </div>
+                        <div class="col-md-4">
+                            <label class="form-label">Articles</label>
+                            <input type="number" class="form-control" id="searchArticles" placeholder="Nombre d'articles" onchange="performAdvancedSearch()">
+                        </div>
+                    </div>
+                    <div class="row">
+                        <div class="col-12">
+                            <button class="btn btn-primary me-2" onclick="performAdvancedSearch()">
+                                <i class="fas fa-search me-1"></i>Rechercher
+                            </button>
+                            <button class="btn btn-outline-secondary" onclick="resetAdvancedSearch()">
+                                <i class="fas fa-redo me-1"></i>Réinitialiser
+                            </button>
+                        </div>
+                    </div>
+                </div>
+                
+                <!-- Search Results Summary -->
+                <div id="searchSummary" style="display: none;" class="mt-3">
+                    <div class="alert alert-info">
+                        <i class="fas fa-info-circle me-2"></i>
+                        <span id="searchResultsText"></span>
+                    </div>
+                </div>
+            </div>
+
             <?php include __DIR__ . '/includes/achat_tabs.php'; ?>
             
             <?php if (isset($success_message)): ?>
@@ -735,6 +853,318 @@ try {
     <script>
         let selectedDP = null;
         let itemCount = 0;
+        let allBCData = [];
+        
+        // Store all BC data for search
+        document.addEventListener('DOMContentLoaded', function() {
+            // Collect all BC data from the page
+            const bcCards = document.querySelectorAll('.bc-card');
+            const bcTableRows = document.querySelectorAll('.bc-table tbody tr');
+            
+            bcCards.forEach(card => {
+                const bcData = extractBCDataFromCard(card);
+                if (bcData) allBCData.push(bcData);
+            });
+            
+            bcTableRows.forEach(row => {
+                const bcData = extractBCDataFromTableRow(row);
+                if (bcData) allBCData.push(bcData);
+            });
+        });
+        
+        function extractBCDataFromCard(card) {
+            try {
+                const ref = card.querySelector('h5')?.textContent?.trim();
+                const details = card.querySelector('.text-muted')?.textContent?.trim();
+                const statut = card.querySelector('.status-badge')?.textContent?.trim();
+                const montant = card.querySelector('.bg-success')?.textContent?.trim();
+                const articles = card.querySelector('.bg-info')?.textContent?.trim();
+                
+                return {
+                    ref: ref || '',
+                    details: details || '',
+                    statut: statut || '',
+                    montant: montant || '',
+                    articles: articles || '',
+                    element: card,
+                    type: 'card'
+                };
+            } catch (e) {
+                return null;
+            }
+        }
+        
+        function extractBCDataFromTableRow(row) {
+            try {
+                const cells = row.querySelectorAll('td');
+                if (cells.length < 5) return null;
+                
+                return {
+                    ref: cells[0]?.textContent?.trim() || '',
+                    details: cells[1]?.textContent?.trim() || '',
+                    statut: cells[2]?.textContent?.trim() || '',
+                    articles: cells[3]?.textContent?.trim() || '',
+                    montant: cells[4]?.textContent?.trim() || '',
+                    element: row,
+                    type: 'table'
+                };
+            } catch (e) {
+                return null;
+            }
+        }
+        
+        // Smart Search Functions
+        function performSmartSearch(searchTerm) {
+            if (!searchTerm || searchTerm.length < 2) {
+                showAllBC();
+                hideSearchSummary();
+                return;
+            }
+            
+            const searchType = document.getElementById('searchType').value;
+            const results = [];
+            
+            allBCData.forEach(bc => {
+                let matches = false;
+                
+                switch (searchType) {
+                    case 'all':
+                        matches = searchInAllFields(bc, searchTerm);
+                        break;
+                    case 'ref_bc':
+                        matches = bc.ref.toLowerCase().includes(searchTerm.toLowerCase());
+                        break;
+                    case 'ref_dp':
+                        matches = bc.details.toLowerCase().includes(searchTerm.toLowerCase());
+                        break;
+                    case 'fournisseur':
+                        matches = bc.details.toLowerCase().includes(searchTerm.toLowerCase());
+                        break;
+                    case 'montant':
+                        matches = bc.montant.toLowerCase().includes(searchTerm.toLowerCase());
+                        break;
+                    case 'statut':
+                        matches = bc.statut.toLowerCase().includes(searchTerm.toLowerCase());
+                        break;
+                    case 'date':
+                        matches = bc.details.toLowerCase().includes(searchTerm.toLowerCase());
+                        break;
+                    default:
+                        matches = searchInAllFields(bc, searchTerm);
+                }
+                
+                if (matches) {
+                    results.push(bc);
+                }
+            });
+            
+            displaySearchResults(results, searchTerm);
+        }
+        
+        function searchInAllFields(bc, searchTerm) {
+            const term = searchTerm.toLowerCase();
+            return (
+                bc.ref.toLowerCase().includes(term) ||
+                bc.details.toLowerCase().includes(term) ||
+                bc.statut.toLowerCase().includes(term) ||
+                bc.montant.toLowerCase().includes(term) ||
+                bc.articles.toLowerCase().includes(term)
+            );
+        }
+        
+        function displaySearchResults(results, searchTerm) {
+            // Hide all BC elements
+            allBCData.forEach(bc => {
+                bc.element.style.display = 'none';
+            });
+            
+            // Show matching results
+            results.forEach(bc => {
+                bc.element.style.display = '';
+                // Highlight matching text
+                highlightSearchTerm(bc.element, searchTerm);
+            });
+            
+            // Show search summary
+            showSearchSummary(results.length, searchTerm);
+        }
+        
+        function highlightSearchTerm(element, searchTerm) {
+            if (!searchTerm || searchTerm.length < 2) return;
+            
+            const textNodes = getTextNodes(element);
+            const regex = new RegExp(`(${escapeRegExp(searchTerm)})`, 'gi');
+            
+            textNodes.forEach(node => {
+                const text = node.textContent;
+                const matches = text.match(regex);
+                if (matches) {
+                    const span = document.createElement('span');
+                    span.innerHTML = text.replace(regex, '<mark>$1</mark>');
+                    node.parentNode.replaceChild(span, node);
+                }
+            });
+        }
+        
+        function getTextNodes(element) {
+            const textNodes = [];
+            const walker = document.createTreeWalker(
+                element,
+                NodeFilter.SHOW_TEXT,
+                null,
+                false
+            );
+            
+            let node;
+            while (node = walker.nextNode()) {
+                if (node.textContent.trim()) {
+                    textNodes.push(node);
+                }
+            }
+            
+            return textNodes;
+        }
+        
+        function escapeRegExp(string) {
+            return string.replace(/[.*+?^${}()|[\]\\]/g, '\\$&');
+        }
+        
+        function showSearchSummary(count, searchTerm) {
+            const summary = document.getElementById('searchSummary');
+            const text = document.getElementById('searchResultsText');
+            
+            summary.style.display = 'block';
+            text.textContent = `Trouvé ${count} résultat(s) pour "${searchTerm}"`;
+        }
+        
+        function hideSearchSummary() {
+            document.getElementById('searchSummary').style.display = 'none';
+        }
+        
+        function showAllBC() {
+            allBCData.forEach(bc => {
+                bc.element.style.display = '';
+                // Remove highlights
+                removeHighlights(bc.element);
+            });
+        }
+        
+        function removeHighlights(element) {
+            const marks = element.querySelectorAll('mark');
+            marks.forEach(mark => {
+                const parent = mark.parentNode;
+                parent.replaceChild(document.createTextNode(mark.textContent), mark);
+                parent.normalize();
+            });
+        }
+        
+        function clearSearch() {
+            document.getElementById('smartSearchInput').value = '';
+            showAllBC();
+            hideSearchSummary();
+        }
+        
+        function updateSearchPlaceholder() {
+            const searchType = document.getElementById('searchType').value;
+            const input = document.getElementById('smartSearchInput');
+            
+            const placeholders = {
+                'all': 'Rechercher par référence, fournisseur, montant, statut...',
+                'ref_bc': 'Rechercher par référence BC...',
+                'ref_dp': 'Rechercher par référence DP...',
+                'fournisseur': 'Rechercher par fournisseur...',
+                'montant': 'Rechercher par montant...',
+                'statut': 'Rechercher par statut...',
+                'date': 'Rechercher par date...'
+            };
+            
+            input.placeholder = placeholders[searchType] || placeholders['all'];
+        }
+        
+        // Advanced Search Functions
+        function toggleAdvancedSearch() {
+            const options = document.getElementById('advancedSearchOptions');
+            options.style.display = options.style.display === 'none' ? 'block' : 'none';
+        }
+        
+        function performAdvancedSearch() {
+            const filters = {
+                dateFrom: document.getElementById('searchDateFrom').value,
+                dateTo: document.getElementById('searchDateTo').value,
+                amountMin: document.getElementById('searchAmountMin').value,
+                amountMax: document.getElementById('searchAmountMax').value,
+                statut: document.getElementById('searchStatut').value,
+                fournisseur: document.getElementById('searchFournisseur').value,
+                articles: document.getElementById('searchArticles').value
+            };
+            
+            const results = [];
+            
+            allBCData.forEach(bc => {
+                if (matchesAdvancedFilters(bc, filters)) {
+                    results.push(bc);
+                }
+            });
+            
+            displaySearchResults(results, 'recherche avancée');
+        }
+        
+        function matchesAdvancedFilters(bc, filters) {
+            // Check date filter
+            if (filters.dateFrom || filters.dateTo) {
+                // Extract date from details (assuming format: dd/mm/yyyy)
+                const dateMatch = bc.details.match(/(\d{2}\/\d{2}\/\d{4})/);
+                if (dateMatch) {
+                    const bcDate = new Date(dateMatch[1].split('/').reverse().join('-'));
+                    const fromDate = filters.dateFrom ? new Date(filters.dateFrom) : null;
+                    const toDate = filters.dateTo ? new Date(filters.dateTo) : null;
+                    
+                    if (fromDate && bcDate < fromDate) return false;
+                    if (toDate && bcDate > toDate) return false;
+                }
+            }
+            
+            // Check amount filter
+            if (filters.amountMin || filters.amountMax) {
+                const amount = parseFloat(bc.montant.replace(/[^\d.-]/g, ''));
+                if (!isNaN(amount)) {
+                    if (filters.amountMin && amount < parseFloat(filters.amountMin)) return false;
+                    if (filters.amountMax && amount > parseFloat(filters.amountMax)) return false;
+                }
+            }
+            
+            // Check statut filter
+            if (filters.statut && !bc.statut.toLowerCase().includes(filters.statut.toLowerCase())) {
+                return false;
+            }
+            
+            // Check fournisseur filter
+            if (filters.fournisseur && !bc.details.toLowerCase().includes(filters.fournisseur.toLowerCase())) {
+                return false;
+            }
+            
+            // Check articles filter
+            if (filters.articles) {
+                const articles = parseInt(bc.articles.replace(/[^\d]/g, ''));
+                if (!isNaN(articles) && articles !== parseInt(filters.articles)) {
+                    return false;
+                }
+            }
+            
+            return true;
+        }
+        
+        function resetAdvancedSearch() {
+            document.getElementById('searchDateFrom').value = '';
+            document.getElementById('searchDateTo').value = '';
+            document.getElementById('searchAmountMin').value = '';
+            document.getElementById('searchAmountMax').value = '';
+            document.getElementById('searchStatut').value = '';
+            document.getElementById('searchFournisseur').value = '';
+            document.getElementById('searchArticles').value = '';
+            
+            clearSearch();
+        }
         
         function selectDP(dpId) {
             // Désélectionner la carte précédente
