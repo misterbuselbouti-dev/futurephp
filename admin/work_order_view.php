@@ -188,14 +188,10 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Ordre de Travail #<?php echo $work_order_id; ?> - <?php echo APP_NAME; ?></title>
     
-    <!-- Bootstrap CSS -->
+    <!-- Simple Clean Theme -->
     <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
-    
-    <!-- FontAwesome -->
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
-    
-    <!-- Custom CSS -->
-    <link rel="stylesheet" href="../assets/css/style.css">
+    <link rel="stylesheet" href="../assets/css/simple-theme.css">
     
     <style>
         .main-content {
@@ -203,25 +199,30 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
             padding: 2rem;
         }
         
-        .info-card {
-            background: white;
-            border-radius: 10px;
-            padding: 1.5rem;
-            margin-bottom: 1.5rem;
-            border: 1px solid #e2e8f0;
-            box-shadow: 0 2px 4px rgba(0,0,0,0.05);
+        .workshop-card {
+            background-color: var(--bg-white);
+            border: 1px solid var(--border);
+            border-radius: var(--radius-lg);
+            padding: var(--space-6);
+            margin-bottom: var(--space-6);
+            transition: transform 0.2s;
         }
         
-        .info-card h6 {
-            color: #64748b;
-            font-size: 0.875rem;
-            margin-bottom: 0.5rem;
+        .workshop-card:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
         }
         
-        .info-card .value {
-            font-size: 1.25rem;
+        .workshop-card h6 {
+            color: var(--text-light);
+            font-size: var(--font-size-sm);
+            margin-bottom: var(--space-2);
+        }
+        
+        .workshop-card .value {
+            font-size: var(--font-size-xl);
             font-weight: 600;
-            color: #1e293b;
+            color: var(--text-dark);
         }
         
         .timeline {
@@ -236,12 +237,12 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
             top: 0;
             bottom: 0;
             width: 2px;
-            background: #e2e8f0;
+            background: var(--border);
         }
         
         .timeline-item {
             position: relative;
-            margin-bottom: 20px;
+            margin-bottom: var(--space-5);
         }
         
         .timeline-item::before {
@@ -252,41 +253,60 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
             width: 10px;
             height: 10px;
             border-radius: 50%;
-            background: #64748b;
+            background: var(--text-muted);
         }
         
         .timeline-item.success::before {
-            background: #10b981;
+            background: var(--success);
         }
         
         .timeline-item.info::before {
-            background: #3b82f6;
+            background: var(--info);
         }
         
         .timeline-item.warning::before {
-            background: #f59e0b;
+            background: var(--warning);
         }
         
         @media (max-width: 768px) {
             .main-content {
                 margin-left: 0;
-                padding: 1rem;
+                padding: var(--space-4);
             }
         }
     </style>
 </head>
 <body>
-    <?php include '../includes/header.php'; ?>
+    <!-- Include header -->
+    <?php include '../includes/header_simple.php'; ?>
+    
+    <!-- Include sidebar -->
     <?php include '../includes/sidebar.php'; ?>
     
+    <!-- Main Content -->
     <div class="main-content">
         <div class="container-fluid">
-            <nav aria-label="breadcrumb" class="mb-3">
-                <ol class="breadcrumb">
-                    <li class="breadcrumb-item"><a href="admin_breakdowns_workshop.php">Gestion Atelier</a></li>
-                    <li class="breadcrumb-item active">Ordre de Travail #<?php echo $work_order_id; ?></li>
-                </ol>
-            </nav>
+            <!-- Page Header -->
+            <div class="d-flex justify-content-between align-items-center mb-6">
+                <div>
+                    <h1 class="mb-2">
+                        <i class="fas fa-wrench me-3"></i>
+                        Ordre de Travail #<?php echo $work_order_id; ?>
+                    </h1>
+                    <p class="text-muted mb-0">Bienvenue, <?php echo htmlspecialchars($user['full_name']); ?></p>
+                </div>
+                <div class="d-flex gap-3">
+                    <button class="btn btn-outline-primary" onclick="window.location.href='../quick_audit.php'">
+                        <i class="fas fa-clipboard-check me-2"></i>Audit
+                    </button>
+                    <button class="btn btn-outline-success" onclick="window.location.href='../remove_unnecessary_files.php'">
+                        <i class="fas fa-trash-alt me-2"></i>Nettoyer
+                    </button>
+                    <button class="btn btn-primary" onclick="window.location.href='admin_breakdowns_workshop.php'">
+                        <i class="fas fa-arrow-left me-2"></i>Retour
+                    </button>
+                </div>
+            </div>
             
             <!-- Messages -->
             <?php if (isset($_SESSION['success_message'])): ?>
@@ -305,47 +325,28 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
                 </div>
             <?php endif; ?>
             
-            <!-- Header -->
-            <div class="d-flex justify-content-between align-items-center mb-4">
-                <div>
-                    <h1 class="mb-2">
-                        <i class="fas fa-wrench me-3"></i>
-                        Ordre de Travail #<?php echo $work_order_id; ?>
-                    </h1>
-                    <p class="text-muted mb-0">Référence: <?php echo htmlspecialchars($work_order['ref_ot'] ?? ''); ?></p>
-                </div>
-                <div class="d-flex gap-2">
-                    <button class="btn btn-outline-primary" onclick="window.print()">
-                        <i class="fas fa-print me-1"></i>Imprimer
-                    </button>
-                    <a href="admin_breakdowns_workshop.php" class="btn btn-outline-secondary">
-                        <i class="fas fa-arrow-left me-1"></i>Retour
-                    </a>
-                </div>
-            </div>
-            
             <!-- Quick Info Grid -->
             <div class="row mb-4">
                 <div class="col-md-3">
-                    <div class="info-card">
+                    <div class="workshop-card">
                         <h6>Bus</h6>
                         <div class="value"><?php echo htmlspecialchars($work_order['bus_number'] ?? ''); ?></div>
                     </div>
                 </div>
                 <div class="col-md-3">
-                    <div class="info-card">
+                    <div class="workshop-card">
                         <h6>Technicien</h6>
                         <div class="value"><?php echo htmlspecialchars($work_order['technician_name'] ?? ''); ?></div>
                     </div>
                 </div>
                 <div class="col-md-3">
-                    <div class="info-card">
+                    <div class="workshop-card">
                         <h6>Type</h6>
                         <div class="value"><?php echo htmlspecialchars($work_order['work_type'] ?? ''); ?></div>
                     </div>
                 </div>
                 <div class="col-md-3">
-                    <div class="info-card">
+                    <div class="workshop-card">
                         <h6>Priorité</h6>
                         <div class="value">
                             <span class="badge bg-<?php echo getPriorityBadgeClass($work_order['priority'] ?? 'Normal'); ?>">
@@ -356,9 +357,10 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
                 </div>
             </div>
             
+            <!-- Status Info Grid -->
             <div class="row mb-4">
                 <div class="col-md-3">
-                    <div class="info-card">
+                    <div class="workshop-card">
                         <h6>Statut</h6>
                         <div class="value">
                             <span class="badge bg-<?php echo getStatusBadgeClass($work_order['status'] ?? 'En attente'); ?>">
@@ -368,19 +370,19 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
                     </div>
                 </div>
                 <div class="col-md-3">
-                    <div class="info-card">
+                    <div class="workshop-card">
                         <h6>Heures Estimées</h6>
                         <div class="value"><?php echo $work_order['estimated_hours'] ?? 0; ?>h</div>
                     </div>
                 </div>
                 <div class="col-md-3">
-                    <div class="info-card">
+                    <div class="workshop-card">
                         <h6>Heures Réelles</h6>
                         <div class="value"><?php echo $work_order['actual_hours'] ?? 0; ?>h</div>
                     </div>
                 </div>
                 <div class="col-md-3">
-                    <div class="info-card">
+                    <div class="workshop-card">
                         <h6>Créé par</h6>
                         <div class="value"><?php echo htmlspecialchars($work_order['created_by_name'] ?? ''); ?></div>
                     </div>
@@ -388,24 +390,17 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
             </div>
             
             <!-- Description -->
-            <div class="card mb-4">
-                <div class="card-header">
-                    <h6 class="mb-0">Description du Travail</h6>
-                </div>
-                <div class="card-body">
-                    <p><?php echo nl2br(htmlspecialchars($work_order['work_description'] ?? '')); ?></p>
-                </div>
+            <div class="workshop-card mb-4">
+                <h6 class="mb-3">Description du Travail</h6>
+                <p><?php echo nl2br(htmlspecialchars($work_order['work_description'] ?? '')); ?></p>
             </div>
             
             <!-- Status Update -->
-            <div class="card mb-4">
-                <div class="card-header">
-                    <h6 class="mb-0">Mettre à Jour le Statut</h6>
-                </div>
-                <div class="card-body">
-                    <form method="POST" action="">
-                        <input type="hidden" name="action" value="update_status">
-                        <div class="row">
+            <div class="workshop-card mb-4">
+                <h6 class="mb-3">Mettre à Jour le Statut</h6>
+                <form method="POST" action="">
+                    <input type="hidden" name="action" value="update_status">
+                    <div class="row">
                             <div class="col-md-6">
                                 <label class="form-label">Nouveau Statut</label>
                                 <select class="form-select" name="new_status">
@@ -446,7 +441,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
                         <p class="text-muted">Aucune pièce utilisée.</p>
                     <?php else: ?>
                         <div class="table-responsive">
-                            <table class="table table-sm">
+                            <table class="table table-hover">
                                 <thead>
                                     <tr>
                                         <th>Référence</th>
@@ -487,21 +482,18 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
             </div>
             
             <!-- Timeline -->
-            <div class="card">
-                <div class="card-header">
-                    <h6 class="mb-0">
-                        <i class="fas fa-history me-2"></i>
-                        Chronologie
-                    </h6>
-                </div>
-                <div class="card-body">
-                    <div class="timeline">
-                        <?php foreach ($timeline as $item): ?>
-                            <div class="timeline-item <?php echo $item['action'] === 'Création' ? 'success' : ($item['action'] === 'Début' ? 'info' : ($item['action'] === 'Fin' ? 'success' : 'warning')); ?>">
-                                <div class="d-flex justify-content-between align-items-start">
-                                    <div>
-                                        <strong><?php echo htmlspecialchars($item['action']); ?></strong>
-                                        <p class="mb-0"><?php echo htmlspecialchars($item['description']); ?></p>
+            <div class="workshop-card">
+                <h6 class="mb-3">
+                    <i class="fas fa-history me-2"></i>
+                    Chronologie
+                </h6>
+                <div class="timeline">
+                    <?php foreach ($timeline as $item): ?>
+                        <div class="timeline-item <?php echo $item['action'] === 'Création' ? 'success' : ($item['action'] === 'Début' ? 'info' : ($item['action'] === 'Fin' ? 'success' : 'warning')); ?>">
+                            <div class="d-flex justify-content-between align-items-start">
+                                <div>
+                                    <strong><?php echo htmlspecialchars($item['action']); ?></strong>
+                                    <p class="mb-0"><?php echo htmlspecialchars($item['description']); ?></p>
                                         <small class="text-muted">Par <?php echo htmlspecialchars($item['performed_by_name']); ?></small>
                                     </div>
                                     <small class="text-muted"><?php echo date('d/m/Y H:i', strtotime($item['performed_at'])); ?></small>
