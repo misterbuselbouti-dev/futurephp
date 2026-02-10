@@ -254,14 +254,18 @@ function format_duration($hours) {
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Détails Incident #<?php echo $reportId; ?> - <?php echo APP_NAME; ?></title>
+    
+    <!-- Simple Clean Theme -->
     <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
-    <link href="../assets/css/style.css" rel="stylesheet">
+    <link rel="stylesheet" href="../assets/css/simple-theme.css">
+    
     <style>
         .status-timeline {
             position: relative;
             padding-left: 30px;
         }
+        
         .status-timeline::before {
             content: '';
             position: absolute;
@@ -269,12 +273,14 @@ function format_duration($hours) {
             top: 0;
             bottom: 0;
             width: 2px;
-            background: #e2e8f0;
+            background: var(--border);
         }
+        
         .status-item {
             position: relative;
-            margin-bottom: 20px;
+            margin-bottom: var(--space-5);
         }
+        
         .status-item::before {
             content: '';
             position: absolute;
@@ -283,61 +289,95 @@ function format_duration($hours) {
             width: 10px;
             height: 10px;
             border-radius: 50%;
-            background: #64748b;
+            background: var(--text-muted);
         }
+        
         .status-item.active::before {
-            background: #10b981;
+            background: var(--success);
         }
+        
         .status-item.warning::before {
-            background: #f59e0b;
+            background: var(--warning);
         }
+        
         .status-item.danger::before {
-            background: #ef4444;
+            background: var(--danger);
         }
+        
         .info-grid {
             display: grid;
             grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
-            gap: 1rem;
-            margin-bottom: 2rem;
+            gap: var(--space-4);
+            margin-bottom: var(--space-6);
         }
-        .info-card {
-            background: white;
-            padding: 1rem;
-            border-radius: 8px;
-            border: 1px solid #e2e8f0;
+        
+        .workshop-card {
+            background-color: var(--bg-white);
+            border: 1px solid var(--border);
+            border-radius: var(--radius-lg);
+            padding: var(--space-6);
+            margin-bottom: var(--space-6);
+            transition: transform 0.2s;
         }
-        .info-card h6 {
-            color: #64748b;
-            font-size: 0.875rem;
-            margin-bottom: 0.5rem;
+        
+        .workshop-card:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
         }
-        .info-card .value {
-            font-size: 1.25rem;
-            font-weight: 600;
-            color: #1e293b;
+        
+        .form-control, .form-select {
+            border-radius: var(--radius);
+            border: 1px solid var(--border);
+            transition: all 0.2s ease;
+        }
+        
+        .form-control:focus, .form-select:focus {
+            border-color: var(--primary);
+            box-shadow: 0 0 0 0.2rem rgba(var(--primary-rgb), 0.25);
+        }
+        
+        .table-responsive {
+            border-radius: var(--radius);
+            overflow: hidden;
+        }
+        
+        @media (max-width: 768px) {
+            .main-content {
+                margin-left: 0;
+                padding: var(--space-4);
+            }
         }
     </style>
 </head>
 <body>
-    <?php include __DIR__ . '/../includes/header.php'; ?>
-    <?php include __DIR__ . '/../includes/sidebar.php'; ?>
+    <!-- Include header -->
+    <?php include '../includes/header_simple.php'; ?>
+    
+    <!-- Include sidebar -->
+    <?php include '../includes/sidebar.php'; ?>
 
+    <!-- Main Content -->
     <div class="main-content">
         <div class="container-fluid">
-            <!-- Header -->
-            <div class="row mb-4">
-                <div class="col-12">
-                    <nav aria-label="breadcrumb">
-                        <ol class="breadcrumb">
-                            <li class="breadcrumb-item"><a href="admin_breakdowns_enhanced.php">Incidents</a></li>
-                            <li class="breadcrumb-item active">Détails #<?php echo $reportId; ?></li>
-                        </ol>
-                    </nav>
+            <!-- Page Header -->
+            <div class="d-flex justify-content-between align-items-center mb-6">
+                <div>
                     <h1 class="mb-2">
                         <i class="fas fa-screwdriver-wrench me-3"></i>
                         Détails Incident #<?php echo $reportId; ?>
                     </h1>
-                    <p class="text-muted">Gestion complète de l'incident</p>
+                    <p class="text-muted mb-0">Bienvenue, <?php echo htmlspecialchars($user['full_name']); ?></p>
+                </div>
+                <div class="d-flex gap-3">
+                    <button class="btn btn-outline-primary" onclick="window.location.href='../quick_audit.php'">
+                        <i class="fas fa-clipboard-check me-2"></i>Audit
+                    </button>
+                    <button class="btn btn-outline-success" onclick="window.location.href='../remove_unnecessary_files.php'">
+                        <i class="fas fa-trash-alt me-2"></i>Nettoyer
+                    </button>
+                    <button class="btn btn-primary" onclick="window.location.href='admin_breakdowns_enhanced.php'">
+                        <i class="fas fa-arrow-left me-2"></i>Retour
+                    </button>
                 </div>
             </div>
 
@@ -357,27 +397,27 @@ function format_duration($hours) {
 
             <!-- Quick Info Grid -->
             <div class="info-grid">
-                <div class="info-card">
+                <div class="workshop-card">
                     <h6>Référence</h6>
                     <div class="value"><?php echo htmlspecialchars($report['report_ref']); ?></div>
                 </div>
-                <div class="info-card">
+                <div class="workshop-card">
                     <h6>Bus</h6>
-                    <div class="value"><?php echo htmlspecialchars(($report['bus_number'] ?? '-') . ' - ' . ($report['license_plate'] ?? '-')); ?></div>
+                    <div class="value"><?php echo htmlspecialchars($report['bus_number'] . ' - ' . $report['license_plate']); ?></div>
                 </div>
-                <div class="info-card">
+                <div class="workshop-card">
                     <h6>Chauffeur</h6>
-                    <div class="value"><?php echo htmlspecialchars($report['driver_name'] ?? '-'); ?></div>
+                    <div class="value"><?php echo htmlspecialchars($report['driver_nom'] . ' ' . $report['driver_prenom']); ?></div>
                 </div>
-                <div class="info-card">
+                <div class="workshop-card">
                     <h6>Téléphone</h6>
                     <div class="value"><?php echo htmlspecialchars($report['driver_phone'] ?? '-'); ?></div>
                 </div>
-                <div class="info-card">
+                <div class="workshop-card">
                     <h6>Catégorie</h6>
                     <div class="value"><?php echo htmlspecialchars($report['category']); ?></div>
                 </div>
-                <div class="info-card">
+                <div class="workshop-card">
                     <h6>Urgence</h6>
                     <div class="value">
                         <span class="badge bg-<?php echo urgency_badge($report['urgency']); ?>">
@@ -385,11 +425,11 @@ function format_duration($hours) {
                         </span>
                     </div>
                 </div>
-                <div class="info-card">
+                <div class="workshop-card">
                     <h6>Kilométrage</h6>
                     <div class="value"><?php echo $report['kilometrage'] ? number_format($report['kilometrage']) : '-'; ?> km</div>
                 </div>
-                <div class="info-card">
+                <div class="workshop-card">
                     <h6>Statut</h6>
                     <div class="value">
                         <span class="badge bg-<?php echo status_badge($report['status']); ?>">
@@ -397,25 +437,21 @@ function format_duration($hours) {
                         </span>
                     </div>
                 </div>
-                <div class="info-card">
+                <div class="workshop-card">
                     <h6>Date</h6>
                     <div class="value"><?php echo date('d/m/Y H:i', strtotime($report['created_at'])); ?></div>
                 </div>
             </div>
 
             <!-- Description -->
-            <div class="card mb-4">
-                <div class="card-header">
-                    <h6 class="mb-0">Description</h6>
-                </div>
-                <div class="card-body">
-                    <p><?php echo nl2br(htmlspecialchars($report['description'] ?? '-')); ?></p>
-                </div>
+            <div class="workshop-card mb-4">
+                <h6 class="mb-3">Description</h6>
+                <p><?php echo nl2br(htmlspecialchars($report['description'] ?? '-')); ?></p>
             </div>
 
             <!-- Assignment Section -->
-            <div class="card mb-4">
-                <div class="card-header d-flex justify-content-between align-items-center">
+            <div class="workshop-card mb-4">
+                <div class="d-flex justify-content-between align-items-center mb-3">
                     <h6 class="mb-0">Assignation</h6>
                     <?php if (!$assignment): ?>
                         <button type="button" class="btn btn-primary btn-sm" data-bs-toggle="modal" data-bs-target="#assignmentModal">
@@ -423,15 +459,12 @@ function format_duration($hours) {
                         </button>
                     <?php endif; ?>
                 </div>
-                <div class="card-body">
-                    <?php if ($assignment): ?>
-                        <div class="row">
-                            <div class="col-md-6">
-                                <p><strong>Technicien:</strong> <?php echo htmlspecialchars($assignment['technician_name']); ?></p>
-                                <p><strong>Rôle:</strong> <?php echo htmlspecialchars($assignment['technician_role']); ?></p>
-                                <p><strong>Téléphone:</strong> <?php echo htmlspecialchars($assignment['technician_phone'] ?? '-'); ?></p>
-                            </div>
-                            <div class="col-md-6">
+                <?php if ($assignment): ?>
+                    <div class="row">
+                        <div class="col-md-6">
+                            <p><strong>Technicien:</strong> <?php echo htmlspecialchars($assignment['technician_name']); ?></p>
+                            <p><strong>Rôle:</strong> <?php echo htmlspecialchars($assignment['technician_role']); ?></p>
+                            <p><strong>Téléphone:</strong> <?php echo htmlspecialchars($assignment['technician_phone'] ?? '-'); ?></p>
                                 <p><strong>Assigné le:</strong> <?php echo date('d/m/Y H:i', strtotime($assignment['assigned_at'])); ?></p>
                                 <p><strong>Début:</strong> <?php echo $assignment['started_at'] ? date('d/m/Y H:i', strtotime($assignment['started_at'])) : '-'; ?></p>
                                 <p><strong>Fin:</strong> <?php echo $assignment['ended_at'] ? date('d/m/Y H:i', strtotime($assignment['ended_at'])) : '-'; ?></p>
