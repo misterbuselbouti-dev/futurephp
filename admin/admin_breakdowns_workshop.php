@@ -221,165 +221,17 @@ function generateReference($prefix, $table, $field) {
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title><?php echo htmlspecialchars($page_title); ?> - <?php echo APP_NAME; ?></title>
     
-    <!-- Simple Clean Theme -->
+    <!-- ISO 9001/45001 Universal Theme -->
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800&display=swap" rel="stylesheet">
     <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
-    <link rel="stylesheet" href="../assets/css/simple-theme.css">
+    <link rel="stylesheet" href="../assets/css/iso-universal-theme.css">
     
     <!-- Select2 CSS -->
     <link href="https://cdn.jsdelivr.net/npm/select2@4.1.0-rc.0/dist/css/select2.min.css" rel="stylesheet" />
     <link href="https://cdn.jsdelivr.net/npm/@ttskch/select2-bootstrap4-theme@x.x.x/dist/select2-bootstrap4.min.css" rel="stylesheet" />
     
-    <style>
-        .main-content {
-            margin-left: 260px;
-            padding: 2rem;
-            transition: margin-left 0.3s ease;
-        }
-        
-        .workshop-card {
-            background-color: var(--bg-white);
-            border: 1px solid var(--border);
-            border-radius: var(--radius-lg);
-            padding: var(--space-6);
-            margin-bottom: var(--space-6);
-            transition: transform 0.2s;
-        }
-        
-        .workshop-card:hover {
-            transform: translateY(-2px);
-            box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
-        }
-        
-        .form-control, .form-select {
-            border-radius: var(--radius);
-            border: 1px solid var(--border);
-            padding: 0.75rem 1rem;
-            font-size: 0.95rem;
-            transition: all 0.2s ease;
-        }
-        
-        .form-control:focus, .form-select:focus {
-            border-color: var(--primary);
-            box-shadow: 0 0 0 0.2rem rgba(var(--primary-rgb), 0.25);
-        }
-        
-        .required-star {
-            color: var(--danger);
-            margin-left: 4px;
-        }
-        
-        .btn-primary-custom {
-            background-color: var(--primary);
-            border: none;
-            color: white;
-            padding: 0.75rem 2rem;
-            border-radius: var(--radius);
-            font-weight: 500;
-            transition: all 0.2s ease;
-        }
-        
-        .btn-primary-custom:hover {
-            background-color: var(--primary-dark);
-            transform: translateY(-1px);
-            box-shadow: 0 4px 12px rgba(var(--primary-rgb), 0.3);
-            color: white;
-        }
-        
-        .btn-add-part {
-            background-color: var(--success);
-            border: none;
-            color: white;
-            border-radius: 50%;
-            width: 30px;
-            height: 30px;
-            padding: 0;
-            display: inline-flex;
-            align-items: center;
-            justify-content: center;
-            margin-left: 10px;
-            transition: all 0.2s ease;
-        }
-        
-        .btn-add-part:hover {
-            background: #218838;
-            transform: scale(1.1);
-        }
-        
-        .part-row {
-            background: #f8f9fa;
-            border-radius: 10px;
-            padding: 1rem;
-            margin-bottom: 1rem;
-            border: 1px solid #e9ecef;
-        }
-        
-        .btn-remove-part {
-            background: #dc3545;
-            border: none;
-            color: white;
-            border-radius: 5px;
-            padding: 0.25rem 0.5rem;
-            font-size: 0.8rem;
-        }
-        
-        .btn-remove-part:hover {
-            background: #c82333;
-        }
-        
-        .select2-container--bootstrap4 .select2-selection {
-            border-radius: 10px;
-            border: 1px solid #e0e0e0;
-            min-height: 45px;
-        }
-        
-        .select2-container--bootstrap4 .select2-selection--single {
-            padding: 0.5rem;
-        }
-        
-        .stats-cards {
-            display: grid;
-            grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
-            gap: 1rem;
-            margin-bottom: 2rem;
-        }
-        
-        .stat-card {
-            background: white;
-            padding: 1.5rem;
-            border-radius: 10px;
-            border: 1px solid #e2e8f0;
-            text-align: center;
-            box-shadow: 0 2px 4px rgba(0,0,0,0.05);
-        }
-        
-        .stat-value {
-            font-size: var(--font-size-2xl);
-            font-weight: 700;
-            color: var(--primary);
-            margin-bottom: var(--space-2);
-        }
-        
-        .stat-label {
-            color: var(--text-light);
-            font-size: var(--font-size-sm);
-        }
-        
-        .part-row {
-            background: var(--bg-light);
-            border-radius: var(--radius);
-            border: 1px solid var(--border);
-            text-align: center;
-            box-shadow: 0 2px 4px rgba(0,0,0,0.05);
-        }
-        
-        @media (max-width: 768px) {
-            .main-content {
-                margin-left: 0;
-                padding: var(--space-4);
-            }
-        }
-    </style>
+                    
 </head>
 <body>
     <!-- Include header -->
@@ -454,7 +306,7 @@ function generateReference($prefix, $table, $field) {
             </div>
             
             <!-- Work Order Form -->
-            <div class="workshop-card">
+            <div class="iso-card">
                 <h3 class="mb-4">
                     <i class="fas fa-plus-circle me-2"></i>
                     Nouvel Ordre de Travail
@@ -563,7 +415,7 @@ function generateReference($prefix, $table, $field) {
             </div>
             
             <!-- Existing Work Orders List -->
-            <div class="card workshop-card">
+            <div class="card iso-card">
                 <div class="card-header d-flex justify-content-between align-items-center">
                     <h5 class="mb-0">
                         <i class="fas fa-list me-2"></i>
