@@ -247,25 +247,76 @@ function generateReference($prefix, $table, $field) {
             <div class="d-flex justify-content-between align-items-center mb-6">
                 <div>
                     <h1 class="mb-2">
-                        <i class="fas fa-wrench me-3"></i>
-                        Gestion Atelier
+                        <i class="fas fa-screwdriver-wrench me-3"></i>
+                        <?php echo htmlspecialchars($page_title); ?>
                     </h1>
                     <p class="text-muted mb-0">Bienvenue, <?php echo htmlspecialchars($full_name); ?></p>
                 </div>
                 <div class="d-flex gap-3">
-                    <button class="btn btn-outline-primary" onclick="window.location.href='../quick_audit.php'">
+                    <button class="btn btn-outline-primary" onclick="window.location.href='../audit_system.php'">
                         <i class="fas fa-clipboard-check me-2"></i>Audit
                     </button>
                     <button class="btn btn-outline-success" onclick="window.location.href='../remove_unnecessary_files.php'">
                         <i class="fas fa-trash-alt me-2"></i>Nettoyer
                     </button>
-                    <button class="btn btn-primary" onclick="window.location.href='../dashboard_simple.php'">
+                    <button class="btn btn-primary" onclick="window.location.href='../dashboard.php'">
                         <i class="fas fa-home me-2"></i>Dashboard
                     </button>
                 </div>
             </div>
-                    <p class="text-muted">Créer et gérer les ordres de travail de maintenance</p>
-                </div>
+                    <!-- Filter Section -->
+            <div class="iso-card">
+                <h5 class="mb-3"><i class="fas fa-filter me-2"></i>Filtres et Recherche</h5>
+                <form method="GET" class="filter-form">
+                    <div class="row g-3">
+                        <div class="col-md-3">
+                            <label class="form-label">Recherche</label>
+                            <input type="text" class="form-control" name="search" placeholder="Référence, description...">
+                        </div>
+                        <div class="col-md-2">
+                            <label class="form-label">Statut</label>
+                            <select class="form-select" name="filter_status">
+                                <option value="">Tous les statuts</option>
+                                <option value="En attente">En attente</option>
+                                <option value="En cours">En cours</option>
+                                <option value="Terminé">Terminé</option>
+                            </select>
+                        </div>
+                        <div class="col-md-2">
+                            <label class="form-label">Technicien</label>
+                            <select class="form-select" name="filter_technician">
+                                <option value="">Tous les techniciens</option>
+                                <?php foreach ($technicians as $tech): ?>
+                                    <option value="<?php echo $tech['id']; ?>">
+                                        <?php echo htmlspecialchars($tech['full_name']); ?>
+                                    </option>
+                                <?php endforeach; ?>
+                            </select>
+                        </div>
+                        <div class="col-md-2">
+                            <label class="form-label">Bus</label>
+                            <select class="form-select" name="filter_bus">
+                                <option value="">Tous les bus</option>
+                                <?php foreach ($buses as $bus): ?>
+                                    <option value="<?php echo $bus['id']; ?>">
+                                        <?php echo htmlspecialchars($bus['bus_number']); ?>
+                                    </option>
+                                <?php endforeach; ?>
+                            </select>
+                        </div>
+                        <div class="col-md-3">
+                            <label class="form-label">&nbsp;</label>
+                            <div class="d-flex gap-2">
+                                <button type="submit" class="btn btn-primary">
+                                    <i class="fas fa-search me-1"></i>Filtrer
+                                </button>
+                                <a href="admin_breakdowns_workshop.php" class="btn btn-outline-secondary">
+                                    <i class="fas fa-times me-1"></i>Réinitialiser
+                                </a>
+                            </div>
+                        </div>
+                    </div>
+                </form>
             </div>
             
             <!-- Messages -->
@@ -286,7 +337,7 @@ function generateReference($prefix, $table, $field) {
             <?php endif; ?>
             
             <!-- Statistics Cards -->
-            <div class="stats-grid">
+            <div class="iso-stats-grid">
                 <div class="stat-card">
                     <div class="stat-value"><?php echo count($work_orders); ?></div>
                     <div class="stat-label">Total Ordres</div>
