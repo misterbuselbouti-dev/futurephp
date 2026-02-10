@@ -204,32 +204,7 @@ function breakdownStatusBadge($status) {
             font-size: var(--text-sm);
             opacity: 0.9;
         }
-        .quick-actions {
-            display: grid;
-            grid-template-columns: repeat(auto-fit, minmax(150px, 1fr));
-            gap: 1rem;
-        }
-        .quick-action {
-            background: #f7fafc;
-            border: 1px solid #e2e8f0;
-            border-radius: 8px;
-            padding: 1rem;
-            text-decoration: none;
-            color: #4a5568;
-            text-align: center;
-            transition: all 0.2s;
-        }
-        .quick-action:hover {
-            background: #4299e1;
-            color: white;
-            transform: translateY(-2px);
-        }
-        .quick-action i {
-            display: block;
-            font-size: 1.5rem;
-            margin-bottom: 0.5rem;
-        }
-        .activity-item {
+                .activity-item {
             display: flex;
             align-items: start;
             padding: 1rem;
@@ -403,39 +378,39 @@ function breakdownStatusBadge($status) {
                 <div class="col-lg-6">
                     <section class="iso-card">
                         <h2 class="section-title"><i class="fas fa-bolt"></i> Actions rapides</h2>
-                        <div class="quick-actions">
-                            <a href="buses_complete.php" class="quick-action">
-                                <i class="fas fa-plus-circle"></i>
-                                <span>Ajouter un bus</span>
+                        <div class="d-grid gap-3">
+                            <a href="buses_complete.php" class="btn btn-outline-primary d-flex align-items-center justify-content-center">
+                                <i class="fas fa-plus-circle me-2"></i>
+                                Ajouter un bus
                             </a>
-                            <a href="drivers.php" class="quick-action">
-                                <i class="fas fa-user-plus"></i>
-                                <span>Ajouter un chauffeur</span>
+                            <a href="drivers.php" class="btn btn-outline-success d-flex align-items-center justify-content-center">
+                                <i class="fas fa-user-plus me-2"></i>
+                                Ajouter un chauffeur
                             </a>
-                            <a href="admin/admin_breakdowns.php" class="quick-action">
-                            <i class="fas fa-wrench"></i>
-                            <span>Nouvelle panne</span>
-                        </a>
-                        <a href="management/inventory.php" class="quick-action">
-                            <i class="fas fa-box"></i>
-                            <span>Gérer le stock</span>
-                        </a>
-                        <a href="admin/admin_breakdowns.php" class="quick-action">
-                            <i class="fas fa-screwdriver-wrench"></i>
-                            <span>Gestion pannes</span>
-                        </a>
-                        <a href="notifications.php" class="quick-action">
-                            <i class="fas fa-bell"></i>
-                            <span>Notifications</span>
-                        </a>
-                        <a href="reports/reports.php" class="quick-action">
-                            <i class="fas fa-download"></i>
-                            <span>Rapports</span>
-                        </a>
-                        <a href="purchase/achat_da.php" class="quick-action">
-                            <i class="fas fa-shopping-cart"></i>
-                            <span>Achats</span>
-                        </a>
+                            <a href="admin/admin_breakdowns.php" class="btn btn-outline-warning d-flex align-items-center justify-content-center">
+                                <i class="fas fa-wrench me-2"></i>
+                                Nouvelle panne
+                            </a>
+                            <a href="management/inventory.php" class="btn btn-outline-info d-flex align-items-center justify-content-center">
+                                <i class="fas fa-box me-2"></i>
+                                Gérer le stock
+                            </a>
+                            <a href="admin/admin_breakdowns.php" class="btn btn-outline-secondary d-flex align-items-center justify-content-center">
+                                <i class="fas fa-screwdriver-wrench me-2"></i>
+                                Gestion pannes
+                            </a>
+                            <a href="notifications.php" class="btn btn-outline-dark d-flex align-items-center justify-content-center">
+                                <i class="fas fa-bell me-2"></i>
+                                Notifications
+                            </a>
+                            <a href="reports/reports.php" class="btn btn-outline-primary d-flex align-items-center justify-content-center">
+                                <i class="fas fa-download me-2"></i>
+                                Rapports
+                            </a>
+                            <a href="purchase/achat_da.php" class="btn btn-outline-success d-flex align-items-center justify-content-center">
+                                <i class="fas fa-shopping-cart me-2"></i>
+                                Achats
+                            </a>
                         </div>
                     </section>
                 </div>
