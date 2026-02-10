@@ -216,7 +216,6 @@ function getPerformanceBadge($rate) {
                                     <th>Nb BE</th>
                                     <th>Montant BE</th>
                                     <th>Taux Réception</th>
-                                    <th>Statut Livraison</th>
                                     <th>Performance</th>
                                 </tr>
                             </thead>
@@ -240,14 +239,6 @@ function getPerformanceBadge($rate) {
                                             </div>
                                             <span><?php echo $supplier['receipt_rate']; ?>%</span>
                                         </div>
-                                    </td>
-                                    <td>
-                                        <span class="badge bg-<?php 
-                                            echo $supplier['delivery_status'] === 'Complet' ? 'success' : 
-                                                 ($supplier['delivery_status'] === 'Partiel' ? 'warning' : 'secondary'); 
-                                        ?>">
-                                            <?php echo $supplier['delivery_status']; ?>
-                                        </span>
                                     </td>
                                     <td>
                                         <?php 
@@ -349,7 +340,7 @@ function getPerformanceBadge($rate) {
     <script>
         function exportData() {
             // Simple CSV export
-            let csv = 'Fournisseur,Nb BC,Montant BC,Nb BE,Montant BE,Taux Réception,Statut Livraison,Performance\n';
+            let csv = 'Fournisseur,Nb BC,Montant BC,Nb BE,Montant BE,Taux Réception,Performance\n';
             
             <?php foreach ($performance_data as $supplier): ?>
             csv += '<?php echo htmlspecialchars($supplier['nom_fournisseur']); ?>,' +
@@ -358,7 +349,6 @@ function getPerformanceBadge($rate) {
                   '<?php echo $supplier['total_be']; ?>,' +
                   '<?php echo $supplier['total_be_amount']; ?>,' +
                   '<?php echo $supplier['receipt_rate']; ?>%,' +
-                  '<?php echo $supplier['delivery_status']; ?>,' +
                   '<?php 
                     $badge = getPerformanceBadge($supplier['receipt_rate']);
                     echo $badge['text']; 

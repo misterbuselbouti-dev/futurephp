@@ -88,6 +88,7 @@ try {
                                     <th>Email</th>
                                     <th>Téléphone</th>
                                     <th>Rôle</th>
+                                    <th>Spécialité</th>
                                     <th>Statut</th>
                                     <th>Actions</th>
                                 </tr>
@@ -95,39 +96,66 @@ try {
                             <tbody>
                                 <?php if (isset($error_message)): ?>
                                     <tr>
-                                        <td colspan="7" class="text-center text-danger">
+                                        <td colspan="8" class="text-center text-danger">
                                             <?php echo htmlspecialchars($error_message); ?>
                                         </td>
                                     </tr>
                                 <?php elseif (empty($employees)): ?>
                                     <tr>
-                                        <td colspan="7" class="text-center">Aucun employé trouvé</td>
+                                        <td colspan="8" class="text-center">Aucun employé trouvé</td>
                                     </tr>
                                 <?php else: ?>
                                     <?php foreach ($employees as $employee): ?>
+                                        <?php 
+                                        function getRoleDisplay($role) {
+                                            $roles = [
+                                                'mecanicien' => ['color' => 'success', 'specialty' => 'Mécanique', 'icon' => 'fa-wrench'],
+                                                'electricien' => ['color' => 'warning', 'specialty' => 'Électricité', 'icon' => 'fa-bolt'],
+                                                'tolier' => ['color' => 'info', 'specialty' => 'Tôlerie', 'icon' => 'fa-hammer'],
+                                                'peintre' => ['color' => 'danger', 'specialty' => 'Peinture', 'icon' => 'fa-paint-brush'],
+                                                'chef_atelier' => ['color' => 'dark', 'specialty' => 'Supervision', 'icon' => 'fa-user-tie'],
+                                                'receptionniste' => ['color' => 'secondary', 'specialty' => 'Accueil', 'icon' => 'fa-user'],
+                                                'technician' => ['color' => 'primary', 'specialty' => 'Technique', 'icon' => 'fa-tools'],
+                                                'agent' => ['color' => 'light', 'specialty' => 'Service', 'icon' => 'fa-user'],
+                                                'maintenance_manager' => ['color' => 'warning', 'specialty' => 'Maintenance', 'icon' => 'fa-cogs'],
+                                                'admin' => ['color' => 'danger', 'specialty' => 'Administration', 'icon' => 'fa-shield-alt']
+                                            ];
+                                            return $roles[$role] ?? ['color' => 'secondary', 'specialty' => 'Autre', 'icon' => 'fa-user'];
+                                        }
+                                        $roleDisplay = getRoleDisplay($employee['role']); ?>
                                         <tr>
                                             <td><?php echo htmlspecialchars($employee['id']); ?></td>
                                             <td><?php echo htmlspecialchars($employee['full_name']); ?></td>
                                             <td><?php echo htmlspecialchars($employee['email']); ?></td>
                                             <td><?php echo htmlspecialchars($employee['phone'] ?? 'N/A'); ?></td>
                                             <td>
-                                                <span class="badge bg-<?php echo $employee['role'] === 'admin' ? 'danger' : ($employee['role'] === 'maintenance_manager' ? 'warning' : ($employee['role'] === 'technician' ? 'primary' : 'info')); ?>">
+                                                <span class="badge bg-<?php echo $roleDisplay['color']; ?>">
+                                                    <i class="fas <?php echo $roleDisplay['icon']; ?> me-1"></i>
                                                     <?php 
-                                                    $role_labels = [
-                                                        'admin' => 'Administrateur',
-                                                        'maintenance_manager' => 'Responsable Maintenance',
+                                                    $roleLabels = [
+                                                        'mecanicien' => 'Mécanicien',
+                                                        'electricien' => 'Électricien',
+                                                        'tolier' => 'Tôlier',
+                                                        'peintre' => 'Peintre',
+                                                        'chef_atelier' => 'Chef d\'Atelier',
+                                                        'receptionniste' => 'Réceptionniste',
                                                         'technician' => 'Technicien',
                                                         'agent' => 'Agent',
-                                                        'driver' => 'Chauffeur'
+                                                        'maintenance_manager' => 'Resp. Maintenance',
+                                                        'admin' => 'Administrateur'
                                                     ];
-                                                    echo $role_labels[$employee['role']] ?? $employee['role'];
+                                                    echo $roleLabels[$employee['role']] ?? $employee['role'];
                                                     ?>
                                                 </span>
                                             </td>
                                             <td>
-                                                <?php $is_active = ($employee['is_active'] == 1); ?>
-                                                <span class="badge bg-<?php echo $is_active ? 'success' : 'secondary'; ?>">
-                                                    <?php echo $is_active ? 'Actif' : 'Inactif'; ?>
+                                                <span class="badge bg-light text-dark">
+                                                    <?php echo $roleDisplay['specialty']; ?>
+                                                </span>
+                                            </td>
+                                            <td>
+                                                <span class="badge bg-<?php echo ($employee['is_active'] ?? 1) ? 'success' : 'secondary'; ?>">
+                                                    <?php echo ($employee['is_active'] ?? 1) ? 'Actif' : 'Inactif'; ?>
                                                 </span>
                                             </td>
                                             <td>
@@ -139,7 +167,7 @@ try {
                                                         <i class="fas fa-eye"></i>
                                                     </button>
                                                     <button class="btn btn-sm btn-outline-warning" onclick="toggleEmployeeStatus(<?php echo $employee['id']; ?>)">
-                                                        <i class="fas fa-<?php echo $is_active ? 'ban' : 'check'; ?>"></i>
+                                                        <i class="fas fa-<?php echo ($employee['is_active'] ?? 1) ? 'ban' : 'check'; ?>"></i>
                                                     </button>
                                                     <button class="btn btn-sm btn-outline-danger" onclick="deleteEmployee(<?php echo $employee['id']; ?>)">
                                                         <i class="fas fa-trash"></i>
@@ -205,9 +233,24 @@ try {
                             <label class="form-label">Rôle</label>
                             <select class="form-control" name="role" required>
                                 <option value="">Sélectionner un rôle</option>
-                                <option value="mecanicien">Mécanicien</option>
-                                <option value="receptionniste">Réceptionniste</option>
-                                <option value="admin">Administrateur</option>
+                                
+                                <!-- Garage Workers -->
+                                <optgroup label="Travailleurs du Garage">
+                                    <option value="mecanicien">Mécanicien</option>
+                                    <option value="electricien">Électricien</option>
+                                    <option value="tolier">Tôlier</option>
+                                    <option value="peintre">Peintre</option>
+                                    <option value="chef_atelier">Chef d'Atelier</option>
+                                </optgroup>
+                                
+                                <!-- Other Roles -->
+                                <optgroup label="Autres Rôles">
+                                    <option value="receptionniste">Réceptionniste</option>
+                                    <option value="technician">Technicien</option>
+                                    <option value="agent">Agent</option>
+                                    <option value="maintenance_manager">Responsable Maintenance</option>
+                                    <option value="admin">Administrateur</option>
+                                </optgroup>
                             </select>
                         </div>
                         <div class="mb-3">

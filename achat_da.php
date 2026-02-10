@@ -199,6 +199,33 @@ try {
 } catch (Exception $e) {
     // Continuer sans la liste des bus
 }
+
+// Récupérer la liste des utilisateurs (agents)
+$users_list = [];
+try {
+    $database = new Database();
+    $conn = $database->connect();
+    
+    // Check if users table has is_active column
+    $userCols = [];
+    try {
+        $userCols = $conn->query("SHOW COLUMNS FROM users")->fetchAll(PDO::FETCH_COLUMN);
+    } catch (Exception $e) {
+        $userCols = [];
+    }
+    $hasIsActive = in_array('is_active', $userCols, true);
+    
+    // Get active users
+    if ($hasIsActive) {
+        $stmt = $conn->query("SELECT id, username, full_name FROM users WHERE is_active = 1 ORDER BY full_name");
+    } else {
+        $stmt = $conn->query("SELECT id, username, full_name FROM users ORDER BY full_name");
+    }
+    $users_list = $stmt->fetchAll();
+    
+} catch (Exception $e) {
+    // Continuer sans la liste des utilisateurs
+}
 ?>
 
 <!DOCTYPE html>
@@ -400,13 +427,15 @@ try {
                             </label>
                             <select class="form-select" id="agent" name="agent" required>
                                 <option value="">Sélectionner un agent</option>
-                                <option value="<?php echo htmlspecialchars($full_name); ?>" selected>
-                                    <?php echo htmlspecialchars($full_name); ?>
-                                </option>
-                                <option value="Administrateur">Administrateur</option>
-                                <option value="Responsable Achat">Responsable Achat</option>
-                                <option value="Technicien">Technicien</option>
-                                <option value="Magasinier">Magasinier</option>
+                                <?php foreach ($users_list as $user): ?>
+                                    <option value="<?php echo htmlspecialchars($user['full_name']); ?>" 
+                                            <?php echo $user['full_name'] === $full_name ? 'selected' : ''; ?>>
+                                        <?php echo htmlspecialchars($user['full_name']); ?>
+                                        <?php if (!empty($user['username'])): ?>
+                                            (<?php echo htmlspecialchars($user['username']); ?>)
+                                        <?php endif; ?>
+                                    </option>
+                                <?php endforeach; ?>
                             </select>
                         </div>
                     </div>
@@ -500,7 +529,6 @@ try {
                                             <th>Référence</th>
                                             <th>Demandeur</th>
                                             <th>Date</th>
-                                            <th>Statut</th>
                                             <th>Articles</th>
                                             <th>Montant</th>
                                             <th>DP</th>
@@ -513,11 +541,6 @@ try {
                                                 <td><?php echo htmlspecialchars($da['ref_da']); ?></td>
                                                 <td><?php echo htmlspecialchars($da['demandeur']); ?></td>
                                                 <td><?php echo date('d/m/Y', strtotime($da['date_creation'])); ?></td>
-                                                <td>
-                                                    <span class="badge bg-<?php echo getStatutBadgeClass($da['statut']); ?>">
-                                                        <?php echo htmlspecialchars($da['statut']); ?>
-                                                    </span>
-                                                </td>
                                                 <td><?php echo intval($da['nombre_articles'] ?? 0); ?></td>
                                                 <td><?php echo number_format(floatval($da['montant_total'] ?? 0), 2, ',', ' '); ?> DH</td>
                                                 <td><?php echo intval($da['dp_count'] ?? 0); ?></td>
@@ -557,7 +580,6 @@ try {
                                             <th>Référence</th>
                                             <th>Demandeur</th>
                                             <th>Date</th>
-                                            <th>Statut</th>
                                             <th>Articles</th>
                                             <th>Montant</th>
                                             <th>DP</th>
@@ -570,11 +592,6 @@ try {
                                                 <td><?php echo htmlspecialchars($da['ref_da']); ?></td>
                                                 <td><?php echo htmlspecialchars($da['demandeur']); ?></td>
                                                 <td><?php echo date('d/m/Y', strtotime($da['date_creation'])); ?></td>
-                                                <td>
-                                                    <span class="badge bg-<?php echo getStatutBadgeClass($da['statut']); ?>">
-                                                        <?php echo htmlspecialchars($da['statut']); ?>
-                                                    </span>
-                                                </td>
                                                 <td><?php echo intval($da['nombre_articles'] ?? 0); ?></td>
                                                 <td><?php echo number_format(floatval($da['montant_total'] ?? 0), 2, ',', ' '); ?> DH</td>
                                                 <td><?php echo intval($da['dp_count'] ?? 0); ?></td>

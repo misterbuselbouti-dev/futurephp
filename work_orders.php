@@ -18,14 +18,22 @@ try {
     $stmt = $pdo->query("SELECT id, name FROM customers ORDER BY name");
     $customers = $stmt->fetchAll();
     
-    // Get mechanics (users with mecanicien role)
-    $stmt = $pdo->query("SELECT id, full_name FROM users WHERE role = 'mecanicien' ORDER BY full_name");
+    // Get mechanics (users with garage worker roles)
+    $stmt = $pdo->query("SELECT id, full_name, role FROM users WHERE role IN ('mecanicien', 'electricien', 'tolier', 'peintre', 'chef_atelier') ORDER BY role, full_name");
     $mechanics = $stmt->fetchAll();
     
     // If no mechanics found, get all users as fallback
     if (empty($mechanics)) {
-        $stmt = $pdo->query("SELECT id, full_name FROM users ORDER BY full_name");
+        $stmt = $pdo->query("SELECT id, full_name, role FROM users ORDER BY full_name");
         $mechanics = $stmt->fetchAll();
+    }
+    
+    // Get garage specialties for filtering
+    try {
+        $stmt = $pdo->query("SELECT * FROM garage_specialties ORDER BY name");
+        $specialties = $stmt->fetchAll();
+    } catch (Exception $e) {
+        $specialties = [];
     }
     
     // Get cars
@@ -39,7 +47,7 @@ try {
     
     // Get work orders
     $stmt = $pdo->query("
-        SELECT wo.*, c.name as customer_name, ca.make, ca.model, u.full_name as mechanic_name 
+        SELECT wo.*, c.name as customer_name, ca.make, ca.model, u.full_name as mechanic_name, u.role as mechanic_role 
         FROM work_orders wo
         JOIN customers c ON wo.customer_id = c.id
         JOIN cars ca ON wo.car_id = ca.id
@@ -98,63 +106,97 @@ try {
                                     <th>Date</th>
                                     <th>Client</th>
                                     <th>Véhicule</th>
+                                    <th>Travailleur</th>
+                                    <th>Spécialité</th>
                                     <th>Statut</th>
                                     <th>Priorité</th>
                                     <th>Actions</th>
                                 </tr>
                             </thead>
                             <tbody>
-                                <?php if (isset($error_message)): ?>
-                                    <tr>
-                                        <td colspan="7" class="text-center text-danger">
-                                            <?php echo htmlspecialchars($error_message); ?>
-                                        </td>
-                                    </tr>
-                                <?php elseif (empty($work_orders)): ?>
-                                    <tr>
-                                        <td colspan="7" class="text-center">Aucun ordre de travail trouvé</td>
-                                    </tr>
-                                <?php else: ?>
-                                    <?php foreach ($work_orders as $work_order): ?>
+                                <?php 
+                                        function getRoleDisplay($role) {
+                                            $roles = [
+                                                'mecanicien' => ['color' => 'success', 'specialty' => 'Mécanique', 'icon' => 'fa-wrench'],
+                                                'electricien' => ['color' => 'warning', 'specialty' => 'Électricité', 'icon' => 'fa-bolt'],
+                                                'tolier' => ['color' => 'info', 'specialty' => 'Tôlerie', 'icon' => 'fa-hammer'],
+                                                'peintre' => ['color' => 'danger', 'specialty' => 'Peinture', 'icon' => 'fa-paint-brush'],
+                                                'chef_atelier' => ['color' => 'dark', 'specialty' => 'Supervision', 'icon' => 'fa-user-tie']
+                                            ];
+                                            return $roles[$role] ?? ['color' => 'secondary', 'specialty' => 'Autre', 'icon' => 'fa-user'];
+                                        }
+                                    ?>
+                                    <?php if (isset($error_message)): ?>
                                         <tr>
-                                            <td><strong><?php echo htmlspecialchars($work_order['work_order_number']); ?></strong></td>
-                                            <td><?php echo date('d/m/Y', strtotime($work_order['created_at'])); ?></td>
-                                            <td><?php echo htmlspecialchars($work_order['customer_name']); ?></td>
-                                            <td><?php echo htmlspecialchars($work_order['make'] . ' ' . $work_order['model']); ?></td>
-                                            <td>
-                                                <span class="badge bg-<?php 
-                                                    echo $work_order['status'] === 'en_attente' ? 'warning' : 
-                                                    ($work_order['status'] === 'en_cours' ? 'primary' : 
-                                                    ($work_order['status'] === 'termine' ? 'success' : 'danger')); 
-                                                ?>">
-                                                    <?php 
-                                                    $status_labels = [
-                                                        'en_attente' => 'En attente',
-                                                        'en_cours' => 'En cours',
-                                                        'termine' => 'Terminé',
-                                                        'annule' => 'Annulé'
-                                                    ];
-                                                    echo $status_labels[$work_order['status']] ?? $work_order['status'];
-                                                    ?>
-                                                </span>
+                                            <td colspan="9" class="text-center text-danger">
+                                                <?php echo htmlspecialchars($error_message); ?>
                                             </td>
-                                            <td>
-                                                <span class="badge bg-<?php 
-                                                    echo $work_order['priority'] === 'urgent' ? 'danger' : 
-                                                    ($work_order['priority'] === 'eleve' ? 'warning' : 
-                                                    ($work_order['priority'] === 'faible' ? 'secondary' : 'info')); 
-                                                ?>">
-                                                    <?php 
-                                                    $priority_labels = [
-                                                        'faible' => 'Faible',
-                                                        'moyen' => 'Moyen',
-                                                        'eleve' => 'Élevé',
-                                                        'urgent' => 'Urgent'
-                                                    ];
-                                                    echo $priority_labels[$work_order['priority']] ?? $work_order['priority'];
-                                                    ?>
-                                                </span>
-                                            </td>
+                                        </tr>
+                                    <?php elseif (empty($work_orders)): ?>
+                                        <tr>
+                                            <td colspan="9" class="text-center">Aucun ordre de travail trouvé</td>
+                                        </tr>
+                                    <?php else: ?>
+                                        <?php foreach ($work_orders as $work_order): ?>
+                                            <?php $roleDisplay = getRoleDisplay($work_order['mechanic_role'] ?? ''); ?>
+                                            <tr>
+                                                <td><strong><?php echo htmlspecialchars($work_order['work_order_number']); ?></strong></td>
+                                                <td><?php echo date('d/m/Y', strtotime($work_order['created_at'])); ?></td>
+                                                <td><?php echo htmlspecialchars($work_order['customer_name']); ?></td>
+                                                <td><?php echo htmlspecialchars($work_order['make'] . ' ' . $work_order['model']); ?></td>
+                                                <td>
+                                                    <?php if (!empty($work_order['mechanic_name'])): ?>
+                                                        <span class="badge bg-<?php echo $roleDisplay['color']; ?>">
+                                                            <i class="fas <?php echo $roleDisplay['icon']; ?> me-1"></i>
+                                                            <?php echo htmlspecialchars($work_order['mechanic_name']); ?>
+                                                        </span>
+                                                    <?php else: ?>
+                                                        <span class="text-muted">Non assigné</span>
+                                                    <?php endif; ?>
+                                                </td>
+                                                <td>
+                                                    <?php if (!empty($work_order['mechanic_role'])): ?>
+                                                        <span class="badge bg-light text-dark">
+                                                            <?php echo $roleDisplay['specialty']; ?>
+                                                        </span>
+                                                    <?php else: ?>
+                                                        <span class="text-muted">-</span>
+                                                    <?php endif; ?>
+                                                </td>
+                                                <td>
+                                                    <span class="badge bg-<?php 
+                                                        echo $work_order['status'] === 'en_attente' ? 'warning' : 
+                                                        ($work_order['status'] === 'en_cours' ? 'primary' : 
+                                                        ($work_order['status'] === 'termine' ? 'success' : 'danger')); 
+                                                    ?>">
+                                                        <?php 
+                                                        $status_labels = [
+                                                            'en_attente' => 'En attente',
+                                                            'en_cours' => 'En cours',
+                                                            'termine' => 'Terminé',
+                                                            'annule' => 'Annulé'
+                                                        ];
+                                                        echo $status_labels[$work_order['status']] ?? $work_order['status'];
+                                                        ?>
+                                                    </span>
+                                                </td>
+                                                <td>
+                                                    <span class="badge bg-<?php 
+                                                        echo $work_order['priority'] === 'urgent' ? 'danger' : 
+                                                        ($work_order['priority'] === 'eleve' ? 'warning' : 
+                                                        ($work_order['priority'] === 'faible' ? 'secondary' : 'info')); 
+                                                    ?>">
+                                                        <?php 
+                                                        $priority_labels = [
+                                                            'faible' => 'Faible',
+                                                            'moyen' => 'Moyen',
+                                                            'eleve' => 'Élevé',
+                                                            'urgent' => 'Urgent'
+                                                        ];
+                                                        echo $priority_labels[$work_order['priority']] ?? $work_order['priority'];
+                                                        ?>
+                                                    </span>
+                                                </td>
                                             <td>
                                                 <div class="btn-group" role="group">
                                                     <button class="btn btn-sm btn-outline-primary" onclick="editWorkOrder(<?php echo $work_order['id']; ?>)">
@@ -235,7 +277,21 @@ try {
                             <textarea class="form-control" name="description" rows="3"></textarea>
                         </div>
                         <div class="row">
-                            <div class="col-md-6 mb-3">
+                            <div class="col-md-4 mb-3">
+                                <label class="form-label">Spécialité</label>
+                                <select class="form-control" name="specialty" id="specialtySelect" onchange="updateMechanicsList()">
+                                    <option value="">Toutes les spécialités</option>
+                                    <?php if (!empty($specialties)): ?>
+                                        <?php foreach ($specialties as $specialty): ?>
+                                            <option value="<?php echo htmlspecialchars($specialty['name']); ?>">
+                                                <i class="fas <?php echo htmlspecialchars($specialty['icon']); ?>"></i>
+                                                <?php echo htmlspecialchars($specialty['name_fr']); ?>
+                                            </option>
+                                        <?php endforeach; ?>
+                                    <?php endif; ?>
+                                </select>
+                            </div>
+                            <div class="col-md-4 mb-3">
                                 <label class="form-label">Priorité</label>
                                 <select class="form-control" name="priority" required>
                                     <option value="faible">Faible</option>
@@ -244,16 +300,28 @@ try {
                                     <option value="urgent">Urgent</option>
                                 </select>
                             </div>
-                            <div class="col-md-6 mb-3">
-                                <label class="form-label">Mécanicien</label>
-                                <select class="form-control" name="mechanic_id">
-                                    <option value="">Sélectionner un mécanicien (Optionnel)</option>
+                            <div class="col-md-4 mb-3">
+                                <label class="form-label">Travailleur Assigné</label>
+                                <select class="form-control" name="mechanic_id" id="mechanicSelect">
+                                    <option value="">Sélectionner un travailleur (Optionnel)</option>
                                     <?php if (!empty($mechanics)): ?>
                                         <?php foreach ($mechanics as $mechanic): ?>
-                                            <option value="<?php echo $mechanic['id']; ?>"><?php echo htmlspecialchars($mechanic['full_name']); ?></option>
+                                            <option value="<?php echo $mechanic['id']; ?>" data-role="<?php echo htmlspecialchars($mechanic['role']); ?>">
+                                                <?php 
+                                                $roleLabels = [
+                                                    'mecanicien' => 'Mécanicien',
+                                                    'electricien' => 'Électricien',
+                                                    'tolier' => 'Tôlier',
+                                                    'peintre' => 'Peintre',
+                                                    'chef_atelier' => 'Chef d\'Atelier'
+                                                ];
+                                                $roleLabel = $roleLabels[$mechanic['role']] ?? $mechanic['role'];
+                                                echo htmlspecialchars($mechanic['full_name']) . ' - ' . $roleLabel;
+                                                ?>
+                                            </option>
                                         <?php endforeach; ?>
                                     <?php else: ?>
-                                        <option value="" disabled>Aucun mécanicien disponible</option>
+                                        <option value="" disabled>Aucun travailleur disponible</option>
                                     <?php endif; ?>
                                 </select>
                             </div>
@@ -277,6 +345,35 @@ try {
     <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
     <script src="assets/js/main.js"></script>
     <script>
+        function updateMechanicsList() {
+            const specialtySelect = document.getElementById('specialtySelect');
+            const mechanicSelect = document.getElementById('mechanicSelect');
+            const selectedSpecialty = specialtySelect.value;
+            
+            // Get all options
+            const options = mechanicSelect.querySelectorAll('option');
+            
+            // Show/hide options based on specialty
+            options.forEach(option => {
+                if (option.value === '') {
+                    // Always show the "Select worker" option
+                    option.style.display = 'block';
+                } else {
+                    const role = option.getAttribute('data-role');
+                    if (selectedSpecialty === '' || role === selectedSpecialty) {
+                        option.style.display = 'block';
+                    } else {
+                        option.style.display = 'none';
+                    }
+                }
+            });
+            
+            // Reset selection if current selection is hidden
+            if (mechanicSelect.value && mechanicSelect.options[mechanicSelect.selectedIndex].style.display === 'none') {
+                mechanicSelect.value = '';
+            }
+        }
+        
         function saveWorkOrder() {
             const form = document.getElementById('addWorkOrderForm');
             const formData = new FormData(form);
@@ -328,6 +425,52 @@ try {
                     alertDiv.remove();
                 }
             }, 5000);
+        }
+        
+        function editWorkOrder(id) {
+            // Edit work order functionality
+            window.location.href = 'work_order_edit.php?id=' + id;
+        }
+        
+        function viewWorkOrder(id) {
+            // View work order functionality
+            window.location.href = 'work_order_view.php?id=' + id;
+        }
+        
+        function updateStatus(id) {
+            // Update status functionality
+            if (confirm('Mettre à jour le statut de cet ordre de travail?')) {
+                fetch('api/work_orders/update_status.php', {
+                    method: 'POST',
+                    body: JSON.stringify({id: id})
+                })
+                .then(response => response.json())
+                .then(data => {
+                    if (data.success) {
+                        location.reload();
+                    } else {
+                        alert('Erreur: ' + data.error);
+                    }
+                });
+            }
+        }
+        
+        function deleteWorkOrder(id) {
+            // Delete work order functionality
+            if (confirm('Supprimer cet ordre de travail?')) {
+                fetch('api/work_orders/delete.php', {
+                    method: 'POST',
+                    body: JSON.stringify({id: id})
+                })
+                .then(response => response.json())
+                .then(data => {
+                    if (data.success) {
+                        location.reload();
+                    } else {
+                        alert('Erreur: ' + data.error);
+                    }
+                });
+            }
         }
     </script>
 </body>
