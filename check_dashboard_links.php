@@ -15,12 +15,12 @@ $dashboard_links = [
     'header' => [
         'Audit' => 'site_audit.php',
         'Nettoyer' => 'remove_unnecessary_files.php',
-        'Nouveau' => 'admin_breakdowns_workshop.php'
+        'Nouveau' => 'admin/admin_breakdowns_workshop.php'
     ],
     'quick_actions' => [
         'Nouvelle DA' => 'achat_da.php',
         'Performance Achats' => 'purchase_performance.php',
-        'Ordre Travail' => 'admin_breakdowns_workshop.php',
+        'Ordre Travail' => 'admin/admin_breakdowns_workshop.php',
         'Inventaire' => 'articles_stockables.php',
         'Ajouter Bus' => 'buses_complete.php',
         'Fournisseurs' => 'fournisseurs.php',

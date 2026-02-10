@@ -164,7 +164,7 @@ $page_title = "Tableau de Bord Simple";
                 <button class="btn btn-outline-success" onclick="window.location.href='remove_unnecessary_files.php'">
                     <i class="fas fa-trash-alt me-2"></i>Nettoyer
                 </button>
-                <button class="btn btn-primary" onclick="window.location.href='admin_breakdowns_workshop.php'">
+                <button class="btn btn-primary" onclick="window.location.href='admin/admin_breakdowns_workshop.php'">
                     <i class="fas fa-plus me-2"></i>Nouveau
                 </button>
             </div>
@@ -268,7 +268,7 @@ $page_title = "Tableau de Bord Simple";
                                 <i class="fas fa-chart-line"></i>
                                 <span>Performance Achats</span>
                             </a>
-                            <a href="admin_breakdowns_workshop.php" class="quick-action">
+                            <a href="admin/admin_breakdowns_workshop.php" class="quick-action">
                                 <i class="fas fa-tools"></i>
                                 <span>Ordre Travail</span>
                             </a>
