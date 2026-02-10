@@ -7,6 +7,6 @@ return [
     'username' => 'u442210176.futureautomotive.net',
     'password' => '123Abdou123!',
     'port' => 21,
-    'remote_path' => '/public_html/futureautomotive'
+    'remote_path' => '/public_html/'
 ];
 ?>

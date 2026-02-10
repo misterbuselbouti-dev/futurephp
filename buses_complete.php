@@ -134,145 +134,118 @@ try {
     <link rel="stylesheet" href="assets/css/simple-theme.css">
     <style>
         body {
-            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
-            background-color: #f8f9fa;
-            padding-top: 70px; /* Space for fixed navbar */
+            font-family: Arial, sans-serif;
+            background-color: #f5f5f5;
+            padding-top: 70px;
         }
         .main-content {
             margin-left: 250px;
             padding: 20px;
-            transition: margin-left 0.3s;
         }
         .sidebar-collapsed .main-content {
             margin-left: 70px;
         }
         .card {
-            border-radius: 12px;
-            box-shadow: 0 4px 6px rgba(0,0,0,0.1);
-            border: none;
-            transition: transform 0.2s;
+            border: 1px solid #ddd;
+            border-radius: 8px;
+            margin-bottom: 20px;
+            background: white;
         }
-        .card:hover {
-            transform: translateY(-2px);
+        .card-header {
+            background: #f8f9fa;
+            border-bottom: 1px solid #ddd;
+            padding: 15px;
+            font-weight: bold;
         }
         .table th {
-            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            background: #f8f9fa;
+            border-bottom: 2px solid #dee2e6;
+            font-weight: 600;
+        }
+        .btn {
+            padding: 6px 12px;
+            border-radius: 4px;
+            text-decoration: none;
+            font-size: 14px;
+        }
+        .btn-primary {
+            background: #007bff;
             color: white;
-            border: none;
-            font-weight: 600;
+            border: 1px solid #007bff;
         }
-        .btn-group .btn {
-            margin: 0 2px;
-            border-radius: 6px;
+        .btn-success {
+            background: #28a745;
+            color: white;
+            border: 1px solid #28a745;
         }
-        .category-badge {
+        .btn-danger {
+            background: #dc3545;
+            color: white;
+            border: 1px solid #dc3545;
+        }
+        .btn-warning {
+            background: #ffc107;
+            color: #212529;
+            border: 1px solid #ffc107;
+        }
+        .btn:hover {
+            opacity: 0.8;
+        }
+        .form-control {
+            border: 1px solid #ced4da;
+            border-radius: 4px;
+            padding: 8px 12px;
+        }
+        .form-label {
             font-weight: 600;
-            font-size: 0.75em;
+            margin-bottom: 5px;
+        }
+        .alert {
+            padding: 15px;
+            border-radius: 4px;
+            margin-bottom: 20px;
+        }
+        .alert-success {
+            background: #d4edda;
+            border: 1px solid #c3e6cb;
+            color: #155724;
+        }
+        .alert-danger {
+            background: #f8d7da;
+            border: 1px solid #f5c6cb;
+            color: #721c24;
+        }
+        .badge {
             padding: 4px 8px;
             border-radius: 12px;
+            font-size: 12px;
+            font-weight: 600;
         }
-        .category-bus {
-            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+        .badge-success {
+            background: #28a745;
             color: white;
         }
-        .category-minibus {
-            background: linear-gradient(135deg, #f093fb 0%, #f5576c 100%);
+        .badge-warning {
+            background: #ffc107;
+            color: #212529;
+        }
+        .badge-danger {
+            background: #dc3545;
             color: white;
         }
-        .stats-card {
-            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
-            color: white;
-            border: none;
-            transition: transform 0.2s;
+        .text-center {
+            text-align: center;
         }
-        .stats-card:hover {
-            transform: translateY(-3px);
+        .mb-3 {
+            margin-bottom: 15px;
         }
-        .header-section {
-            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
-            color: white;
-            padding: 3rem 0;
-            margin: -20px -20px 30px -20px;
-            border-radius: 0 0 20px 20px;
+        .mb-4 {
+            margin-bottom: 20px;
         }
-        .filter-section {
-            background: white;
-            border-radius: 12px;
-            padding: 1.5rem;
-            margin-bottom: 2rem;
-            box-shadow: 0 2px 4px rgba(0,0,0,0.1);
-        }
-        .btn-edit {
-            background: linear-gradient(135deg, #6c757d 0%, #495057 100%);
-            border: none;
-            color: white;
-        }
-        .btn-edit:hover {
-            background: linear-gradient(135deg, #5a6268 0%, #343a40 100%);
-            color: white;
-        }
-        .btn-delete {
-            background: linear-gradient(135deg, #dc3545 0%, #c82333 100%);
-            border: none;
-            color: white;
-        }
-        .btn-delete:hover {
-            background: linear-gradient(135deg, #bd2130 0%, #a71e2a 100%);
-            color: white;
-        }
-        .btn-export {
-            background: linear-gradient(135deg, #28a745 0%, #20c997 100%);
-            border: none;
-            color: white;
-        }
-        .btn-export:hover {
-            background: linear-gradient(135deg, #218838 0%, #1e7e34 100%);
-            color: white;
-        }
-        .checkbox-custom {
-            width: 18px;
-            height: 18px;
-        }
-        .table-actions {
-            min-width: 120px;
-        }
-        .search-box {
-            position: relative;
-        }
-        .search-box input {
-            padding-left: 40px;
-            border-radius: 20px;
-            border: 2px solid #e9ecef;
-        }
-        .search-box i {
-            position: absolute;
-            left: 15px;
-            top: 50%;
-            transform: translateY(-50%);
-            color: #6c757d;
-        }
-        .breadcrumb {
-            background: rgba(255,255,255,0.1);
-            border-radius: 20px;
-            padding: 0.5rem 1rem;
-            margin-bottom: 0;
-        }
-        .breadcrumb-item a {
-            color: rgba(255,255,255,0.8);
-            text-decoration: none;
-        }
-        .breadcrumb-item a:hover {
-            color: white;
-        }
-        .breadcrumb-item.active {
-            color: white;
-        }
-        @keyframes fadeIn {
-            from { opacity: 0; transform: translateY(10px); }
-            to { opacity: 1; transform: translateY(0); }
-        }
-        .fade-in {
-            animation: fadeIn 0.3s ease-out;
+        @media (max-width: 992px) {
+            .main-content {
+                margin-left: 0;
+            }
         }
     </style>
 </head>
@@ -281,71 +254,42 @@ try {
     <?php include 'includes/sidebar.php'; ?>
     <div class="main-content">
         <div class="container-fluid">
-            <!-- Header Section -->
-            <div class="header-section">
-                <div class="container">
-                    <nav aria-label="breadcrumb">
-                        <ol class="breadcrumb">
-                            <li class="breadcrumb-item"><a href="index.php"><i class="fas fa-home me-2"></i>Home</a></li>
-                            <li class="breadcrumb-item active"><i class="fas fa-bus me-2"></i>Bus Management</li>
-                        </ol>
-                    </nav>
-                    <h1 class="display-4 fw-bold"><i class="fas fa-bus me-3"></i>Bus Management System</h1>
-                    <p class="lead mb-0">Complete fleet management with advanced features</p>
-                </div>
+            <div class="mb-4">
+                <h1><i class="fas fa-bus me-2"></i>Bus Management</h1>
+                <p class="text-muted">Complete fleet management system</p>
             </div>
             
             <!-- Statistics Cards -->
-            <div class="row g-3 mb-4 fade-in">
+            <div class="row g-3 mb-4">
                 <div class="col-md-3">
-                    <div class="card stats-card">
-                        <div class="card-body">
-                            <div class="d-flex justify-content-between align-items-center">
-                                <div>
-                                    <h2 class="mb-0"><?php echo $total_buses; ?></h2>
-                                    <p class="mb-0">Total Vehicles</p>
-                                </div>
-                                <i class="fas fa-bus fa-2x opacity-75"></i>
-                            </div>
+                    <div class="card">
+                        <div class="card-body text-center">
+                            <h3><?php echo $total_buses; ?></h3>
+                            <p class="text-muted">Total Vehicles</p>
                         </div>
                     </div>
                 </div>
                 <div class="col-md-3">
-                    <div class="card stats-card">
-                        <div class="card-body">
-                            <div class="d-flex justify-content-between align-items-center">
-                                <div>
-                                    <h2 class="mb-0"><?php echo count(array_filter($buses, function($bus) { return $bus['category'] === 'Bus'; })); ?></h2>
-                                    <p class="mb-0">Buses</p>
-                                </div>
-                                <i class="fas fa-bus fa-2x opacity-75"></i>
-                            </div>
+                    <div class="card">
+                        <div class="card-body text-center">
+                            <h3><?php echo count(array_filter($buses, function($bus) { return $bus['category'] === 'Bus'; })); ?></h3>
+                            <p class="text-muted">Buses</p>
                         </div>
                     </div>
                 </div>
                 <div class="col-md-3">
-                    <div class="card stats-card">
-                        <div class="card-body">
-                            <div class="d-flex justify-content-between align-items-center">
-                                <div>
-                                    <h2 class="mb-0"><?php echo count(array_filter($buses, function($bus) { return $bus['category'] === 'Minibus'; })); ?></h2>
-                                    <p class="mb-0">Minibuses</p>
-                                </div>
-                                <i class="fas fa-van-shuttle fa-2x opacity-75"></i>
-                            </div>
+                    <div class="card">
+                        <div class="card-body text-center">
+                            <h3><?php echo count(array_filter($buses, function($bus) { return $bus['category'] === 'Minibus'; })); ?></h3>
+                            <p class="text-muted">Minibuses</p>
                         </div>
                     </div>
                 </div>
                 <div class="col-md-3">
-                    <div class="card stats-card">
-                        <div class="card-body">
-                            <div class="d-flex justify-content-between align-items-center">
-                                <div>
-                                    <h2 class="mb-0"><?php echo $active_buses; ?></h2>
-                                    <p class="mb-0">Active</p>
-                                </div>
-                                <i class="fas fa-check-circle fa-2x opacity-75"></i>
-                            </div>
+                    <div class="card">
+                        <div class="card-body text-center">
+                            <h3><?php echo $active_buses; ?></h3>
+                            <p class="text-muted">Active</p>
                         </div>
                     </div>
                 </div>
@@ -377,48 +321,47 @@ try {
             <?php endif; ?>
             
             <!-- Filters Section -->
-            <div class="filter-section fade-in">
-                <div class="row g-3 align-items-end">
-                    <div class="col-md-4">
-                        <label class="form-label">Search</label>
-                        <div class="search-box">
-                            <i class="fas fa-search"></i>
+            <div class="card mb-4">
+                <div class="card-body">
+                    <div class="row g-3 align-items-end">
+                        <div class="col-md-4">
+                            <label class="form-label">Search</label>
                             <input type="text" class="form-control" id="searchInput" placeholder="Search by number, plate, make, model..." value="<?php echo htmlspecialchars($search); ?>">
                         </div>
-                    </div>
-                    <div class="col-md-2">
-                        <label class="form-label">Category</label>
-                        <select class="form-select" id="categoryFilter">
-                            <option value="">All Categories</option>
-                            <option value="Bus" <?php echo $category_filter === 'Bus' ? 'selected' : ''; ?>>Bus</option>
-                            <option value="Minibus" <?php echo $category_filter === 'Minibus' ? 'selected' : ''; ?>>Minibus</option>
-                        </select>
-                    </div>
-                    <div class="col-md-2">
-                        <label class="form-label">Status</label>
-                        <select class="form-select" id="statusFilter">
-                            <option value="">All Status</option>
-                            <option value="active" <?php echo $status_filter === 'active' ? 'selected' : ''; ?>>Active</option>
-                            <option value="maintenance" <?php echo $status_filter === 'maintenance' ? 'selected' : ''; ?>>Maintenance</option>
-                            <option value="inactive" <?php echo $status_filter === 'inactive' ? 'selected' : ''; ?>>Inactive</option>
-                        </select>
-                    </div>
-                    <div class="col-md-2">
-                        <label class="form-label">Actions</label>
-                        <div class="btn-group w-100">
-                            <button class="btn btn-export" onclick="exportData()">
-                                <i class="fas fa-download me-2"></i>Export
-                            </button>
-                            <button class="btn btn-danger" onclick="bulkDelete()" id="bulkDeleteBtn" style="display: none;">
-                                <i class="fas fa-trash me-2"></i>Delete
+                        <div class="col-md-2">
+                            <label class="form-label">Category</label>
+                            <select class="form-select" id="categoryFilter">
+                                <option value="">All Categories</option>
+                                <option value="Bus" <?php echo $category_filter === 'Bus' ? 'selected' : ''; ?>>Bus</option>
+                                <option value="Minibus" <?php echo $category_filter === 'Minibus' ? 'selected' : ''; ?>>Minibus</option>
+                            </select>
+                        </div>
+                        <div class="col-md-2">
+                            <label class="form-label">Status</label>
+                            <select class="form-select" id="statusFilter">
+                                <option value="">All Status</option>
+                                <option value="active" <?php echo $status_filter === 'active' ? 'selected' : ''; ?>>Active</option>
+                                <option value="maintenance" <?php echo $status_filter === 'maintenance' ? 'selected' : ''; ?>>Maintenance</option>
+                                <option value="inactive" <?php echo $status_filter === 'inactive' ? 'selected' : ''; ?>>Inactive</option>
+                            </select>
+                        </div>
+                        <div class="col-md-2">
+                            <label class="form-label">Actions</label>
+                            <div class="btn-group w-100">
+                                <button class="btn btn-success" onclick="exportData()">
+                                    <i class="fas fa-download"></i> Export
+                                </button>
+                                <button class="btn btn-danger" onclick="bulkDelete()" id="bulkDeleteBtn" style="display: none;">
+                                    <i class="fas fa-trash"></i> Delete
+                                </button>
+                            </div>
+                        </div>
+                        <div class="col-md-2">
+                            <label class="form-label">&nbsp;</label>
+                            <button class="btn btn-primary w-100" data-bs-toggle="modal" data-bs-target="#busModal">
+                                <i class="fas fa-plus"></i> Add Vehicle
                             </button>
                         </div>
-                    </div>
-                    <div class="col-md-2">
-                        <label class="form-label">&nbsp;</label>
-                        <button class="btn btn-primary w-100" data-bs-toggle="modal" data-bs-target="#busModal">
-                            <i class="fas fa-plus me-2"></i>Add Vehicle
-                        </button>
                     </div>
                 </div>
             </div>
@@ -432,7 +375,7 @@ try {
                     </h5>
                     <div class="d-flex align-items-center">
                         <div class="form-check me-3">
-                            <input class="form-check-input checkbox-custom" type="checkbox" id="selectAll">
+                            <input class="form-check-input" type="checkbox" id="selectAll">
                             <label class="form-check-label" for="selectAll">Select All</label>
                         </div>
                     </div>
@@ -454,7 +397,7 @@ try {
                                 <tr>
                                     <th width="40px">
                                         <div class="form-check">
-                                            <input class="form-check-input checkbox-custom" type="checkbox" id="selectAllHeader">
+                                            <input class="form-check-input" type="checkbox" id="selectAllHeader">
                                         </div>
                                     </th>
                                     <th>Bus Number</th>
@@ -465,7 +408,7 @@ try {
                                     <th>Capacity</th>
                                     <th>Puissance Fiscale</th>
                                     <th>Status</th>
-                                    <th class="table-actions">Actions</th>
+                                    <th>Actions</th>
                                 </tr>
                             </thead>
                             <tbody>
@@ -473,14 +416,12 @@ try {
                                 <tr>
                                     <td>
                                         <div class="form-check">
-                                            <input class="form-check-input checkbox-custom bus-checkbox" type="checkbox" value="<?php echo $bus['id']; ?>">
+                                            <input class="form-check-input bus-checkbox" type="checkbox" value="<?php echo $bus['id']; ?>">
                                         </div>
                                     </td>
                                     <td><strong><?php echo htmlspecialchars($bus['bus_number']); ?></strong></td>
                                     <td>
-                                        <span class="badge category-badge <?php echo $bus['category'] === 'Bus' ? 'category-bus' : 'category-minibus'; ?>">
-                                            <?php echo htmlspecialchars($bus['category']); ?>
-                                        </span>
+                                        <span class="badge bg-primary"><?php echo htmlspecialchars($bus['category']); ?></span>
                                     </td>
                                     <td><?php echo htmlspecialchars($bus['make'] . ' ' . $bus['model']); ?></td>
                                     <td><?php echo $bus['year'] ?? '-'; ?></td>
@@ -504,12 +445,12 @@ try {
                                             ?>
                                         </span>
                                     </td>
-                                    <td class="table-actions">
-                                        <div class="btn-group" role="group">
-                                            <a href="buses_edit.php?id=<?php echo $bus['id']; ?>" class="btn btn-sm btn-edit" title="Edit">
+                                    <td>
+                                        <div class="btn-group">
+                                            <button class="btn btn-sm btn-primary" onclick="editBus(<?php echo $bus['id']; ?>)">
                                                 <i class="fas fa-edit"></i>
-                                            </a>
-                                            <button class="btn btn-sm btn-delete" onclick="deleteBus(<?php echo $bus['id']; ?>)" title="Delete">
+                                            </button>
+                                            <button class="btn btn-sm btn-danger" onclick="deleteBus(<?php echo $bus['id']; ?>, '<?php echo addslashes(htmlspecialchars($bus['bus_number'])); ?>')">
                                                 <i class="fas fa-trash"></i>
                                             </button>
                                         </div>
@@ -670,8 +611,8 @@ try {
         });
         
         // Delete function
-        function deleteBus(id) {
-            if (confirm('Are you sure you want to delete this vehicle? This action cannot be undone.')) {
+        function deleteBus(id, busNumber) {
+            if (confirm('Are you sure you want to delete ' + busNumber + '? This action cannot be undone.')) {
                 window.location.href = 'buses_complete.php?action=delete&id=' + id;
             }
         }
