@@ -1,53 +1,10 @@
 <?php
-// FUTURE AUTOMOTIVE - ISO 9001 Professional Header
-// Corporate Navigation with Clean Design
+// FUTURE AUTOMOTIVE - Unified Header (Redirect to Unified)
+// This file now redirects to the unified header for consistency
 
-$unread_notifications = 0;
-try {
-    if (session_status() === PHP_SESSION_NONE) {
-        session_start();
-    }
-    $uid = (int)($_SESSION['user_id'] ?? 0);
-    if ($uid) {
-        require_once __DIR__ . '/../config.php';
-        $database = new Database();
-        $pdo = $database->connect();
-        $stmt = $pdo->prepare("SELECT COUNT(*) AS c FROM notifications WHERE user_id = ? AND is_read = 0");
-        $stmt->execute([$uid]);
-        $unread_notifications = (int)($stmt->fetch()['c'] ?? 0);
-    }
-} catch (Exception $e) {
-    $unread_notifications = 0;
-}
+// Include the unified header instead
+include __DIR__ . '/header_unified.php';
 ?>
-
-<!-- Professional ISO 9001 Header -->
-<header class="main-header">
-    <div class="header-title">
-        <h1><?php echo isset($page_title) ? htmlspecialchars($page_title) : 'Tableau de Bord'; ?></h1>
-    </div>
-    
-    <div class="header-actions">
-        <!-- Date & Time -->
-        <div class="datetime-display">
-            <i class="fas fa-clock"></i>
-            <span id="currentDateTime"></span>
-        </div>
-        
-        <!-- Notifications -->
-        <div class="notification-item">
-            <a href="notifications.php" class="notification-link <?php echo $unread_notifications > 0 ? 'has-notifications' : ''; ?>">
-                <i class="fas fa-bell"></i>
-                <?php if ($unread_notifications > 0): ?>
-                    <span class="notification-badge"><?php echo (int)$unread_notifications; ?></span>
-                <?php endif; ?>
-            </a>
-        </div>
-        
-        <!-- User Menu -->
-        <div class="user-menu">
-            <div class="user-info">
-                <i class="fas fa-user-circle"></i>
                 <span><?php echo get_logged_in_user()['full_name']; ?></span>
                 <i class="fas fa-chevron-down"></i>
             </div>
