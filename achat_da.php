@@ -235,14 +235,11 @@ try {
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Demande d'Achat - <?php echo APP_NAME; ?></title>
     
-    <!-- Bootstrap CSS -->
-    <!-- ISO 9001 Professional Theme -->
-    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+    <!-- ISO 9001/45001 Theme -->
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800&display=swap" rel="stylesheet">
     <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
-    <link rel="stylesheet" href="assets/css/iso-theme.css">
-    <link rel="stylesheet" href="assets/css/iso-components.css">
-    <link rel="stylesheet" href="assets/css/iso-bootstrap.css">
+    <link rel="stylesheet" href="assets/css/iso-universal-theme.css">
     <link href="https://cdn.jsdelivr.net/npm/select2@4.1.0-rc.0/dist/css/select2.min.css" rel="stylesheet" />
     <link href="https://cdn.jsdelivr.net/npm/@ttskch/select2-bootstrap4-theme@x.x.x/dist/select2-bootstrap4.min.css" rel="stylesheet" />
     
@@ -284,81 +281,13 @@ try {
         }
         
         .form-control:focus, .form-select:focus {
-            border-color: #808000;
-            box-shadow: 0 0 0 0.2rem rgba(128, 128, 0, 0.25);
+            border-color: var(--primary);
+            box-shadow: 0 0 0 0.2rem rgba(var(--primary-rgb), 0.25);
         }
         
         .required-star {
-            color: #dc3545;
+            color: var(--danger);
             margin-left: 4px;
-        }
-        
-        .btn-olive {
-            background: linear-gradient(135deg, #808000, #6b6b00);
-            border: none;
-            color: white;
-            padding: 0.75rem 2rem;
-            border-radius: 10px;
-            font-weight: 500;
-            transition: all 0.3s ease;
-        }
-        
-        .btn-olive:hover {
-            background: linear-gradient(135deg, #6b6b00, #585800);
-            transform: translateY(-2px);
-            box-shadow: 0 5px 15px rgba(128, 128, 0, 0.3);
-            color: white;
-        }
-        
-        .btn-add-article {
-            background: #28a745;
-            border: none;
-            color: white;
-            border-radius: 50%;
-            width: 30px;
-            height: 30px;
-            padding: 0;
-            display: inline-flex;
-            align-items: center;
-            justify-content: center;
-            margin-left: 10px;
-            transition: all 0.3s ease;
-        }
-        
-        .btn-add-article:hover {
-            background: #218838;
-            transform: scale(1.1);
-        }
-        
-        .item-row {
-            background: #f8f9fa;
-            border-radius: 10px;
-            padding: 1rem;
-            margin-bottom: 1rem;
-            border: 1px solid #e9ecef;
-        }
-        
-        .btn-remove-item {
-            background: #dc3545;
-            border: none;
-            color: white;
-            border-radius: 5px;
-            padding: 0.25rem 0.5rem;
-            font-size: 0.8rem;
-        }
-        
-        .btn-remove-item:hover {
-            background: #c82333;
-        }
-        
-        .select2-container--bootstrap4 .select2-selection {
-            border-radius: 10px;
-            border: 1px solid #e0e0e0;
-            min-height: 45px;
-        }
-        
-        .select2-container--bootstrap4 .select2-selection--single {
-            padding: 0.5rem;
         }
         
         @media (max-width: 768px) {
@@ -778,7 +707,7 @@ try {
                             </div>
                             <div class="col-md-1">
                                 <label class="form-label">&nbsp;</label>
-                                <button type="button" class="btn btn-remove-item w-100" onclick="removeItem(${itemCount})">
+                                <button type="button" class="btn btn-danger btn-sm w-100" onclick="removeItem(${itemCount})">
                                     <i class="fas fa-trash"></i>
                                 </button>
                             </div>
