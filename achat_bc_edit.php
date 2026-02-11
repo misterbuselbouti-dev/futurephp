@@ -119,6 +119,15 @@ try {
                     <div class="alert alert-danger"><?php echo htmlspecialchars($error_message); ?></div>
                 <?php endif; ?>
 
+                <div class="d-flex flex-wrap gap-2 mb-4">
+                    <a class="btn btn-outline-primary" href="achat_bc_print.php?id=<?php echo (int) $bc_id; ?>" target="_blank" rel="noopener">
+                        <i class="fas fa-print me-2"></i>Aperçu impression
+                    </a>
+                    <a class="btn btn-outline-danger" href="achat_bc_pdf.php?id=<?php echo (int) $bc_id; ?>" target="_blank" rel="noopener">
+                        <i class="fas fa-file-pdf me-2"></i>Télécharger PDF
+                    </a>
+                </div>
+
                 <form method="post">
                     <input type="hidden" name="bc_id" value="<?php echo (int)$bc_id; ?>">
                     <div class="row mb-3">

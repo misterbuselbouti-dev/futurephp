@@ -29,6 +29,8 @@
     --text-tertiary: #4a5568;     /* Medium Gray */
     --text-muted: #718096;        /* Muted Gray */
     --text-light: #a0aec0;        /* Light Gray */
+    --text-on-primary: #ffffff;   /* High-contrast text over brand surfaces */
+    --text-on-primary-muted: rgba(255, 255, 255, 0.8); /* Muted contrast */
     --border-primary: #e2e8f0;    /* Clear Border */
     --border-secondary: #cbd5e0;  /* Medium Border */
     --border-light: #f7fafc;      /* Light Border */

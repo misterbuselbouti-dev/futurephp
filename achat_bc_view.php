@@ -256,10 +256,10 @@ try {
                             <a href="achat_bc.php" class="btn btn-outline-secondary">
                                 <i class="fas fa-arrow-left me-2"></i>Retour
                             </a>
-                            <button class="btn btn-outline-primary" onclick="window.print()">
+                            <a href="achat_bc_print.php?id=<?php echo $bc_id; ?>" target="_blank" rel="noopener" class="btn btn-outline-primary">
                                 <i class="fas fa-print me-2"></i>Imprimer
-                            </button>
-                            <a href="achat_bc_pdf.php?id=<?php echo $bc_id; ?>" class="btn btn-outline-danger">
+                            </a>
+                            <a href="achat_bc_pdf.php?id=<?php echo $bc_id; ?>" target="_blank" rel="noopener" class="btn btn-outline-danger">
                                 <i class="fas fa-file-pdf me-2"></i>PDF
                             </a>
                         </div>
